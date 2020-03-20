@@ -1,4 +1,4 @@
-package it.polimi.ingsw.pcXX;
+package it.polimi.ingsw.ParenteVenturini;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
