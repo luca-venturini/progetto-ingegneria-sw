@@ -1,5 +1,13 @@
 # Project Template - Prova Finale (Ingegneria del Software)
 
+#Domenico Parente - Luca Venturini
+
+
+#_______________________
+
+
+
+
 ## Project Setup
 In order to set up your project, follow these steps
 ### Clone and push the template to your repo
