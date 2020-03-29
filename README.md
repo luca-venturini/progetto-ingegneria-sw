@@ -1,4 +1,4 @@
-# Project Template - Prova Finale (Ingegneria del Software)
+# Prova Finale (Ingegneria del Software)
 
 Domenico Parente - Luca Venturini
 
