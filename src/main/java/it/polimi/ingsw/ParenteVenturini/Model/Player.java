@@ -20,6 +20,10 @@ public class Player {
         this.card = card;
     }
 
+    public void placeWorker(int colour , Point point){
+        Worker worker= new Worker(point,this,colour);
+        addWorker(worker);
+    }
     public void addWorker(Worker worker){
         workers.add(worker);
     }

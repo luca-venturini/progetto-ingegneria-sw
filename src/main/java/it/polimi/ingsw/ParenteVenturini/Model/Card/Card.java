@@ -10,12 +10,4 @@ public abstract class Card {
     }
 
     public abstract boolean isConditionValid();
-/*
-    public abstract Action getAction();
-
-    public abstract WinCheck getWinCondition();
-
-    public abstract Effect getEffect();
- */
-
 }

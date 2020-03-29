@@ -19,10 +19,12 @@ public class Block {
     }
 
     public void updateLevel(int level){
+
         this.level = level;
     }
 
     public void setDoom(boolean doom) {
+
         this.doom = doom;
     }
 

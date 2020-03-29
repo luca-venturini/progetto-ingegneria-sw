@@ -5,11 +5,13 @@ public class Worker {
     private Point position;
     private Point lastPosition;
     private Player player;
+    private int colour;
 
-    public Worker(Point position, Player player) {
+    public Worker(Point position, Player player, int colour) {
         this.position = position;
         this.lastPosition = null;
         this.player = player;
+        this.colour= colour;
     }
 
     public Point getPosition(){
@@ -28,5 +30,5 @@ public class Worker {
         this.position = point;
     }
 
-    /** implementare metodo callMove() **/
+    /* implementare metodo callMove() */
 }
