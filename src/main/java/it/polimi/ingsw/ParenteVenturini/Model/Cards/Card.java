@@ -1,4 +1,6 @@
-package it.polimi.ingsw.ParenteVenturini.Model.Card;
+package it.polimi.ingsw.ParenteVenturini.Model.Cards;
+
+import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public abstract class Card {
     private String name;
@@ -9,5 +11,5 @@ public abstract class Card {
         this.description = description;
     }
 
-    public abstract boolean isConditionValid();
+    public abstract Move getMove();
 }

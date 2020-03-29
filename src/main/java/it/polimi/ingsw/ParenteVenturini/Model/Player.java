@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Card.Card;
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
+import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,21 @@ public class Player {
         this.card = card;
     }
 
-    public void placeWorker(int colour , Point point){
+    public void placeWorker(int colour , Point point, Board board){
         Worker worker= new Worker(point,this,colour);
         addWorker(worker);
+        board.setWorker(worker);
     }
     public void addWorker(Worker worker){
         workers.add(worker);
+    }
+
+    public Worker selectWorker(int num){
+        return workers.get(num);
+    }
+    public void callMove(int num){
+        Worker w = selectWorker(num);
+        Move myMove= card.getMove();
     }
 
     public Card getCard() {

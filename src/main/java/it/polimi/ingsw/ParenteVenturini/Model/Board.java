@@ -1,14 +1,17 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
 
-    private Block board[][];
+    private Block[][] board;
     private List<Worker> workers;
+    private static Board instance;
 
-    public Board() {
+    private Board() {
         board = new Block[5][5];
         workers = new ArrayList<Worker>();
 
@@ -17,6 +20,10 @@ public class Board {
                 board[i][j] = new Block();
             }
         }
+    }
+    public static Board createBoard(){
+        if (instance == null) instance = new Board();
+        return instance;
     }
 
     public void setWorker(Worker w) {
@@ -56,6 +63,20 @@ public class Board {
         return board[x][y].getLevel();
     }
 
+    public void setBlockLevel(Point point, int level) throws IllegalBlockUpdateException {
+        board[point.getX()][point.getY()].updateLevel(level);
+    }
+    public void setDoom(Point point,boolean x) {
+        board[point.getX()][point.getY()].setDoom(x);
+    }
+
+    public Worker findByPosition(Point point){
+        for(Worker w: workers){
+            if(w.getPosition().equals(point))
+                return w;
+        }
+        return null;
+    }
 
 
 }

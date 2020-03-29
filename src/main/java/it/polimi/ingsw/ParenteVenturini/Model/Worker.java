@@ -27,8 +27,15 @@ public class Worker {
     }
 
     public void setPosition(Point point){
+        setLastPosition(this.position);
         this.position = point;
     }
 
-    /* implementare metodo callMove() */
+    public Point getLastPosition() {
+        return lastPosition;
+    }
+
+    public void setLastPosition(Point lastPosition) {
+        this.lastPosition = lastPosition;
+    }
 }
