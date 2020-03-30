@@ -1,8 +1,8 @@
 package it.polimi.ingsw.ParenteVenturini.Model.Moves;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.Action;
-import it.polimi.ingsw.ParenteVenturini.Model.Actions.ApolloMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
+import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
@@ -10,29 +10,32 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.List;
 
-public class ApolloMove extends Move {
+public class AthenaMove extends Move {
 
     private boolean hasWalked;
     private boolean hasEnded;
+    private boolean validCondition;
 
-    public ApolloMove() {
-        hasWalked=false;
-        hasEnded=false;
+    public AthenaMove() {
+        this.hasWalked = false;
+        this.hasEnded = false;
+        this.validCondition=false;
     }
 
     @Override
-    public void walk(Point point, Board board, Worker worker) throws AlreadyWalkedException, IllegalBuildingException, IllegalMovementException, endedMoveException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
         if(!hasEnded) {
             if (!hasWalked) {
-                Action action = new ApolloMovement();
+                Action action = new BasicMovement();
                 action.doAction(point, board, worker);
+                isConditionValid(board,worker);
                 hasWalked = true;
             } else throw new AlreadyWalkedException();
         }else throw new endedMoveException();
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws OutOfOrderMoveException, IllegalBuildingException, IllegalMovementException, endedMoveException {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
         if(!hasEnded) {
             if (hasWalked) {
                 Action action = new BasicConstruction();
@@ -45,8 +48,8 @@ public class ApolloMove extends Move {
     }
 
     @Override
-    public java.util.List<Point> possibleMovements(Board board, Worker worker) {
-        Action action = new ApolloMovement();
+    public List<Point> possibleMovements(Board board, Worker worker) {
+        Action action = new BasicMovement();
         if(!hasEnded) {
             return action.getPossibleActions(board, worker);
         }
@@ -60,5 +63,11 @@ public class ApolloMove extends Move {
             return action.getPossibleActions(board, worker);
         }
         else return null;
+    }
+
+    public void isConditionValid(Board board, Worker worker){
+        if( board.blockLevel(worker.getPosition()) > board.blockLevel(worker.getLastPosition()) )
+            validCondition=true;
+        validCondition=false;
     }
 }

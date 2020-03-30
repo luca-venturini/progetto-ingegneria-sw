@@ -1,19 +1,19 @@
 package it.polimi.ingsw.ParenteVenturini.Model.Cards;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
-import it.polimi.ingsw.ParenteVenturini.Model.Moves.HephaestusMove;
+import it.polimi.ingsw.ParenteVenturini.Model.Moves.ArtemisMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffect;
 
-public class HephaestusCard extends Card {
+public class ArtemisCard extends Card {
 
-    public HephaestusCard(String name, String description) {
+    public ArtemisCard(String name, String description) {
         super(name, description);
     }
 
     @Override
     public Move getMove() {
-        return new HephaestusMove();
+        return new ArtemisMove();
     }
 
     @Override

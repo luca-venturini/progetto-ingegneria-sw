@@ -1,29 +1,72 @@
 package it.polimi.ingsw.ParenteVenturini.Model.Moves;
 
-import com.sun.tools.javac.util.List;
+import it.polimi.ingsw.ParenteVenturini.Model.Actions.Action;
+import it.polimi.ingsw.ParenteVenturini.Model.Actions.AtlasContruction;
+import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
+import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
+import java.util.List;
+
 public class AtlasMove extends Move {
 
-    @Override
-    public void walk(Board board, Worker worker) {
+    private boolean hasWalked;
+    private boolean hasEnded;
 
+    public AtlasMove() {
+        this.hasWalked = false;
+        this.hasEnded = false;
+    }
+
+
+    @Override
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
+        if(!hasEnded) {
+            if (!hasWalked) {
+                Action action = new BasicMovement();
+                action.doAction(point, board, worker);
+                hasWalked = true;
+            } else throw new AlreadyWalkedException();
+        }else throw new endedMoveException();
     }
 
     @Override
-    public void build(Board board, Worker worker) {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
+        if(!hasEnded) {
+            if (hasWalked) {
+                Action action = new BasicConstruction();
+                action.doAction(point, board, worker);
+                hasEnded = true;
+            } else {
+                throw new OutOfOrderMoveException();
+            }
+        }else throw new endedMoveException();
+    }
 
+    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
+        if(!hasEnded) {
+            if (hasWalked) {
+                Action action = new AtlasContruction();
+                action.doAction(point, board, worker);
+                hasEnded = true;
+            } else {
+                throw new OutOfOrderMoveException();
+            }
+        }else throw new endedMoveException();
     }
 
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) {
-        return null;
+        Action action = new BasicMovement();
+        return action.getPossibleActions(board, worker);
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker) {
-        return null;
+    public java.util.List<Point> possibleBuildings(Board board, Worker worker) {
+        Action action = new BasicConstruction();
+        return action.getPossibleActions(board, worker);
     }
 }

@@ -59,7 +59,7 @@ public class HephaestusMove extends Move{
 
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) {
-        Action action = new BasicMovement();
+        Action action = new BasicConstruction();
         return action.getPossibleActions(board, worker);
     }
 }

@@ -79,5 +79,11 @@ public class Board {
         return false;
     }
 
+    public boolean isPerimeterPoint(Point point){
+        if(point.getX()==0 || point.getX()==4 || point.getY()==0 || point.getY()==4)
+            return true;
+        return false;
+    }
+
 
 }

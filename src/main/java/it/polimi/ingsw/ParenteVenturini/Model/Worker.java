@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Player.Player;
+
 public class Worker {
 
     private Point position;

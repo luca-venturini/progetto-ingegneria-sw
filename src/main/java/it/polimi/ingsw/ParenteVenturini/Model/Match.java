@@ -2,7 +2,9 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
+import it.polimi.ingsw.ParenteVenturini.Model.Player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Match {
@@ -12,17 +14,16 @@ public class Match {
     private Board board;
     private Deck deck;
 
-
-    public void initBoard(){
-        Board.createBoard();
+    public Match(){
+        this.board= new Board();
+        this.deck= new Deck();
+        this.players= new ArrayList<Player>();
+        this.challenger=null;
     }
 
-    public Board getBoard() {
-        return this.board;
-    }
-
-    public void initDeck() {
-        Deck.createDeck();
+    public void addPlayer(String nickname){
+        Player p= new Player(nickname);
+        players.add(p);
     }
 
 }

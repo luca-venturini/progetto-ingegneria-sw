@@ -15,6 +15,14 @@ public abstract class Card {
 
     public abstract Move getMove();
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public abstract WinCheck getWinCheck();
 
     public abstract OpponentEffect getOpponentEffect();

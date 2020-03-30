@@ -1,7 +1,10 @@
-package it.polimi.ingsw.ParenteVenturini.Model;
+package it.polimi.ingsw.ParenteVenturini.Model.Player;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
+import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.ArrayList;
 import java.util.List;
