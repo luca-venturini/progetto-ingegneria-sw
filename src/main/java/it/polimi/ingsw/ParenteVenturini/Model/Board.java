@@ -9,9 +9,8 @@ public class Board {
 
     private Block[][] board;
     private List<Worker> workers;
-    private static Board instance;
 
-    private Board() {
+    public Board() {
         board = new Block[5][5];
         workers = new ArrayList<Worker>();
 
@@ -20,10 +19,6 @@ public class Board {
                 board[i][j] = new Block();
             }
         }
-    }
-    public static Board createBoard(){
-        if (instance == null) instance = new Board();
-        return instance;
     }
 
     public void setWorker(Worker w) {
