@@ -73,5 +73,11 @@ public class Board {
         return null;
     }
 
+    public boolean isValidPoint(Point point){
+        if(point.getX()>= 0 && point.getX()<=4 && point.getY()>= 0 && point.getX()<=4)
+            return true;
+        return false;
+    }
+
 
 }
