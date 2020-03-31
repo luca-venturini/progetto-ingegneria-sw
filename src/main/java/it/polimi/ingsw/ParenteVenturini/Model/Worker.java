@@ -18,9 +18,7 @@ public class Worker {
         return position;
     }
 
-    public boolean win(Board board){
-        return false;
-    }
+    /* win is now in Player */
 
     public boolean gameOver(Board board){
         return false;

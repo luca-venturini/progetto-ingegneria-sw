@@ -11,12 +11,12 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.List;
 
-public class AtlasMove extends Move {
+public class PanMove extends Move {
 
     private boolean hasWalked;
     private boolean hasEnded;
 
-    public AtlasMove() {
+    public PanMove() {
         this.hasWalked = false;
         this.hasEnded = false;
     }
@@ -47,19 +47,6 @@ public class AtlasMove extends Move {
     }
 
     @Override
-    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
-        if(!hasEnded) {
-            if (hasWalked) {
-                Action action = new AtlasContruction();
-                action.doAction(point, board, worker);
-                hasEnded = true;
-            } else {
-                throw new OutOfOrderMoveException();
-            }
-        }else throw new endedMoveException();
-    }
-
-    @Override
     public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
         return action.getPossibleActions(board, worker);
@@ -71,3 +58,4 @@ public class AtlasMove extends Move {
         return action.getPossibleActions(board, worker);
     }
 }
+
