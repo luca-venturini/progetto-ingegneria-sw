@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ParenteVenturini.Model.Cards;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Deck {
@@ -17,5 +16,14 @@ public class Deck {
         cards.add( new MinotaurCard() );
         cards.add( new PanCard() );
         cards.add( new PrometheusCard() );*/
+    }
+
+    public Card selectByName(String name){
+        for(Card c: cards){
+            if( name.equals(c.getName()) ) {
+                return c;
+            }
+        }
+        return null;
     }
 }
