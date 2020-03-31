@@ -15,6 +15,10 @@ public abstract class Move {
 
     public abstract void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException;
 
+    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
+        build(point, board, worker);
+    }
+
     public abstract List<Point> possibleMovements(Board board, Worker worker);
 
     public abstract List<Point> possibleBuildings(Board board, Worker worker);
