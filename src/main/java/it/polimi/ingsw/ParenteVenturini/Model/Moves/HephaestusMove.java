@@ -5,6 +5,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
@@ -18,7 +19,7 @@ public class HephaestusMove extends Move{
 
 
     @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
+    public void walk(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
         if(!hasWalked) {
             Action action = new BasicMovement();
             action.doAction(point, board, worker);
@@ -28,7 +29,7 @@ public class HephaestusMove extends Move{
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
+    public void build(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
 
         if(hasWalked) {
             if (numOfBuilding == 0) {
@@ -52,14 +53,16 @@ public class HephaestusMove extends Move{
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker) {
+    public List<Point> possibleMovements(Board board, Worker worker, OpponentEffectContainer oppEff) {
         Action action = new BasicMovement();
-        return action.getPossibleActions(board, worker);
+        List<Point> possiblePoints = action.getPossibleActions(board, worker);
+        return oppEff.removeMovementPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker) {
+    public List<Point> possibleBuildings(Board board, Worker worker, OpponentEffectContainer oppEff) {
         Action action = new BasicConstruction();
-        return action.getPossibleActions(board, worker);
+        List<Point> possiblePoints = action.getPossibleActions(board, worker);
+        return oppEff.removeConstructionPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
     }
 }

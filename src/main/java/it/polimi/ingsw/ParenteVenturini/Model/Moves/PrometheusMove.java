@@ -5,6 +5,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
@@ -17,7 +18,7 @@ public class PrometheusMove extends Move {
     private boolean specialEffectAlreadyActivated;
 
     @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
+    public void walk(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
         if(!hasWalked){
             Action action = new BasicMovement();
             action.doAction(point, board, worker);
@@ -27,8 +28,8 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
-        if(!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker)){
+    public void build(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
+        if(!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker, oppEff)){
             Action action = new BasicConstruction();
             action.doAction(point, board, worker);
             specialEffectAlreadyActivated = true;
@@ -41,20 +42,22 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker) {
+    public List<Point> possibleMovements(Board board, Worker worker, OpponentEffectContainer oppEff) {
         Action action = new BasicMovement();
-        return action.getPossibleActions(board, worker);
+        List<Point> possiblePoints = action.getPossibleActions(board, worker);
+        return oppEff.removeMovementPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker) {
+    public List<Point> possibleBuildings(Board board, Worker worker, OpponentEffectContainer oppEff) {
         Action action = new BasicConstruction();
-        return action.getPossibleActions(board, worker);
+        List<Point> possiblePoints = action.getPossibleActions(board, worker);
+        return oppEff.removeConstructionPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
     }
 
-    private boolean canUseSpecialEffect(Board board, Worker worker){
+    private boolean canUseSpecialEffect(Board board, Worker worker, OpponentEffectContainer oppEff){
         int level = board.blockLevel(worker.getPosition());
-        List<Point> possiblePoints = possibleMovements(board, worker);
+        List<Point> possiblePoints = possibleMovements(board, worker, oppEff);
         for(Point p: possiblePoints){
             if(board.blockLevel(p)>level)
                 return false;

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
+
 public class Worker {
 
     private Point position;
@@ -16,6 +18,10 @@ public class Worker {
 
     public Point getPosition(){
         return position;
+    }
+
+    public OpponentEffect getEffect(){
+        return player.getOpponentEffectPlayer();
     }
 
     /* win is now in Player */

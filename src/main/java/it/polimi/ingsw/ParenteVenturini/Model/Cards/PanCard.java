@@ -1,8 +1,11 @@
 package it.polimi.ingsw.ParenteVenturini.Model.Cards;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Checks.PanWinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
+import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
-import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffect;
+import it.polimi.ingsw.ParenteVenturini.Model.Moves.PanMove;
+import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 
 public class PanCard extends Card {
 
@@ -12,12 +15,12 @@ public class PanCard extends Card {
 
     @Override
     public Move getMove() {
-        return null;
+        return new PanMove();
     }
 
     @Override
     public WinCheck getWinCheck() {
-        return null;
+        return new PanWinCheck();
     }
 
     @Override

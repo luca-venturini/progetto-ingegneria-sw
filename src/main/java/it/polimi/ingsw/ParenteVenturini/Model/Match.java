@@ -18,12 +18,14 @@ public class Match {
     private Deck deck;
     private Player starter;
     private int typeOfMatch;
+    private OpponentEffectContainer opponentEffectContainer;
 
     public Match(){
         this.board= new Board();
         this.deck= new Deck();
         this.players= new ArrayList<Player>();
         this.chosenCards= new ArrayList<Card>();
+        this.opponentEffectContainer = new OpponentEffectContainer();
         this.typeOfMatch = 2;
     }
 

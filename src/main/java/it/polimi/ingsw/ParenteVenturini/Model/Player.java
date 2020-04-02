@@ -4,6 +4,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.BasicWinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
+import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyChosenStarter;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidNamePlayerException;
@@ -94,6 +95,10 @@ public class Player {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public OpponentEffect getOpponentEffectPlayer(){
+        return card.getOpponentEffect();
     }
 
 }
