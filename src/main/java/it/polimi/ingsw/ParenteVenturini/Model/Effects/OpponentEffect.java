@@ -9,4 +9,6 @@ public interface OpponentEffect {
 
     List<Point> removeMovementPoints(List<Point> movements, Point actualPoint, Board board);
     List<Point> removeConstructionPoints(List<Point> movements, Point actualPoint, Board board);
+    boolean isMovementValid(Point nextPoint, Point actualPoint, Board board);
+    boolean isConstructionValid(Point nextPoint, Point actualPoint, Board board);
 }

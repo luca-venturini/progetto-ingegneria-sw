@@ -15,20 +15,15 @@ import java.util.List;
 
 public class ApolloMove extends Move {
 
-    private boolean hasWalked;
-    private boolean hasEnded;
-
     public ApolloMove() {
         hasWalked=false;
         hasEnded=false;
     }
 
     @Override
-    public void walk(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws AlreadyWalkedException, IllegalBuildingException, IllegalMovementException, endedMoveException, OpponentEffectException {
+    public void walk(Point point, Board board, Worker worker) throws AlreadyWalkedException, IllegalBuildingException, IllegalMovementException, endedMoveException, OpponentEffectException {
         if(!hasEnded) {
             if (!hasWalked) {
-                if(!possibleMovements(board, worker, oppEff).contains(point))
-                    throw new OpponentEffectException();
                 Action action = new ApolloMovement();
                 action.doAction(point, board, worker);
                 hasWalked = true;
@@ -37,11 +32,9 @@ public class ApolloMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws OutOfOrderMoveException, IllegalBuildingException, IllegalMovementException, endedMoveException, OpponentEffectException {
+    public void build(Point point, Board board, Worker worker) throws OutOfOrderMoveException, IllegalBuildingException, IllegalMovementException, endedMoveException, OpponentEffectException {
         if(!hasEnded) {
             if (hasWalked) {
-                if(!possibleMovements(board, worker, oppEff).contains(point))
-                    throw new OpponentEffectException();
                 Action action = new BasicConstruction();
                 action.doAction(point, board, worker);
                 hasEnded = true;
@@ -52,21 +45,19 @@ public class ApolloMove extends Move {
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new ApolloMovement();
         if(!hasEnded) {
-            List<Point> possiblePoints = action.getPossibleActions(board, worker);
-            return oppEff.removeMovementPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+            return action.getPossibleActions(board, worker);
         }
         else return null;
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
         if(!hasEnded) {
-            List<Point> possiblePoints = action.getPossibleActions(board, worker);
-            return oppEff.removeConstructionPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+            return action.getPossibleActions(board, worker);
         }
         else return null;
     }

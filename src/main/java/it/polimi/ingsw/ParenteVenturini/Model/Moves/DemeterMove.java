@@ -26,7 +26,7 @@ public class DemeterMove extends Move {
     }
 
     @Override
-    public void walk(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
         if(!hasEnded) {
             if (!hasWalked) {
                 Action action = new BasicMovement();
@@ -37,7 +37,7 @@ public class DemeterMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException {
         if(!hasEnded) {
             if (hasWalked) {
                 if (numOfBuilding == 0) {
@@ -59,27 +59,24 @@ public class DemeterMove extends Move {
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
         if(!hasEnded) {
-            List<Point> possiblePoints = action.getPossibleActions(board, worker);
-            return oppEff.removeMovementPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+            return action.getPossibleActions(board, worker);
         }
         else return null;
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
         if(!hasEnded) {
             if(!hasWalked) {
                 if(numOfBuilding==0) {
-                    List<Point> possiblePoints = action.getPossibleActions(board, worker);
-                    return oppEff.removeConstructionPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+                    return action.getPossibleActions(board, worker);
                 }
                 else{
                     List<Point> possiblePoints = action.getPossibleActions(board, worker);
-                    possiblePoints = oppEff.removeConstructionPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
                     possiblePoints.remove(firstBuilding);
                     return possiblePoints;
                 }

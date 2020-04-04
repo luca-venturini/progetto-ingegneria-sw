@@ -59,10 +59,10 @@ public class Player {
         return workers.get(num);
     }
 
-    public void callMove(int num){
-        Worker w = selectWorker(num);
-        Move myMove= card.getMove();
+    public Move callMove(){
+        return card.getMove();
     }
+
 
     public boolean hasWon(Board board){
         return winCondition.hasWon(board, workers);

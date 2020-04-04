@@ -24,4 +24,14 @@ public class AthenaEffect implements OpponentEffect {
     public List<Point> removeConstructionPoints(List<Point> movements, Point actualPoint, Board board) {
         return movements;
     }
+
+    @Override
+    public boolean isMovementValid(Point nextPoint, Point actualPoint, Board board) {
+        return board.blockLevel(actualPoint) >= board.blockLevel(nextPoint);
+    }
+
+    @Override
+    public boolean isConstructionValid(Point nextPoint, Point actualPoint, Board board) {
+        return true;
+    }
 }

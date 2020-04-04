@@ -43,4 +43,24 @@ public class OpponentEffectContainer {
         return possiblePoints;
     }
 
+    public boolean checkMovementPoint(Point nextPoint, Worker worker, Board board ){
+        for(OpponentEffect eff: getActiveEffects()){
+            if(!eff.equals(worker.getEffect())){
+                if(!eff.isMovementValid(nextPoint, worker.getPosition(), board))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkConstructionPoint(Point nextPoint, Worker worker, Board board ){
+        for(OpponentEffect eff: getActiveEffects()){
+            if(!eff.equals(worker.getEffect())){
+                if(!eff.isConstructionValid(nextPoint, worker.getPosition(), board))
+                    return false;
+            }
+        }
+        return true;
+    }
+
 }

@@ -2,10 +2,8 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyChosenStarter;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidNamePlayerException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoMorePlayersException;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +17,8 @@ public class Match {
     private Player starter;
     private int typeOfMatch;
     private OpponentEffectContainer opponentEffectContainer;
+    private Player currentPlayer;
+    private Turn turn;
 
     public Match(){
         this.board= new Board();
@@ -30,14 +30,104 @@ public class Match {
     }
 
     public void addPlayer(String nickname) throws NoMorePlayersException {
-        if(getnumOfPlayers() < getTypeOfMatch()) {
+        if(getNumPlayers() < getTypeOfMatch()) {
             Player p = new Player(nickname,this);
             players.add(p);
         }
         else throw new NoMorePlayersException();
     }
 
-    public int getnumOfPlayers(){
+    public void walk(Point p, int n) throws OpponentEffectException {
+        Move move = currentPlayer.callMove();
+        Worker myWorker = currentPlayer.selectWorker(n);
+        if(opponentEffectContainer.checkMovementPoint(p, myWorker, board)){
+            try {
+                move.walk(p, board, myWorker);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            throw new OpponentEffectException();
+    }
+
+    public void build(Point p, int n) throws OpponentEffectException {
+        Move move = currentPlayer.callMove();
+        Worker myWorker = currentPlayer.selectWorker(n);
+        if(opponentEffectContainer.checkConstructionPoint(p, myWorker, board)){
+            try {
+                move.build(p, board, myWorker);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            throw new OpponentEffectException();
+    }
+
+    public void specialBuild(Point p, int n) throws OpponentEffectException {
+        Move move = currentPlayer.callMove();
+        Worker myWorker = currentPlayer.selectWorker(n);
+        if(opponentEffectContainer.checkConstructionPoint(p, myWorker, board)){
+            try {
+                move.specialBuild(p, board, myWorker);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            throw new OpponentEffectException();
+    }
+
+    public List<Point> getPossibleMovements(int n){
+        Move move = currentPlayer.callMove();
+        Worker myWorker = currentPlayer.selectWorker(n);
+        List<Point> temp = move.possibleMovements(board, myWorker);
+        temp = opponentEffectContainer.removeMovementPoint(temp, myWorker.getPosition(), myWorker.getEffect(), board);
+        return temp;
+    }
+
+    public List<Point> getPossibleBuildings(int n){
+        Move move = currentPlayer.callMove();
+        Worker myWorker = currentPlayer.selectWorker(n);
+        List<Point> temp = move.possibleBuildings(board, myWorker);
+        temp = opponentEffectContainer.removeConstructionPoint(temp, myWorker.getPosition(), myWorker.getEffect(), board);
+        return temp;
+    }
+
+    public boolean gameOver(){
+        Move move = currentPlayer.callMove();
+        Worker currentWorker = turn.getCurrentWorker();
+        boolean result = false;
+        if(move.forcedMovement(board, turn.getCurrentWorker())){
+            result = gameOverMovement(move, board, currentWorker);
+        }
+        else if(move.forcedBuilding(board, turn.getCurrentWorker())){
+            result = gameOverBuilding(move, board, currentWorker);
+        }
+        else if( !move.forcedMovement(board, turn.getCurrentWorker()) && !move.forcedBuilding(board, turn.getCurrentWorker()))
+            return (gameOverMovement(move, board, currentWorker) || gameOverBuilding(move, board, currentWorker));
+        return result;
+    }
+
+    private boolean gameOverMovement(Move move, Board board, Worker currentWorker){
+        List<Point> points = move.possibleMovements(board, currentWorker);
+        points = opponentEffectContainer.removeMovementPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
+        if(points == null)
+            return true;
+        return false;
+    }
+
+    private boolean gameOverBuilding(Move move, Board board, Worker currentWorker){
+        List<Point> points = move.possibleBuildings(board, currentWorker);
+        points = opponentEffectContainer.removeConstructionPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
+        if(points == null)
+            return true;
+        return false;
+    }
+
+
+    public int getNumPlayers(){
         return players.size();
     }
 

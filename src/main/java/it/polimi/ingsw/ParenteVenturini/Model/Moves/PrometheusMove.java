@@ -18,7 +18,7 @@ public class PrometheusMove extends Move {
     private boolean specialEffectAlreadyActivated;
 
     @Override
-    public void walk(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
         if(!hasWalked){
             Action action = new BasicMovement();
             action.doAction(point, board, worker);
@@ -28,8 +28,8 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
-        if(!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker, oppEff)){
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
+        if(!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker)){
             Action action = new BasicConstruction();
             action.doAction(point, board, worker);
             specialEffectAlreadyActivated = true;
@@ -42,22 +42,20 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
-        List<Point> possiblePoints = action.getPossibleActions(board, worker);
-        return oppEff.removeMovementPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+        return action.getPossibleActions(board, worker);
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
-        List<Point> possiblePoints = action.getPossibleActions(board, worker);
-        return oppEff.removeConstructionPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+        return action.getPossibleActions(board, worker);
     }
 
-    private boolean canUseSpecialEffect(Board board, Worker worker, OpponentEffectContainer oppEff){
+    private boolean canUseSpecialEffect(Board board, Worker worker){
         int level = board.blockLevel(worker.getPosition());
-        List<Point> possiblePoints = possibleMovements(board, worker, oppEff);
+        List<Point> possiblePoints = possibleMovements(board, worker);
         for(Point p: possiblePoints){
             if(board.blockLevel(p)>level)
                 return false;

@@ -12,16 +12,31 @@ import java.util.List;
 
 public abstract class Move {
 
-    public abstract void walk(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, OpponentEffectException;
+    protected boolean hasWalked;
+    protected boolean hasEnded;
 
-    public abstract void build(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException, OpponentEffectException;
+    public abstract void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, OpponentEffectException;
 
-    public void specialBuild(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
-        build(point, board, worker, oppEff);
+    public abstract void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException, OpponentEffectException;
+
+    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException, OpponentEffectException {
+        build(point, board, worker);
     }
 
-    public abstract List<Point> possibleMovements(Board board, Worker worker, OpponentEffectContainer oppEff);
+    public abstract List<Point> possibleMovements(Board board, Worker worker);
 
-    public abstract List<Point> possibleBuildings(Board board, Worker worker, OpponentEffectContainer oppEff);
+    public abstract List<Point> possibleBuildings(Board board, Worker worker);
+
+    public boolean forcedMovement(Board board, Worker worker){
+        if(hasWalked == false)
+            return true;
+        return false;
+    }
+
+    public boolean forcedBuilding(Board board, Worker worker){
+        if(hasWalked == true && !hasEnded)
+            return true;
+        return false;
+    }
 
 }

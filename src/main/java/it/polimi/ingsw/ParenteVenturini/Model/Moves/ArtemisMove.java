@@ -26,7 +26,7 @@ public class ArtemisMove extends Move {
     }
 
     @Override
-    public void walk(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
         if(!hasEnded) {
             if (!hasWalked) {
                 if (numOfMovements == 0) {
@@ -48,7 +48,7 @@ public class ArtemisMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker, OpponentEffectContainer oppEff) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
         if(!hasEnded) {
             if (hasWalked) {
                 Action action = new BasicConstruction();
@@ -61,17 +61,15 @@ public class ArtemisMove extends Move {
     }
 
     @Override
-    public java.util.List<Point> possibleMovements(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public java.util.List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
         if(!hasEnded) {
             if(!hasWalked) {
                 if(numOfMovements==0) {
-                    List<Point> possiblePoints = action.getPossibleActions(board, worker);
-                    return oppEff.removeMovementPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+                    return action.getPossibleActions(board, worker);
                 }
                 else{
                     List<Point> possiblePoints = action.getPossibleActions(board, worker);
-                    possiblePoints = oppEff.removeMovementPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
                     possiblePoints.remove(firstMovement);
                     return possiblePoints;
                 }
@@ -81,11 +79,10 @@ public class ArtemisMove extends Move {
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker, OpponentEffectContainer oppEff) {
+    public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
         if(!hasEnded) {
-            List<Point> possiblePoints = action.getPossibleActions(board, worker);
-            return oppEff.removeConstructionPoint(possiblePoints, worker.getPosition(), worker.getEffect(), board);
+            return action.getPossibleActions(board, worker);
         }
         else return null;
     }
