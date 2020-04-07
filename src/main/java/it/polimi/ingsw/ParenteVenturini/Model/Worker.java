@@ -24,12 +24,6 @@ public class Worker {
         return player.getOpponentEffectPlayer();
     }
 
-    /* win is now in Player */
-
-    public boolean gameOver(Board board){
-        return false;
-    }
-
     public void setPosition(Point point){
         setLastPosition(this.position);
         this.position = point;

@@ -5,7 +5,6 @@ import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
-import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 

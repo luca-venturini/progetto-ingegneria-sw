@@ -4,12 +4,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Actions.Action;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.ApolloMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
-import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
-import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
-import org.graalvm.compiler.virtual.phases.ea.EffectList;
 
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class ApolloMove extends Move {
     }
 
     @Override
-    public void walk(Point point, Board board, Worker worker) throws AlreadyWalkedException, IllegalBuildingException, IllegalMovementException, endedMoveException, OpponentEffectException {
+    public void walk(Point point, Board board, Worker worker) throws AlreadyWalkedException, IllegalBuildingException, IllegalMovementException, endedMoveException {
         if(!hasEnded) {
             if (!hasWalked) {
                 Action action = new ApolloMovement();
@@ -32,7 +29,7 @@ public class ApolloMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws OutOfOrderMoveException, IllegalBuildingException, IllegalMovementException, endedMoveException, OpponentEffectException {
+    public void build(Point point, Board board, Worker worker) throws OutOfOrderMoveException, IllegalBuildingException, IllegalMovementException, endedMoveException {
         if(!hasEnded) {
             if (hasWalked) {
                 Action action = new BasicConstruction();

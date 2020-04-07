@@ -19,6 +19,7 @@ public class Match {
     private OpponentEffectContainer opponentEffectContainer;
     private Player currentPlayer;
     private Turn turn;
+    private Player challenger;
 
     public Match(){
         this.board= new Board();
@@ -27,6 +28,7 @@ public class Match {
         this.chosenCards= new ArrayList<Card>();
         this.opponentEffectContainer = new OpponentEffectContainer();
         this.typeOfMatch = 2;
+        this.challenger=null;
     }
 
     public void addPlayer(String nickname) throws NoMorePlayersException {
@@ -113,17 +115,13 @@ public class Match {
     private boolean gameOverMovement(Move move, Board board, Worker currentWorker){
         List<Point> points = move.possibleMovements(board, currentWorker);
         points = opponentEffectContainer.removeMovementPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
-        if(points == null)
-            return true;
-        return false;
+        return points == null;
     }
 
     private boolean gameOverBuilding(Move move, Board board, Worker currentWorker){
         List<Point> points = move.possibleBuildings(board, currentWorker);
         points = opponentEffectContainer.removeConstructionPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
-        if(points == null)
-            return true;
-        return false;
+        return points == null;
     }
 
 
@@ -141,8 +139,7 @@ public class Match {
 
     public void setChallenger() {
         Random rand= new Random();
-        Player challenger=players.get(rand.nextInt(players.size()));
-        challenger.setChallenger(true);
+        this.challenger=players.get(rand.nextInt(players.size()));
     }
 
     public Player selectPlayer(String name){
@@ -154,23 +151,41 @@ public class Match {
         return null;
     }
 
-    public void chooseCard(String name) throws InvalidCardException {
-        Card c=this.deck.selectByName(name);
-        if( c!=null && !chosenCards.contains(c) ){
-            chosenCards.add(c);
-        }
-        else throw new InvalidCardException();
-
+    public void selectCardFromDeck(String name) throws InvalidCardException, NoMoreCardsException {
+        Card c = this.deck.selectByName(name);
+        if (chosenCards.size() < getTypeOfMatch()){
+            if (c != null && !chosenCards.contains(c)) {
+                chosenCards.add(c);
+            } else throw new InvalidCardException();
+        }else throw  new NoMoreCardsException();
     }
 
-    public void chooseStarter(String name) throws AlreadyChosenStarter, InvalidNamePlayerException {
+    public void selectStarter(String nickname) throws AlreadyChosenStarter, InvalidNamePlayerException {
         if(starter == null){
-            Player p= selectPlayer(name);
-            if(p != null)
-                this.starter=p;
+            Player p= selectPlayer(nickname);
+            if(p != null) {
+                this.starter = p;
+                orderPlayers();
+            }
             else throw new InvalidNamePlayerException();
         }
         else throw new AlreadyChosenStarter();
 
     }
+
+    public List<Card> getChosenCards(){
+        return chosenCards;
+    }
+
+    public void orderPlayers(){
+        List<Player> p= new ArrayList<Player>();
+        p.add(this.starter);
+        for(Player i:players){
+            if(! i.equals(starter)){
+                p.add(i);
+            }
+        }
+        this.players=p;
+    }
+
 }

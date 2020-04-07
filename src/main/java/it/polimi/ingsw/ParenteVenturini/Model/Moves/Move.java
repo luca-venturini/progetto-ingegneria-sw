@@ -3,7 +3,6 @@ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
-import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
@@ -28,15 +27,13 @@ public abstract class Move {
     public abstract List<Point> possibleBuildings(Board board, Worker worker);
 
     public boolean forcedMovement(Board board, Worker worker){
-        if(hasWalked == false)
+        if(!hasWalked)
             return true;
         return false;
     }
 
     public boolean forcedBuilding(Board board, Worker worker){
-        if(hasWalked == true && !hasEnded)
-            return true;
-        return false;
+        return hasWalked == true && !hasEnded;
     }
 
 }

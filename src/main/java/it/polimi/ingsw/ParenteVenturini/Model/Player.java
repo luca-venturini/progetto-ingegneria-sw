@@ -1,18 +1,11 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.BasicWinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyChosenStarter;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidNamePlayerException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoChallengerException;
-import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
-import it.polimi.ingsw.ParenteVenturini.Model.Point;
-import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +17,12 @@ public class Player {
     private String nickname;
     private WinCheck winCondition;
     private Match match;
-    private boolean challenger;
 
 
     public Player(String nickname, Match match) {
         this.nickname = nickname;
         workers = new ArrayList<Worker>();
         this.match= match;
-        this.challenger= false;
     }
 
     public void setCard(Card card){
@@ -51,7 +42,7 @@ public class Player {
         addWorker(worker);
         board.setWorker(worker);
     }
-    public void addWorker(Worker worker){
+    private void addWorker(Worker worker){
         workers.add(worker);
     }
 
@@ -77,20 +68,14 @@ public class Player {
         this.nickname = nickname;
     }
 
-    public void setChallenger(boolean challenger) {
-        this.challenger = challenger;
-    }
-
-    public void chooseCard(String nameCard) throws NoChallengerException, InvalidCardException {
-        if(challenger) {
-            match.chooseCard(nameCard);
-        }else throw new NoChallengerException();
-    }
-
-    public void chooseStarter(String nickname) throws NoChallengerException, AlreadyChosenStarter, InvalidNamePlayerException {
-        if(challenger) {
-            match.chooseStarter(nickname);
-        }else throw new NoChallengerException();
+    public void chooseCard(String nameCard) throws InvalidCardException {
+        List<Card> cards=match.getChosenCards();
+        for(Card c:cards) {
+            if ( nameCard.equals(c.getName()) ) {
+                this.card=c;
+            }
+            else throw new InvalidCardException();
+        }
     }
 
     public String getNickname() {

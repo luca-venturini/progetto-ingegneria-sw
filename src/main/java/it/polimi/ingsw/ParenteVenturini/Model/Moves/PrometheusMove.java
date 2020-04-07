@@ -5,7 +5,6 @@ import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
-import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
@@ -28,7 +27,7 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException {
         if(!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker)){
             Action action = new BasicConstruction();
             action.doAction(point, board, worker);

@@ -5,7 +5,6 @@ import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicConstruction;
 import it.polimi.ingsw.ParenteVenturini.Model.Actions.BasicMovement;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
-import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
@@ -15,12 +14,10 @@ public class AthenaMove extends Move {
 
     private boolean hasWalked;
     private boolean hasEnded;
-    private boolean validCondition;
 
     public AthenaMove() {
         this.hasWalked = false;
         this.hasEnded = false;
-        this.validCondition=false;
     }
 
     @Override
@@ -65,7 +62,4 @@ public class AthenaMove extends Move {
         else return null;
     }
 
-    private boolean isConditionValid(Board board, Worker worker){
-        return ( board.blockLevel(worker.getPosition()) > board.blockLevel(worker.getLastPosition()) );
-    }
 }
