@@ -27,13 +27,15 @@ public abstract class Move {
     public abstract List<Point> possibleBuildings(Board board, Worker worker);
 
     public boolean forcedMovement(Board board, Worker worker){
-        if(!hasWalked)
-            return true;
-        return false;
+        return !hasWalked;
     }
 
     public boolean forcedBuilding(Board board, Worker worker){
-        return hasWalked == true && !hasEnded;
+        return hasWalked && !hasEnded;
+    }
+
+    public boolean getHasEnded(){
+        return hasEnded;
     }
 
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Checks.BasicWinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.OpponentEffectException;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 import java.util.ArrayList;
@@ -17,12 +18,14 @@ public class Player {
     private String nickname;
     private WinCheck winCondition;
     private Match match;
+    private Move move;
 
 
     public Player(String nickname, Match match) {
         this.nickname = nickname;
         workers = new ArrayList<Worker>();
         this.match= match;
+        this.move=null;
     }
 
     public void setCard(Card card){
@@ -86,4 +89,87 @@ public class Player {
         return card.getOpponentEffect();
     }
 
+    public void walk(Point p, int n) throws OpponentEffectException {
+        if( this.move== null )
+            this.move = callMove();
+        Worker myWorker = selectWorker(n);
+        if(match.getOpponentEffectContainer().checkMovementPoint(p, myWorker,match.getBoard())){
+            try {
+                move.walk(p, match.getBoard(), myWorker);
+                OpponentEffect temp= card.getOpponentEffect();
+                if(temp!= null && temp.isMovementValid(p, myWorker.getPosition(), match.getBoard())){
+                    match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
+                }
+                if(move.getHasEnded()){
+                    this.move=null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            throw new OpponentEffectException();
+    }
+
+    public void build(Point p, int n) throws OpponentEffectException {
+        if( this.move== null )
+            this.move = callMove();
+        Worker myWorker = selectWorker(n);
+        if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard()) ){
+            try {
+                move.build(p, match.getBoard(), myWorker);
+                OpponentEffect temp= card.getOpponentEffect();
+                if(temp!= null && temp.isConstructionValid(p, myWorker.getPosition(), match.getBoard())){
+                    match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
+                }
+                if(move.getHasEnded()){
+                    this.move=null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            throw new OpponentEffectException();
+    }
+
+    public void specialBuild(Point p, int n) throws OpponentEffectException {
+        if( this.move== null )
+            this.move = callMove();
+        Worker myWorker = selectWorker(n);
+        if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard())){
+            try {
+                move.specialBuild(p, match.getBoard(), myWorker);
+                OpponentEffect temp= card.getOpponentEffect();
+                if(temp!= null && temp.isConstructionValid(p, myWorker.getPosition(), match.getBoard())){
+                    match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
+                }
+                if(move.getHasEnded()){
+                    this.move=null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            throw new OpponentEffectException();
+    }
+
+    public List<Point> getPossibleMovements(int n){
+        if( this.move== null )
+            this.move = callMove();
+        Worker myWorker =selectWorker(n);
+        List<Point> temp = move.possibleMovements(match.getBoard(), myWorker);
+        temp = match.getOpponentEffectContainer().removeMovementPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());
+        return temp;
+    }
+
+    public List<Point> getPossibleBuildings(int n){
+        if( this.move== null )
+            this.move = callMove();
+        Worker myWorker = selectWorker(n);
+        List<Point> temp = move.possibleBuildings(match.getBoard(), myWorker);
+        temp = match.getOpponentEffectContainer().removeConstructionPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());
+        return temp;
+    }
 }

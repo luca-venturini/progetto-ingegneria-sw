@@ -1,11 +1,9 @@
 package it.polimi.ingsw.ParenteVenturini.Model.Cards;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Checks.BasicWinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.MinotaurMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
-import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 
 public class MinotaurCard extends Card {
     public MinotaurCard(String name, String description) {

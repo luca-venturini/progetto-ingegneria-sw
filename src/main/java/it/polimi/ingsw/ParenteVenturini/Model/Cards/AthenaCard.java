@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ParenteVenturini.Model.Cards;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Checks.BasicWinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.AthenaEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;

@@ -39,64 +39,6 @@ public class Match {
         else throw new NoMorePlayersException();
     }
 
-    public void walk(Point p, int n) throws OpponentEffectException {
-        Move move = currentPlayer.callMove();
-        Worker myWorker = currentPlayer.selectWorker(n);
-        if(opponentEffectContainer.checkMovementPoint(p, myWorker, board)){
-            try {
-                move.walk(p, board, myWorker);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else
-            throw new OpponentEffectException();
-    }
-
-    public void build(Point p, int n) throws OpponentEffectException {
-        Move move = currentPlayer.callMove();
-        Worker myWorker = currentPlayer.selectWorker(n);
-        if(opponentEffectContainer.checkConstructionPoint(p, myWorker, board)){
-            try {
-                move.build(p, board, myWorker);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else
-            throw new OpponentEffectException();
-    }
-
-    public void specialBuild(Point p, int n) throws OpponentEffectException {
-        Move move = currentPlayer.callMove();
-        Worker myWorker = currentPlayer.selectWorker(n);
-        if(opponentEffectContainer.checkConstructionPoint(p, myWorker, board)){
-            try {
-                move.specialBuild(p, board, myWorker);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else
-            throw new OpponentEffectException();
-    }
-
-    public List<Point> getPossibleMovements(int n){
-        Move move = currentPlayer.callMove();
-        Worker myWorker = currentPlayer.selectWorker(n);
-        List<Point> temp = move.possibleMovements(board, myWorker);
-        temp = opponentEffectContainer.removeMovementPoint(temp, myWorker.getPosition(), myWorker.getEffect(), board);
-        return temp;
-    }
-
-    public List<Point> getPossibleBuildings(int n){
-        Move move = currentPlayer.callMove();
-        Worker myWorker = currentPlayer.selectWorker(n);
-        List<Point> temp = move.possibleBuildings(board, myWorker);
-        temp = opponentEffectContainer.removeConstructionPoint(temp, myWorker.getPosition(), myWorker.getEffect(), board);
-        return temp;
-    }
-
     public boolean gameOver(){
         Move move = currentPlayer.callMove();
         Worker currentWorker = turn.getCurrentWorker();
@@ -124,6 +66,13 @@ public class Match {
         return points == null;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public OpponentEffectContainer getOpponentEffectContainer() {
+        return opponentEffectContainer;
+    }
 
     public int getNumPlayers(){
         return players.size();
