@@ -28,4 +28,11 @@ public class Deck {
         }
         return null;
     }
+
+    public List<String> getCardNames(){
+        ArrayList<String> cardsName = new ArrayList<>();
+        for (Card c: cards)
+            cardsName.add(c.getName());
+        return cardsName;
+    }
 }

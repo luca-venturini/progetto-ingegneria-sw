@@ -137,4 +137,16 @@ public class Match {
         this.players=p;
     }
 
+    public List<Player> getPlayers(){
+        return players;
+    }
+
+    public void setChosenCards(List<Card> cards){
+        chosenCards = cards;
+    }
+
+    public Player getChallenger() {
+        return challenger;
+    }
+
 }
