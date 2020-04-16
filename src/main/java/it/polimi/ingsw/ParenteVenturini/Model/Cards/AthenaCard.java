@@ -8,8 +8,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public class AthenaCard extends Card {
 
-    public AthenaCard(String name, String description) {
-        super(name, description);
+    public AthenaCard() {
+        super();
+        this.setName("Athena");
     }
 
     @Override

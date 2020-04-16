@@ -12,26 +12,27 @@ import java.util.List;
 
 public class DemeterMove extends Move {
 
-    private boolean hasWalked;
-    private boolean hasEnded;
     private int numOfBuilding;
     private Point firstBuilding;
 
     public DemeterMove() {
         this.hasWalked = false;
+        this.hasBuilt = false;
         this.hasEnded = false;
         this.numOfBuilding = 0;
         this.firstBuilding = null;
     }
 
     @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
-            if (!hasWalked) {
-                Action action = new BasicMovement();
-                action.doAction(point, board, worker);
-                hasWalked = true;
-            } else throw new AlreadyWalkedException();
+            if( !hasBuilt) {
+                if (!hasWalked) {
+                    Action action = new BasicMovement();
+                    action.doAction(point, board, worker);
+                    hasWalked = true;
+                } else throw new AlreadyWalkedException();
+            }else throw  new AlreadyBuiltException();
         }else throw new endedMoveException();
     }
 
@@ -39,20 +40,22 @@ public class DemeterMove extends Move {
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException {
         if(!hasEnded) {
             if (hasWalked) {
-                if (numOfBuilding == 0) {
-                    Action action = new BasicMovement();
-                    action.doAction(point, board, worker);
-                    firstBuilding = point;
-                    numOfBuilding++;
-                }
                 if (numOfBuilding == 1) {
                     if (!point.equals(firstBuilding)) {
                         Action action = new BasicConstruction();
                         action.doAction(point, board, worker);
                         hasEnded = true;
-                    } else throw new IllegalMovementException();
+                    } else throw new IllegalBuildingException();
 
-                } else throw new AlreadyBuiltException();
+                }
+                else if (numOfBuilding == 0) {
+                    Action action = new BasicConstruction();
+                    action.doAction(point, board, worker);
+                    hasBuilt = true;
+                    firstBuilding = point;
+                    numOfBuilding++;
+                }
+                else throw new AlreadyBuiltException();
             } else throw new OutOfOrderMoveException();
         }else throw  new endedMoveException();
     }
@@ -60,7 +63,7 @@ public class DemeterMove extends Move {
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
-        if(!hasEnded) {
+        if(!hasEnded && !hasBuilt && !hasWalked) {
             return action.getPossibleActions(board, worker);
         }
         else return null;
@@ -70,7 +73,7 @@ public class DemeterMove extends Move {
     public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
         if(!hasEnded) {
-            if(!hasWalked) {
+            if(hasWalked) {
                 if(numOfBuilding==0) {
                     return action.getPossibleActions(board, worker);
                 }

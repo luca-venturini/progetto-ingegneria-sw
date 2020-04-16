@@ -7,8 +7,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public class DemeterCard extends Card {
 
-    public DemeterCard(String name, String description) {
-        super(name, description);
+    public DemeterCard() {
+        super();
+        this.setName("Demeter");
     }
 
     @Override

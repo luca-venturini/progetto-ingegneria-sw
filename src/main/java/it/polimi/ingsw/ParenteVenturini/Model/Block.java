@@ -5,33 +5,33 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateExcep
 public class Block {
 
     private int level;
-    private boolean doom;
+    private boolean dome;
 
     public Block() {
         this.level = 0;
-        this.doom = false;
+        this.dome = false;
     }
 
     public int getLevel() {
         return level;
     }
 
-    public boolean isDoom() {
-        return doom;
+    public boolean isDome() {
+        return dome;
     }
 
     public void updateLevel(int level) throws IllegalBlockUpdateException {
-        if(level>4) {
+        if(level>4 || level<0) {
             throw new IllegalBlockUpdateException();
         }
         this.level = level;
         if(level==4)
-            this.setDoom(true);
+            this.setDome(true);
     }
 
-    public void setDoom(boolean doom) {
+    public void setDome(boolean dome) {
 
-        this.doom = doom;
+        this.dome = dome;
     }
 
 }

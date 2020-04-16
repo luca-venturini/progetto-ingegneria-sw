@@ -6,6 +6,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementExceptio
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MinotaurMovement extends Action {
@@ -24,23 +25,27 @@ public class MinotaurMovement extends Action {
 
     @Override
     public boolean isValid(Point point, Board board, Worker worker) {
-        return super.isValid(point, board, worker);
+        List<Point> possibleActions=getPossibleActions(board,worker);
+        return checkValid(point,possibleActions);
     }
 
     @Override
     public List<Point> getPossibleActions(Board board, Worker worker) {
         List<Point> possibleActions =  super.getPossibleActions(board, worker);
+        List<Point> checkedActions= new ArrayList<>();
         for (Point p: possibleActions){
-            if( board.isThereDoom(p) ){
-                possibleActions.remove(p);
-            }
-            if(board.isOccupied(p)){
-                Point thirdPoint = new Point(2*p.getX()-worker.getPosition().getX(), 2*p.getY()-worker.getPosition().getY());
-                if( !board.isValidPoint(thirdPoint) || board.isOccupied(thirdPoint)){
-                    possibleActions.remove(p);
+            if( board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1 ) {
+                if (!(board.isOccupied(p) || board.isThereDome(p))) {
+                    checkedActions.add(p);
+                }
+                if (board.isOccupied(p)) {
+                    Point thirdPoint = new Point(2 * p.getX() - worker.getPosition().getX(), 2 * p.getY() - worker.getPosition().getY());
+                    if (board.isValidPoint(thirdPoint) && !board.isOccupied(thirdPoint)) {
+                        checkedActions.add(p);
+                    }
                 }
             }
         }
-        return possibleActions;
+        return checkedActions;
     }
 }

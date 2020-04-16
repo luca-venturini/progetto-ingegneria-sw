@@ -25,64 +25,64 @@ public class Board {
         workers.add(w);
     }
 
-    public boolean isOccupied(Point point){
-        for(Worker w: workers){
-            if(w.getPosition().equals(point))
+    public boolean isOccupied(Point point) {
+        for (Worker w : workers) {
+            if (w.getPosition().equals(point))
                 return true;
         }
         return false;
     }
 
-    public boolean isOccupied(int x, int y){
+    public boolean isOccupied(int x, int y) {
         Point pointTemp = new Point(x, y);
-        for(Worker w: workers){
-            if(w.getPosition().equals(pointTemp))
+        for (Worker w : workers) {
+            if (w.getPosition().equals(pointTemp))
                 return true;
-        }
+            }
         return false;
     }
 
-    public boolean isThereDoom(Point point){
-        return board[point.getX()][point.getY()].isDoom();
+    public boolean isThereDome(Point point) {
+        return board[point.getX()][point.getY()].isDome();
     }
 
-    public boolean isThereDoom(int x, int y){
-        return board[x][y].isDoom();
+    public boolean isThereDome(int x, int y) {
+        return board[x][y].isDome();
     }
 
-    public int blockLevel(Point point){
+    public int blockLevel(Point point) {
         return board[point.getX()][point.getY()].getLevel();
     }
 
-    public int blockLevel(int x, int y){
-        return board[x][y].getLevel();
+    public int blockLevel(int x, int y) {
+            return board[x][y].getLevel();
     }
 
     public void setBlockLevel(Point point, int level) throws IllegalBlockUpdateException {
-        board[point.getX()][point.getY()].updateLevel(level);
+            board[point.getX()][point.getY()].updateLevel(level);
     }
-    public void setDoom(Point point,boolean x) {
-        board[point.getX()][point.getY()].setDoom(x);
+    public void setDome(Point point,boolean x) {
+            board[point.getX()][point.getY()].setDome(x);
     }
 
-    public Worker findByPosition(Point point){
-        for(Worker w: workers){
-            if(w.getPosition().equals(point))
+    public Worker findByPosition(Point point) {
+        for (Worker w : workers) {
+            if (w.getPosition().equals(point))
                 return w;
-        }
-        return null;
+            }
+            return null;
     }
 
     public boolean isValidPoint(Point point){
-        if(point.getX()>= 0 && point.getX()<=4 && point.getY()>= 0 && point.getX()<=4)
-            return true;
-        return false;
+        return point.getX() >= 0 && point.getX() <= 4 && point.getY() >= 0 && point.getY() <= 4;
+    }
+
+    public boolean isValidPoint(int x, int y){
+        return x >= 0 && x <= 4 && y >= 0 && y <= 4;
     }
 
     public boolean isPerimeterPoint(Point point){
-        if(point.getX()==0 || point.getX()==4 || point.getY()==0 || point.getY()==4)
-            return true;
-        return false;
+        return point.getX() == 0 || point.getX() == 4 || point.getY() == 0 || point.getY() == 4;
     }
 
 

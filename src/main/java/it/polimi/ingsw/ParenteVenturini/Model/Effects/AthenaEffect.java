@@ -9,6 +9,8 @@ import java.util.List;
 
 public class AthenaEffect implements OpponentEffect {
 
+    //todo correct removeMovementPoints
+
     @Override
     public List<Point> removeMovementPoints(List<Point> movements, Point actualPoint, Board board) {
         List<Point> futureMovements = new ArrayList<>(movements);

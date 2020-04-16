@@ -13,43 +13,54 @@ import java.util.List;
 
 public class MinotaurMove extends Move {
 
-    private boolean hasWalked;
-    private boolean hasBuilt;
-
-    @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalMovementException, AlreadyWalkedException, IllegalBuildingException {
-        if(!hasWalked){
-            Action action = new MinotaurMovement();
-            action.doAction(point, board, worker);
-            hasWalked = true;
-        }
-        else throw new AlreadyWalkedException();
+    public MinotaurMove() {
+        hasWalked = false;
+        hasBuilt = false;
+        hasEnded = false;
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
-        if(hasWalked) {
-            if(!hasBuilt) {
-                Action action = new BasicConstruction();
-                action.doAction(point, board, worker);
-                hasBuilt = true;
-            }
-            else
-                throw new AlreadyBuiltException();
-        }
-        else
-            throw new OutOfOrderMoveException();
+    public void walk(Point point, Board board, Worker worker) throws IllegalMovementException, AlreadyWalkedException, IllegalBuildingException, endedMoveException, AlreadyBuiltException {
+        if(!hasEnded) {
+            if( !hasBuilt) {
+                if (!hasWalked) {
+                    Action action = new MinotaurMovement();
+                    action.doAction(point, board, worker);
+                    hasWalked = true;
+                } else throw new AlreadyWalkedException();
+            }else throw  new AlreadyBuiltException();
+        }else throw  new endedMoveException();
+    }
+
+    @Override
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException {
+        if(!hasEnded){
+            if(hasWalked) {
+                if(!hasBuilt) {
+                    Action action = new BasicConstruction();
+                    action.doAction(point, board, worker);
+                    hasBuilt = true;
+                    hasEnded = true;
+                }else throw new AlreadyBuiltException();
+            } else throw new OutOfOrderMoveException();
+        }else throw new endedMoveException();
     }
 
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new MinotaurMovement();
-        return action.getPossibleActions(board, worker);
+        if(!hasEnded && !hasBuilt && !hasWalked) {
+            return action.getPossibleActions(board, worker);
+        }
+        else return null;
     }
 
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) {
-        Action action = new BasicMovement();
-        return action.getPossibleActions(board, worker);
+        Action action = new BasicConstruction();
+        if(!hasEnded && !hasBuilt && hasWalked) {
+            return action.getPossibleActions(board, worker);
+        }
+        else return null;
     }
 }

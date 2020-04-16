@@ -6,8 +6,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.MinotaurMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public class MinotaurCard extends Card {
-    public MinotaurCard(String name, String description) {
-        super(name, description);
+    public MinotaurCard() {
+        super();
+        this.setName("Minotaur");
     }
 
     @Override

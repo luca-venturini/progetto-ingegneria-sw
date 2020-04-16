@@ -11,7 +11,7 @@ public class Worker {
 
     public Worker(Point position, Player player, int colour) {
         this.position = position;
-        this.lastPosition = null;
+        this.lastPosition = position;
         this.player = player;
         this.colour= colour;
     }

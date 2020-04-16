@@ -7,8 +7,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public class AtlasCard extends Card {
 
-    public AtlasCard(String name, String description) {
-        super(name, description);
+    public AtlasCard() {
+        super();
+        this.setName("Atlas");
     }
 
     @Override

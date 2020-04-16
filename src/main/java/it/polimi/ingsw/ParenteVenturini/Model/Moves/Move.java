@@ -12,13 +12,14 @@ import java.util.List;
 public abstract class Move {
 
     protected boolean hasWalked;
+    protected boolean hasBuilt;
     protected boolean hasEnded;
 
-    public abstract void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, OpponentEffectException;
+    public abstract void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException;
 
-    public abstract void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException, OpponentEffectException;
+    public abstract void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException;
 
-    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException, OpponentEffectException {
+    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         build(point, board, worker);
     }
 
@@ -31,7 +32,11 @@ public abstract class Move {
     }
 
     public boolean forcedBuilding(Board board, Worker worker){
-        return hasWalked && !hasEnded;
+        return hasWalked && !hasBuilt;
+    }
+
+    public boolean getHasWalkedandBuilt(){
+        return hasWalked && hasBuilt;
     }
 
     public boolean getHasEnded(){

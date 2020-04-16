@@ -12,10 +12,18 @@ import java.util.List;
 public abstract class Action {
 
     public abstract void  doAction(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException;
-    public boolean  isValid(Point point, Board board, Worker worker){
-        return getPossibleActions(board, worker).contains(point);
+
+    public abstract boolean  isValid(Point point, Board board, Worker worker);
+
+    protected boolean  checkValid(Point point,List<Point> possibleActions) {
+        for(Point p: possibleActions){
+            if(p.equals(point))
+                return true;
+        }
+        return false;
     }
-    public  List<Point> getPossibleActions(Board board, Worker worker){
+
+    public  List<Point> getPossibleActions(Board board, Worker worker) {
         Point workerPoint = new Point(worker.getPosition());
         List<Point> possibleActions = new ArrayList<>();
         /*
@@ -29,8 +37,8 @@ public abstract class Action {
         (4,0) (4,1) (4,2) (4,3) (4,4)
 
          */
-        for(int i=workerPoint.getX()-1; i<workerPoint.getX()+1; i++){
-            for(int j=workerPoint.getY()-1;j<workerPoint.getY()+1;j++){
+        for(int i=workerPoint.getX()-1; i<=workerPoint.getX()+1; i++){
+            for(int j=workerPoint.getY()-1;j<=workerPoint.getY()+1;j++){
                 if(!(i<0 || i>4 || j<0 || j>4)){
                     possibleActions.add(new Point(i, j));
                 }

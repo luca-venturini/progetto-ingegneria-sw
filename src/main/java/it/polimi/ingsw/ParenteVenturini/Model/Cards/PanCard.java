@@ -8,8 +8,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.PanMove;
 
 public class PanCard extends Card {
 
-    public PanCard(String name, String description) {
-        super(name, description);
+    public PanCard() {
+        super();
+        this.setName("Pan");
     }
 
     @Override

@@ -6,8 +6,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.PrometheusMove;
 
 public class PrometheusCard extends Card {
-    public PrometheusCard(String name, String description) {
-        super(name, description);
+    public PrometheusCard() {
+        super();
+        this.setName("Prometheus");
     }
 
     @Override

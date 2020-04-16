@@ -7,18 +7,12 @@ import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 
 public abstract class Card {
     private String name;
-    private String description;
 
-    public Card(String name, String description) {
-        this.name = name;
-        this.description = description;
+    protected void setName(String name){
+        this.name= name;
     }
 
     public abstract Move getMove();
-
-    public String getDescription() {
-        return description;
-    }
 
     public String getName() {
         return name;

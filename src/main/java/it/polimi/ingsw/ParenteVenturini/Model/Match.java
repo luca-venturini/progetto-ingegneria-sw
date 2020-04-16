@@ -29,12 +29,16 @@ public class Match {
         this.opponentEffectContainer = new OpponentEffectContainer();
         this.typeOfMatch = 2;
         this.challenger=null;
+        this.turn= null;
     }
 
-    public void addPlayer(String nickname) throws NoMorePlayersException {
+    public void addPlayer(String nickname) throws NoMorePlayersException, AlreadyPresentPlayerException {
         if(getNumPlayers() < getTypeOfMatch()) {
-            Player p = new Player(nickname,this);
-            players.add(p);
+            if(selectPlayer(nickname)==null) {
+                Player p = new Player(nickname, this);
+                players.add(p);
+            }
+            else throw new AlreadyPresentPlayerException();
         }
         else throw new NoMorePlayersException();
     }
@@ -70,34 +74,58 @@ public class Match {
         return board;
     }
 
+    public Player getChallenger() {
+        return challenger;
+    }
+
+    public List<Player> getPlayers() throws NoPlayerException {
+        if( !players.isEmpty() )
+            return players;
+        else throw new NoPlayerException();
+    }
+
     public OpponentEffectContainer getOpponentEffectContainer() {
         return opponentEffectContainer;
     }
 
-    public int getNumPlayers(){
-        return players.size();
+    public int getNumPlayers() {
+        if( !players.isEmpty() )
+            return players.size();
+        else return 0;
     }
 
     public int getTypeOfMatch() {
         return typeOfMatch;
     }
 
-    public void setTypeOfMatch(int typeOfMatch) {
-        this.typeOfMatch = typeOfMatch;
+    public Player getStarter() {
+        return starter;
     }
 
-    public void setChallenger() {
-        Random rand= new Random();
-        this.challenger=players.get(rand.nextInt(players.size()));
+    public void setTypeOfMatch(int typeOfMatch) throws InvalidTypeOfMatch {
+        if(typeOfMatch==3 || typeOfMatch==2)
+            this.typeOfMatch = typeOfMatch;
+        else throw new InvalidTypeOfMatch();
+    }
+
+    public void setChallenger() throws NoPlayerException {
+        if( !players.isEmpty() ) {
+            Random rand = new Random();
+            this.challenger = players.get(rand.nextInt(players.size()));
+        }
+        else throw new NoPlayerException();
     }
 
     public Player selectPlayer(String name){
-        for(Player p: players){
-            if(name.equals(p.getNickname()) ){
-                return p;
+        if( !players.isEmpty() ) {
+            for (Player p : players) {
+                if (name.equals(p.getNickname())) {
+                    return p;
+                }
             }
+            return null;
         }
-        return null;
+        else return null;
     }
 
     public void selectCardFromDeck(String name) throws InvalidCardException, NoMoreCardsException {
@@ -109,44 +137,48 @@ public class Match {
         }else throw  new NoMoreCardsException();
     }
 
-    public void selectStarter(String nickname) throws AlreadyChosenStarter, InvalidNamePlayerException {
-        if(starter == null){
-            Player p= selectPlayer(nickname);
-            if(p != null) {
-                this.starter = p;
-                orderPlayers();
-            }
-            else throw new InvalidNamePlayerException();
+    public void selectStarter(String nickname) throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException {
+        if( !players.isEmpty() ) {
+            if (starter == null) {
+                Player p = selectPlayer(nickname);
+                if (p != null) {
+                    this.starter = p;
+                    try {
+                        orderPlayers();
+                    } catch (NoStarterException | NoPlayerException e) {
+                        e.printStackTrace();
+                    }
+                } else throw new InvalidNamePlayerException();
+            } else throw new AlreadyChosenStarterException();
         }
-        else throw new AlreadyChosenStarter();
-
+        else throw new NoPlayerException();
     }
 
     public List<Card> getChosenCards(){
         return chosenCards;
     }
 
-    public void orderPlayers(){
-        List<Player> p= new ArrayList<Player>();
-        p.add(this.starter);
-        for(Player i:players){
-            if(! i.equals(starter)){
-                p.add(i);
-            }
+    public void orderPlayers() throws NoStarterException, NoPlayerException {
+        if( !players.isEmpty() ) {
+            if (this.starter != null) {
+                List<Player> p = new ArrayList<Player>();
+                p.add(this.starter);
+                for (Player i : players) {
+                    if (!i.equals(starter)) {
+                        p.add(i);
+                    }
+                }
+                this.players = p;
+            } else throw new NoStarterException();
         }
-        this.players=p;
-    }
-
-    public List<Player> getPlayers(){
-        return players;
+        else throw new NoPlayerException();
     }
 
     public void setChosenCards(List<Card> cards){
         chosenCards = cards;
     }
 
-    public Player getChallenger() {
-        return challenger;
+    public Turn getTurn() {
+        return turn;
     }
-
 }

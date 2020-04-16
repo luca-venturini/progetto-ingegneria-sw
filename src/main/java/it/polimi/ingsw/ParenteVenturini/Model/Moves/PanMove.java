@@ -12,49 +12,58 @@ import java.util.List;
 
 public class PanMove extends Move {
 
-    private boolean hasWalked;
-    private boolean hasEnded;
-
     public PanMove() {
         this.hasWalked = false;
+        this.hasBuilt = false;
         this.hasEnded = false;
     }
 
 
     @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
-            if (!hasWalked) {
-                Action action = new BasicMovement();
-                action.doAction(point, board, worker);
-                hasWalked = true;
-            } else throw new AlreadyWalkedException();
+            if( !hasBuilt) {
+                if (!hasWalked) {
+                    Action action = new BasicMovement();
+                    action.doAction(point, board, worker);
+                    hasWalked = true;
+                } else throw new AlreadyWalkedException();
+            }else throw  new AlreadyBuiltException();
         }else throw new endedMoveException();
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
-            if (hasWalked) {
-                Action action = new BasicConstruction();
-                action.doAction(point, board, worker);
-                hasEnded = true;
-            } else {
-                throw new OutOfOrderMoveException();
-            }
+            if( !hasBuilt) {
+                if (hasWalked) {
+                    Action action = new BasicConstruction();
+                    action.doAction(point, board, worker);
+                    hasBuilt = true;
+                    hasEnded = true;
+                } else {
+                    throw new OutOfOrderMoveException();
+                }
+            }else throw new AlreadyBuiltException();
         }else throw new endedMoveException();
     }
 
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
-        return action.getPossibleActions(board, worker);
+        if(!hasEnded && !hasBuilt && !hasWalked) {
+            return action.getPossibleActions(board, worker);
+        }
+        else return null;
     }
 
     @Override
     public java.util.List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
-        return action.getPossibleActions(board, worker);
+        if(!hasEnded &&  !hasBuilt && hasWalked) {
+            return action.getPossibleActions(board, worker);
+        }
+        else return null;
     }
 }
 

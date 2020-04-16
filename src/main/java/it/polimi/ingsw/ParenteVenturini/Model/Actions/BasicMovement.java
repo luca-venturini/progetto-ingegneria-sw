@@ -5,6 +5,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementExceptio
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasicMovement extends Action {
@@ -20,21 +21,20 @@ public class BasicMovement extends Action {
 
     @Override
     public boolean isValid(Point point, Board board, Worker worker) {
-        return super.isValid(point, board, worker);
+        List<Point> possibleActions=getPossibleActions(board,worker);
+        return checkValid(point,possibleActions);
     }
 
 
     @Override
     public List<Point> getPossibleActions(Board board, Worker worker) {
         List<Point> possibleActions=super.getPossibleActions(board, worker);
+        List<Point> checkedActions= new ArrayList<>();
         for(Point p: possibleActions){
-            if( board.isOccupied(p) || board.isThereDoom(p) ){
-                    possibleActions.remove(p);
-            }
-            if(board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1){
-                possibleActions.remove(p);
+            if( !( board.isOccupied(p) || board.isThereDome(p) ) && board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1 ){
+                checkedActions.add(p);
             }
         }
-        return possibleActions;
+        return checkedActions;
     }
 }

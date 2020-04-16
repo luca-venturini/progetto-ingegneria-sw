@@ -7,8 +7,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public class ApolloCard extends Card {
 
-    public ApolloCard(String name, String description) {
-        super(name, description);
+    public ApolloCard() {
+        super();
+        this.setName("Apollo");
     }
 
     @Override

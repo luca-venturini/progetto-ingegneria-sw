@@ -13,6 +13,7 @@ public class Turn {
     public Turn(List<Player> players) {
         this.players = players;
         this.currentPlayer = players.get(0);
+        this.numTurn=1;
     }
 
     public void setNextPlayer() {

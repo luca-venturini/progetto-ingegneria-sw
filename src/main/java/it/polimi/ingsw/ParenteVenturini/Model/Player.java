@@ -75,7 +75,7 @@ public class Player {
         List<Card> cards=match.getChosenCards();
         for(Card c:cards) {
             if ( nameCard.equals(c.getName()) ) {
-                this.card=c;
+                setCard(c);
             }
             else throw new InvalidCardException();
         }
@@ -101,7 +101,7 @@ public class Player {
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
                 if(move.getHasEnded()){
-                    this.move=null;
+                    endMove();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -123,7 +123,7 @@ public class Player {
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
                 if(move.getHasEnded()){
-                    this.move=null;
+                    endMove();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,7 +145,7 @@ public class Player {
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
                 if(move.getHasEnded()){
-                    this.move=null;
+                    endMove();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -155,7 +155,7 @@ public class Player {
             throw new OpponentEffectException();
     }
 
-    public List<Point> getPossibleMovements(int n){
+    public List<Point> getPossibleMovements(int n) {
         if( this.move== null )
             this.move = callMove();
         Worker myWorker =selectWorker(n);
@@ -164,12 +164,19 @@ public class Player {
         return temp;
     }
 
-    public List<Point> getPossibleBuildings(int n){
+    public List<Point> getPossibleBuildings(int n) {
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = selectWorker(n);
         List<Point> temp = move.possibleBuildings(match.getBoard(), myWorker);
         temp = match.getOpponentEffectContainer().removeConstructionPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());
         return temp;
+    }
+
+    public void endMove(){
+        if(this.move.getHasEnded() || this.move.getHasWalkedandBuilt() ){
+            move = null;
+            match.getTurn().setNextPlayer();
+        }
     }
 }

@@ -9,15 +9,15 @@ public class Deck {
     public Deck(){
         cards= new ArrayList<Card>();
 
-        cards.add( new ApolloCard("Apollo","") );
-        cards.add( new ArtemisCard("Artemis","") );
-        cards.add( new AthenaCard("Athena","") );
-        cards.add( new AtlasCard("Atlas","") );
-        cards.add( new DemeterCard("Demeter","") );
-        cards.add( new HephaestusCard("Hephaestus","") );
-        cards.add( new MinotaurCard("Minotaur","") );
-        cards.add( new PanCard("Pan","") );
-        cards.add( new PrometheusCard("Prometheus","") );
+        cards.add( new ApolloCard() );
+        cards.add( new ArtemisCard() );
+        cards.add( new AthenaCard() );
+        cards.add( new AtlasCard() );
+        cards.add( new DemeterCard() );
+        cards.add( new HephaestusCard() );
+        cards.add( new MinotaurCard() );
+        cards.add( new PanCard() );
+        cards.add( new PrometheusCard() );
     }
 
     public Card selectByName(String name){

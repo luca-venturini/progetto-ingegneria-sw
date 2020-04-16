@@ -8,58 +8,82 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HephaestusMove extends Move{
 
-    private boolean hasWalked;
     private int numOfBuilding;
     private Point firstBuilding;
 
-
-    @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
-        if(!hasWalked) {
-            Action action = new BasicMovement();
-            action.doAction(point, board, worker);
-            hasWalked = true;
-        }
-        else throw new AlreadyWalkedException();
+    public HephaestusMove() {
+        this.hasWalked = false;
+        this.hasBuilt = false;
+        this.hasEnded = false;
+        this.numOfBuilding = 0;
+        this.firstBuilding = null;
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
+        if(!hasEnded) {
+            if(!hasBuilt) {
+                if (!hasWalked) {
+                    Action action = new BasicMovement();
+                    action.doAction(point, board, worker);
+                    hasWalked = true;
+                } else throw new AlreadyWalkedException();
+            }else throw new AlreadyBuiltException();
+        }else throw new endedMoveException();
+    }
 
-        if(hasWalked) {
-            if (numOfBuilding == 0) {
-                Action action = new BasicConstruction();
-                action.doAction(point, board, worker);
-                firstBuilding = point;
-                numOfBuilding++;
-            }
-            if (numOfBuilding == 1) {
-                if (point.equals(firstBuilding)) {
+    @Override
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException {
+        if(!hasEnded) {
+            if (hasWalked) {
+                if (numOfBuilding == 1) {
+                    if (point.equals(firstBuilding) && board.blockLevel(firstBuilding) <3 ) {
+                        Action action = new BasicConstruction();
+                        action.doAction(point, board, worker);
+                        numOfBuilding++;
+                        hasEnded = true;
+                    } else throw new IllegalBuildingException();
+                }
+                else if (numOfBuilding == 0) {
                     Action action = new BasicConstruction();
                     action.doAction(point, board, worker);
+                    hasBuilt= true;
+                    firstBuilding = point;
                     numOfBuilding++;
-                } else throw new IllegalBuildingException();
-
-            } else throw new AlreadyBuiltException();
-        }
-        else{
-            throw new OutOfOrderMoveException();
-        }
+                }
+                else throw new AlreadyBuiltException();
+            } else throw new OutOfOrderMoveException();
+        }else throw  new endedMoveException();
     }
 
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
-        return action.getPossibleActions(board, worker);
+        if(!hasEnded && !hasBuilt && !hasWalked) {
+            return action.getPossibleActions(board, worker);
+        }
+        else return null;
     }
 
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
-        return action.getPossibleActions(board, worker);
+        if(!hasEnded && hasWalked) {
+            if(!hasBuilt) {
+                return action.getPossibleActions(board, worker);
+            }
+            else if(board.blockLevel(firstBuilding) < 3){
+                List<Point> p= new ArrayList<>();
+                p.add(firstBuilding);
+                return p;
+            }
+            else return null;
+        }
+        else return null;
     }
 }

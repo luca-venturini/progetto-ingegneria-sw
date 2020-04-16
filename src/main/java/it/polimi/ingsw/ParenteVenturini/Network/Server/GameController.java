@@ -2,7 +2,10 @@ package it.polimi.ingsw.ParenteVenturini.Network.Server;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyPresentPlayerException;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidTypeOfMatch;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoMorePlayersException;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoPlayerException;
 import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Player;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
@@ -18,7 +21,11 @@ public class GameController {
 
     public GameController(int numOfPlayers){
         match = new Match();
-        match.setTypeOfMatch(numOfPlayers);
+        try {
+            match.setTypeOfMatch(numOfPlayers);
+        } catch (InvalidTypeOfMatch invalidTypeOfMatch) {
+            invalidTypeOfMatch.printStackTrace();
+        }
         System.out.println("Creata partita da "+numOfPlayers+" giocatori");
     }
 
@@ -35,8 +42,8 @@ public class GameController {
             System.out.println("add player");
             for (Player p: match.getPlayers())
                 System.out.println("---: "+p.getNickname());
-        } catch (NoMorePlayersException e) {
-            System.out.println("erroreeee");
+        } catch (NoMorePlayersException | AlreadyPresentPlayerException | NoPlayerException e) {
+            System.out.println("Error");
             e.printStackTrace();
         }
         clients.add(client);
@@ -50,7 +57,11 @@ public class GameController {
     public void startSetup(){
         if(match.getTypeOfMatch() == clients.size()) {
             notifyAllClients(new SetUpNotification());
-            match.setChallenger();
+            try {
+                match.setChallenger();
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
             Player challenger = match.getChallenger();
             Deck deck = new Deck();
             notifySingleClient(challenger, new SelectCardNotification(deck.getCardNames(), match.getNumPlayers()));

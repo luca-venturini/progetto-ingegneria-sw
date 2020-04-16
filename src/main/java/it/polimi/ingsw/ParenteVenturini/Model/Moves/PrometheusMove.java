@@ -12,44 +12,58 @@ import java.util.List;
 
 public class PrometheusMove extends Move {
 
-    private boolean hasWalked;
-    private boolean hasBuilt;
     private boolean specialEffectAlreadyActivated;
 
-    @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException {
-        if(!hasWalked){
-            Action action = new BasicMovement();
-            action.doAction(point, board, worker);
-            hasWalked = true;
-        }
-        else throw new AlreadyWalkedException();
+    public PrometheusMove() {
+        hasWalked=false;
+        hasBuilt=false;
+        hasEnded=false;
+        specialEffectAlreadyActivated=false;
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException {
-        if(!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker)){
-            Action action = new BasicConstruction();
-            action.doAction(point, board, worker);
-            specialEffectAlreadyActivated = true;
-        }
-        else if(!hasBuilt && hasWalked){
-            Action action = new BasicConstruction();
-            action.doAction(point, board, worker);
-            hasBuilt = true;
-        }
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
+        if(!hasEnded) {
+            if (!hasWalked) {
+                Action action = new BasicMovement();
+                action.doAction(point, board, worker);
+                hasWalked = true;
+            } else throw new AlreadyWalkedException();
+        }else throw  new endedMoveException();
+    }
+
+    @Override
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, endedMoveException {
+        if(!hasEnded) {
+            if (!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker)) {
+                Action action = new BasicConstruction();
+                action.doAction(point, board, worker);
+                specialEffectAlreadyActivated = true;
+            } else if (!hasBuilt && hasWalked) {
+                Action action = new BasicConstruction();
+                action.doAction(point, board, worker);
+                hasBuilt = true;
+                hasEnded = true;
+            }
+        }else throw new endedMoveException();
     }
 
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
-        return action.getPossibleActions(board, worker);
+        if(!hasEnded && !hasWalked) {
+            return action.getPossibleActions(board, worker);
+        }
+        else return null;
     }
 
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
-        return action.getPossibleActions(board, worker);
+        if(!hasEnded) {
+            return action.getPossibleActions(board, worker);
+        }
+        else return null;
     }
 
     private boolean canUseSpecialEffect(Board board, Worker worker){

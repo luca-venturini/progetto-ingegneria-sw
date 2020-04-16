@@ -7,8 +7,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public class ArtemisCard extends Card {
 
-    public ArtemisCard(String name, String description) {
-        super(name, description);
+    public ArtemisCard() {
+        super();
+        this.setName("Artemis");
     }
 
     @Override

@@ -7,8 +7,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 public class HephaestusCard extends Card {
 
-    public HephaestusCard(String name, String description) {
-        super(name, description);
+    public HephaestusCard() {
+        super();
+        this.setName("Hephaestus");
     }
 
     @Override

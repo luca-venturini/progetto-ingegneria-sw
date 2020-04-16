@@ -12,67 +12,65 @@ import java.util.List;
 
 public class ArtemisMove extends Move {
 
-    private boolean hasWalked;
-    private boolean hasEnded;
     private int numOfMovements;
-    private Point firstMovement;
 
     public ArtemisMove() {
         this.hasWalked = false;
+        this.hasBuilt = false;
         this.hasEnded = false;
         this.numOfMovements = 0;
-        this.firstMovement = null;
     }
 
     @Override
-    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
+    public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
-            if (!hasWalked) {
-                if (numOfMovements == 0) {
-                    Action action = new BasicMovement();
-                    action.doAction(point, board, worker);
-                    firstMovement = point;
-                    numOfMovements++;
-                }
-                if (numOfMovements == 1) {
-                    if (!point.equals(firstMovement)) {
+            if( !hasBuilt) {
+                if (numOfMovements <= 1) {
+                    if (numOfMovements == 1) {
+                        if (!point.equals(worker.getLastPosition())) {
+                            Action action = new BasicMovement();
+                            action.doAction(point, board, worker);
+                            numOfMovements++;
+                        } else throw new IllegalMovementException();
+                    }
+                    if (numOfMovements == 0) {
                         Action action = new BasicMovement();
                         action.doAction(point, board, worker);
+                        numOfMovements++;
                         hasWalked = true;
-                    } else throw new IllegalMovementException();
-
+                    }
                 } else throw new AlreadyWalkedException();
-            } else throw new AlreadyWalkedException();
+            }else throw  new AlreadyBuiltException();
         }else throw  new endedMoveException();
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
-            if (hasWalked) {
-                Action action = new BasicConstruction();
-                action.doAction(point, board, worker);
-                hasEnded = true;
-            } else {
-                throw new OutOfOrderMoveException();
-            }
+            if( !hasBuilt) {
+                if (hasWalked) {
+                    Action action = new BasicConstruction();
+                    action.doAction(point, board, worker);
+                    hasBuilt = true;
+                    hasEnded = true;
+                } else throw new OutOfOrderMoveException();
+            }else throw new AlreadyBuiltException();
         }else throw new endedMoveException();
     }
 
     @Override
     public java.util.List<Point> possibleMovements(Board board, Worker worker) {
         Action action = new BasicMovement();
-        if(!hasEnded) {
-            if(!hasWalked) {
-                if(numOfMovements==0) {
-                    return action.getPossibleActions(board, worker);
-                }
-                else{
-                    List<Point> possiblePoints = action.getPossibleActions(board, worker);
-                    possiblePoints.remove(firstMovement);
-                    return possiblePoints;
-                }
-            }else return null;
+        if(!hasEnded && !hasBuilt) {
+            if(numOfMovements==0) {
+                return action.getPossibleActions(board, worker);
+            }
+            else if(numOfMovements==1){
+                List<Point> possiblePoints = action.getPossibleActions(board, worker);
+                possiblePoints.remove(worker.getLastPosition());
+                return possiblePoints;
+            }
+            else return null;
         }
         else return null;
     }
@@ -80,7 +78,7 @@ public class ArtemisMove extends Move {
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) {
         Action action = new BasicConstruction();
-        if(!hasEnded) {
+        if(!hasEnded  && !hasBuilt && hasWalked) {
             return action.getPossibleActions(board, worker);
         }
         else return null;
