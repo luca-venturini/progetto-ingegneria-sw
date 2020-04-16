@@ -26,7 +26,7 @@ public class GameController {
 
         int i = 1;
         String originalNickname = nickname;
-        while (match.selectPlayer(nickname) != null){
+        while (!isValidNickname(nickname)){
             nickname = originalNickname+" ("+i+")";
             i++;
         }
@@ -41,6 +41,10 @@ public class GameController {
         }
         clients.add(client);
         return match.selectPlayer(nickname);
+    }
+
+    public boolean isValidNickname(String nickname){
+        return match.selectPlayer(nickname) == null;
     }
 
     public void startSetup(){

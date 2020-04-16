@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Server;
 
+import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.InvalidNicknameException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,11 @@ public class GameDispatcher {
         return gameDispatcher;
     }
 
-    public synchronized GameController getGameController(int numOfPlayers){
+    public synchronized GameController getGameController(String nickname, int numOfPlayers) throws InvalidNicknameException {
+        if(actualPlayers != 0){
+            if (!gameController.isValidNickname(nickname))
+                throw new InvalidNicknameException();
+        }
         if(actualPlayers==0 ){
             gameController = new GameController(numOfPlayers);
             requiredPlayers = numOfPlayers;

@@ -2,6 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.Network.Server;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Player;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
+import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.InvalidNicknameException;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.ErrorLoginNotification;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.SimplyNotification;
@@ -29,7 +30,12 @@ public class ClientController implements ServerMessageHandler {
             sendMessage(new ErrorLoginNotification(nickname, "Sono possibili partite solo da 2 o 3 giocatori"));
             return;
         }
-        gameController = gameDispatcher.getGameController(Integer.parseInt(numOfPlayers));
+        try {
+            gameController = gameDispatcher.getGameController(nickname, Integer.parseInt(numOfPlayers));
+        } catch (InvalidNicknameException e) {
+            sendMessage(new ErrorLoginNotification(nickname, "Nickname non disponibile"));
+            return;
+        }
         if(gameController.getNumOfPlayers() != 0)
             sendMessage(new SimplyNotification("Partita già inizializzata, sei stato aggiunto a quella"));
         player = gameController.addPlayer(this, nickname);
