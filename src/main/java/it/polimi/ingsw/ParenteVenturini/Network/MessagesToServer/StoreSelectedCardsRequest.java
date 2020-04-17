@@ -2,16 +2,23 @@ package it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer;
 
 import it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SelectCardRequest implements MessageToServer {
+public class StoreSelectedCardsRequest implements MessageToServer {
 
     private List<String> choosenCards;
     private String nickname;
 
-    public SelectCardRequest(String nickname, List<String> choosenCards) {
+    public StoreSelectedCardsRequest(String nickname, List<String> choosenCards) {
         this.nickname = nickname;
         this.choosenCards = choosenCards;
+    }
+
+    public StoreSelectedCardsRequest(String nickname, String choosenCards) {
+        this.nickname = nickname;
+        this.choosenCards = new ArrayList<>();
+        this.choosenCards.add(choosenCards);
     }
 
     @Override

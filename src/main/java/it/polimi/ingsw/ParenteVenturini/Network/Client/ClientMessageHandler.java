@@ -8,4 +8,7 @@ public interface ClientMessageHandler {
     void visit(SelectCardNotification msg);
     void visit(SimplyNotification msg);
     void visit(StartGameNotification msg);
+    void visit(ChooseCardNotification msg);
+    void visit(SetPlayerCardResponse msg);
+    void visit(AviableCardResponse msg);
 }

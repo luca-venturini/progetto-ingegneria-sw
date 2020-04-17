@@ -6,4 +6,6 @@ public interface ViewInterface {
     String login();
     void chooseCards(List<String> cardsName, int numberOfCardsRequired);
     void displayMenu();
+    void displayChooseCardMenu();
+    void displayMessage(String s);
 }

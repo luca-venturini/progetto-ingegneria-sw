@@ -9,6 +9,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoPlayerException;
 import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Player;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
+import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 
 import java.util.ArrayList;
@@ -17,7 +18,10 @@ import java.util.List;
 public class GameController {
     private List<ClientController> clients = new ArrayList<>();
     private Match match;
-    private boolean choosingCardPhase;
+    private CardSetupHandler cardSetupHandler;
+    private Deck deck = new Deck();
+
+
 
     public GameController(int numOfPlayers){
         match = new Match();
@@ -56,14 +60,13 @@ public class GameController {
 
     public void startSetup(){
         if(match.getTypeOfMatch() == clients.size()) {
-            notifyAllClients(new SetUpNotification());
+            notifyAllClients(new SimplyNotification( "E' iniziata la fase di setUp, tra poco tocca a te..."));
             try {
                 match.setChallenger();
             } catch (NoPlayerException e) {
                 e.printStackTrace();
             }
             Player challenger = match.getChallenger();
-            Deck deck = new Deck();
             notifySingleClient(challenger, new SelectCardNotification(deck.getCardNames(), match.getNumPlayers()));
         }
         else
@@ -90,7 +93,6 @@ public class GameController {
     }
 
     public void addCardsToMatch(String nickname, List<String> values) throws IllegalCardException {
-        Deck deck = new Deck();
         List<Card> chosenCards = new ArrayList<>();
 
         if(nickname.equals(match.getChallenger().getNickname())){
@@ -105,12 +107,39 @@ public class GameController {
         }
         if(chosenCards.size() == match.getNumPlayers()){
             match.setChosenCards(chosenCards);
-            notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, tra poco tocca a te..."));
-
+            try {
+                cardSetupHandler = new CardSetupHandler(chosenCards, match.getPlayers(), match.getChallenger());
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
+            notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, inizia "+cardSetupHandler.getNextPlayer()));
+            notifyAllClients(new ChooseCardNotification());
         }
         else{
             throw new IllegalCardException();
         }
+    }
+
+
+
+    public void setPlayerCard(Player player, String card){
+        try {
+            cardSetupHandler.setCard(player, deck.selectByName(card));
+            notifySingleClient(player, new SetPlayerCardResponse( true, "Carta aggiunta"));
+            notifyAllClients(new SimplyNotification(player.getNickname()+" ha scelto la sua carta, tocca a "+cardSetupHandler.getNextPlayer()));
+        } catch (NotYourTurnException e) {
+            notifySingleClient(player, new SetPlayerCardResponse( false, "Non è il tuo turno"));
+        } catch (IllegalCardException e) {
+            notifySingleClient(player, new SetPlayerCardResponse( false, "La carta scelta non è disponibile"));
+        }
+    }
+
+    public void sendPossibleCards(ClientController clientController){
+        List<String> cardsName = new ArrayList<>();
+        for(Card c: cardSetupHandler.getPossibleCards()){
+            cardsName.add(c.getName());
+        }
+        notifySingleClient(clientController, new AviableCardResponse(cardsName));
     }
 
     public int getNumOfPlayers(){

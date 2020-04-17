@@ -28,37 +28,9 @@ public class ClientSideController implements ClientMessageHandler {
         this.client = client;
     }
 
-
     public void handleMessage(MessageToClient msg){
         msg.accept(this);
     }
-
-    @Override
-    public void visit(ErrorLoginNotification msg) {
-        System.out.println(msg.getNickname()+": "+msg.getValues().get(0));
-        client.login();
-    }
-
-    @Override
-    public void visit(SetUpNotification msg) {
-        System.out.println("Fase di setUp iniziata");
-    }
-
-    @Override
-    public void visit(SelectCardNotification msg) {
-        client.chooseCards(msg.getValues(), msg.numberOfCardsRequired());
-    }
-
-    @Override
-    public void visit(SimplyNotification msg) {
-        System.out.println(msg.getValues().get(0));
-    }
-
-    @Override
-    public void visit(StartGameNotification msg) {
-        client.displayMenu();
-    }
-
 
     public void sendMessage(MessageToServer msg){
         try {
@@ -68,4 +40,51 @@ public class ClientSideController implements ClientMessageHandler {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void visit(ErrorLoginNotification msg) {
+        client.displayMessage(msg.getNickname()+": "+msg.getValues().get(0));
+        client.login();
+    }
+
+    @Override
+    public void visit(SetUpNotification msg) {
+        client.displayMessage("Fase di setUp iniziata");
+    }
+
+    @Override
+    public void visit(SelectCardNotification msg) {
+        client.chooseCards(msg.getValues(), msg.numberOfCardsRequired());
+    }
+
+    @Override
+    public void visit(SimplyNotification msg) {
+        client.displayMessage(msg.getValues().get(0));
+    }
+
+    @Override
+    public void visit(StartGameNotification msg) {
+        client.displayMenu();
+    }
+
+    @Override
+    public void visit(ChooseCardNotification msg) {
+        client.displayChooseCardMenu();
+    }
+
+    @Override
+    public void visit(SetPlayerCardResponse msg) {
+        client.displayMessage(msg.getValues().get(0));
+        if(! msg.isSet())
+            client.displayChooseCardMenu();
+    }
+
+    @Override
+    public void visit(AviableCardResponse msg) {
+        for(String s: msg.getValues())
+            client.displayMessage(s);
+        client.displayChooseCardMenu();
+    }
+
+
 }

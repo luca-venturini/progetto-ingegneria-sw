@@ -1,8 +1,6 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.AccessGameMessageRequest;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SelectCardRequest;
+import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,6 @@ public class CLI implements ViewInterface {
             MessageToServer message = new AccessGameMessageRequest(name, numOfPlayers);
             clientSideController.sendMessage(message);
             System.out.println("Message inviato");
-            Thread.sleep(1000);
             System.out.println("Il tuo nickanme è: "+name);
             nickname = name;
             return name;
@@ -59,7 +56,7 @@ public class CLI implements ViewInterface {
                 System.out.println("Carta già scelta");
         }
 
-        MessageToServer message = new SelectCardRequest(nickname, choosen);
+        MessageToServer message = new StoreSelectedCardsRequest(nickname, choosen);
         clientSideController.sendMessage(message);
         System.out.println("Message inviato");
         try {
@@ -83,4 +80,33 @@ public class CLI implements ViewInterface {
             stdIn.nextLine();
         }
     }
+
+    @Override
+    public void displayChooseCardMenu() {
+        int choice;
+        do {
+            printString("--Menu card SetUp--");
+            printString("1- Get possible Cards");
+            printString("2- Choose and send your card");
+            printString("Choice: ");
+            String number = stdIn.nextLine();
+            choice = Integer.parseInt(number);
+            if (choice == 1) {
+                MessageToServer message = new AviableCardRequest(nickname);
+                clientSideController.sendMessage(message);
+            } else if (choice == 2) {
+                printString("card name:");
+                String card = stdIn.nextLine();
+                MessageToServer message = new SetPlayerCardRequest(nickname, card);
+                clientSideController.sendMessage(message);
+            }
+        }while(choice<1 || choice>2);
+    }
+
+    @Override
+    public void displayMessage(String s) {
+        printString(s);
+    }
+
+
 }

@@ -51,12 +51,23 @@ public class ClientController implements ServerMessageHandler {
     }
 
     @Override
-    public void visit(SelectCardRequest msg) {
+    public void visit(StoreSelectedCardsRequest msg) {
         try {
             gameController.addCardsToMatch(msg.getNickname(), msg.getValues());
         } catch (IllegalCardException e) {
             sendMessage(new SimplyNotification("Questo non dovrebbe succedere..."));
         }
+    }
+
+    @Override
+    public void visit(AviableCardRequest msg) {
+        gameController.sendPossibleCards(this);
+    }
+
+    @Override
+    public void visit(SetPlayerCardRequest msg) {
+        String card = msg.getValues().get(0);
+        gameController.setPlayerCard(player, card);
     }
 
 
