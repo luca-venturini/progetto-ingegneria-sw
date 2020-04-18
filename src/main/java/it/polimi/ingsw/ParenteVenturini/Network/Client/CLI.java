@@ -1,5 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.PlaceWorkerResponse;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ public class CLI implements ViewInterface {
     private Scanner stdIn = new Scanner(System.in);
     private ClientSideController clientSideController;
     private String nickname;
+    private List<LightWorker> lightWorkers;
 
     public CLI(ClientSideController clientInMessageHandler) {
         this.clientSideController = clientInMessageHandler;
@@ -106,6 +109,55 @@ public class CLI implements ViewInterface {
     @Override
     public void displayMessage(String s) {
         printString(s);
+    }
+
+    @Override
+    public void displayChooseStartingPlayerMenu() {
+        int choice;
+        do {
+            printString("--Menu starting Player SetUp--");
+            printString("1- Get possible Players");
+            printString("2- Choose starting player");
+            printString("Choice: ");
+            String number = stdIn.nextLine();
+            choice = Integer.parseInt(number);
+            if (choice == 1) {
+                MessageToServer message = new AviablePlayerRequest(nickname);
+                clientSideController.sendMessage(message);
+            } else if (choice == 2) {
+                printString("player name:");
+                String playerName = stdIn.nextLine();
+                MessageToServer message = new SetStartingPlayerRequest(nickname, playerName);
+                clientSideController.sendMessage(message);
+            }
+        }while(choice<1 || choice>2);
+    }
+
+    @Override
+    public void displayPlaceWorkerMenu() {
+        int choice;
+        do {
+            printString("--Menu Place Worker setUp--");
+            printString("1- Get possible Points");
+            printString("2- Place worker");
+            printString("Choice: ");
+            String number = stdIn.nextLine();
+            choice = Integer.parseInt(number);
+            if (choice == 1) {
+                MessageToServer message = new AviablePlayerRequest(nickname);
+                clientSideController.sendMessage(message);
+            } else if (choice == 2) {
+                printString("worker number (1 or 2) :");
+                String workerNum = stdIn.nextLine();
+                printString("x :");
+                String xPos = stdIn.nextLine();
+                printString("y :");
+                String yPos = stdIn.nextLine();
+                Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                MessageToServer message = new PlaceWorkerRequest(point, workerNum, nickname);
+                clientSideController.sendMessage(message);
+            }
+        }while(choice<1 || choice>2);
     }
 
 

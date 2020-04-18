@@ -70,6 +70,23 @@ public class ClientController implements ServerMessageHandler {
         gameController.setPlayerCard(player, card);
     }
 
+    @Override
+    public void visit(AviablePlayerRequest msg) {
+        gameController.sendPossiblePlayers(this);
+    }
+
+    @Override
+    public void visit(SetStartingPlayerRequest msg) {
+        gameController.setStartingPlayer(this.player.getNickname(), msg.getValues().get(0));
+    }
+
+    @Override
+    public void visit(PlaceWorkerRequest msg) {
+
+        //TO DO
+        //gameController.placeWorker(msg.getNickname(), msg.getPoint(), msg.getValues().get(0))
+    }
+
 
     public Player getPlayer() {
         return player;

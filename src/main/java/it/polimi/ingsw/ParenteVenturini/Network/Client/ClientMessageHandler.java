@@ -11,4 +11,9 @@ public interface ClientMessageHandler {
     void visit(ChooseCardNotification msg);
     void visit(SetPlayerCardResponse msg);
     void visit(AviableCardResponse msg);
+    void visit(ChooseStartingPlayerNotification msg);
+    void visit(AviablePlayersResponse msg);
+    void visit(SetStartingPlayerResponse msg);
+    void visit(PlaceWorkerResponse msg);
+    void visit(PlaceWorkersNotification msg);
 }

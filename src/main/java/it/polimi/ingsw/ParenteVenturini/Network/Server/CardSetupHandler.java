@@ -39,7 +39,7 @@ public class CardSetupHandler {
         if(players.size() > currentPlayer)
             return players.get(currentPlayer).getNickname();
         else
-            return "none";
+            return null;
     }
 
     public List<Card> getPossibleCards(){

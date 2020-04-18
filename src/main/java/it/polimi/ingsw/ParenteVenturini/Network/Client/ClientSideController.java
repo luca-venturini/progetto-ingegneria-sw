@@ -86,5 +86,34 @@ public class ClientSideController implements ClientMessageHandler {
         client.displayChooseCardMenu();
     }
 
+    @Override
+    public void visit(ChooseStartingPlayerNotification msg) {
+        client.displayChooseStartingPlayerMenu();
+    }
+
+    @Override
+    public void visit(AviablePlayersResponse msg) {
+        for(String s: msg.getValues())
+            client.displayMessage(s);
+        client.displayChooseStartingPlayerMenu();
+    }
+
+    @Override
+    public void visit(SetStartingPlayerResponse msg) {
+        client.displayMessage(msg.getValues().get(0));
+        if(! msg.isSet())
+            client.displayChooseStartingPlayerMenu();
+    }
+
+    @Override
+    public void visit(PlaceWorkersNotification msg) {
+        client.displayPlaceWorkerMenu();
+    }
+
+    @Override
+    public void visit(PlaceWorkerResponse msg) {
+
+    }
+
 
 }

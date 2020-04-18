@@ -8,4 +8,6 @@ public interface ViewInterface {
     void displayMenu();
     void displayChooseCardMenu();
     void displayMessage(String s);
+    void displayChooseStartingPlayerMenu();
+    void displayPlaceWorkerMenu();
 }

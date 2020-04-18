@@ -7,16 +7,16 @@ public class Worker {
     private Point position;
     private Point lastPosition;
     private Player player;
-    private Color colour;
+    private int colour;
 
-    public Worker(Point position, Player player, Color colour) {
+    public Worker(Point position, Player player, int colour) {
         this.position = position;
         this.lastPosition = position;
         this.player = player;
         this.colour = colour;
     }
 
-    public Color getColour() {
+    public int getColour() {
         return colour;
     }
 

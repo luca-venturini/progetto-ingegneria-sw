@@ -2,10 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.Network.Server;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyPresentPlayerException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidTypeOfMatch;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoMorePlayersException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoPlayerException;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Player;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
@@ -19,6 +16,7 @@ public class GameController {
     private List<ClientController> clients = new ArrayList<>();
     private Match match;
     private CardSetupHandler cardSetupHandler;
+    private PlaceWorkerSetupHandler placeWorkerSetupHandler;
     private Deck deck = new Deck();
 
 
@@ -120,13 +118,16 @@ public class GameController {
         }
     }
 
-
-
     public void setPlayerCard(Player player, String card){
         try {
             cardSetupHandler.setCard(player, deck.selectByName(card));
             notifySingleClient(player, new SetPlayerCardResponse( true, "Carta aggiunta"));
-            notifyAllClients(new SimplyNotification(player.getNickname()+" ha scelto la sua carta, tocca a "+cardSetupHandler.getNextPlayer()));
+            if(cardSetupHandler.getNextPlayer() != null)
+                notifyAllClients(new SimplyNotification(player.getNickname()+" ha scelto la sua carta, tocca a "+cardSetupHandler.getNextPlayer()));
+            else {
+                notifyAllClients(new SimplyNotification("Inizio nuova fase, attendi..."));
+                notifySingleClient(match.getChallenger(), new ChooseStartingPlayerNotification());
+            }
         } catch (NotYourTurnException e) {
             notifySingleClient(player, new SetPlayerCardResponse( false, "Non è il tuo turno"));
         } catch (IllegalCardException e) {
@@ -141,6 +142,49 @@ public class GameController {
         }
         notifySingleClient(clientController, new AviableCardResponse(cardsName));
     }
+
+
+    public void setStartingPlayer(String nickname, String startingPlayerNickname){
+        if(nickname == match.getChallenger().getNickname()) {
+            try {
+                match.selectStarter(startingPlayerNickname);
+                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( true, "Giocatore iniziale settato"));
+                notifyAllClients(new SimplyNotification("Ogni giocatore dovrà posizionare i propri workers"));
+                placeWorkerSetupHandler = new PlaceWorkerSetupHandler(match.getPlayers(), match.getBoard());
+                notifyAllClients(new PlaceWorkersNotification());
+            } catch (AlreadyChosenStarterException e) {
+                e.printStackTrace();
+            } catch (InvalidNamePlayerException e) {
+                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( false, "Il nickname scelto non è disponibile"));
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("Error setStartingPlayer method in gameController");
+        }
+    }
+
+    public void sendPossiblePlayers(ClientController clientController){
+        List<String> playersNickname = new ArrayList<>();
+        try {
+            List<Player> players = match.getPlayers();
+            for(Player p: players)
+                playersNickname.add(p.getNickname());
+        } catch (NoPlayerException e) {
+            playersNickname = null;
+            e.printStackTrace();
+        }
+        notifySingleClient(clientController, new AviablePlayersResponse(playersNickname));
+    }
+
+    /*
+    public void placeWorkers(Stri){
+
+    }
+
+     */
+
+
 
     public int getNumOfPlayers(){
         return clients.size();
