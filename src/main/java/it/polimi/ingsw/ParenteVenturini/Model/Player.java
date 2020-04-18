@@ -40,8 +40,8 @@ public class Player {
             this.winCondition = card.getWinCheck();
     }
 
-    public void placeWorker(int colour , Point point, Board board){
-        Worker worker= new Worker(point, this,colour);
+    public void placeWorker(Color colour , Point point, Board board){
+        Worker worker= new Worker(point, this, colour);
         addWorker(worker);
         board.setWorker(worker);
     }
