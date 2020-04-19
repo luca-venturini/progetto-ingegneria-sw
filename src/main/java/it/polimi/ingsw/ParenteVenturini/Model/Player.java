@@ -179,4 +179,8 @@ public class Player {
             match.getTurn().setNextPlayer();
         }
     }
+
+    public List<Worker> getWorkers(){
+        return workers;
+    }
 }

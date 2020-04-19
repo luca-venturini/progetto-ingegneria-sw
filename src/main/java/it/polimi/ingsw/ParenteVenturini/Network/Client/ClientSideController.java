@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
@@ -111,9 +112,22 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
-    public void visit(PlaceWorkerResponse msg) {
-
+    public void visit(AviablePlaceWorkerPointResponse msg) {
+        client.displayMessage(msg.getPoints().toString());
+        client.displayPlaceWorkerMenu();
     }
 
+    @Override
+    public void visit(PlaceWorkerResponse msg) {
+        System.out.println(msg.getSettedPoint().toString());
+        if(msg.isSet()) {
+            client.addLightWorker(new Point(msg.getSettedPoint().getX(), msg.getSettedPoint().getY()) );
+        }
 
+        client.displayMessage(msg.getMessage());
+        if(!msg.isHasFinished()) {
+            client.displayPlaceWorkerMenu();
+        }
+
+    }
 }

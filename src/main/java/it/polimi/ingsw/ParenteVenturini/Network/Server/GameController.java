@@ -5,7 +5,10 @@ import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Player;
+import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
+import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 
@@ -18,8 +21,6 @@ public class GameController {
     private CardSetupHandler cardSetupHandler;
     private PlaceWorkerSetupHandler placeWorkerSetupHandler;
     private Deck deck = new Deck();
-
-
 
     public GameController(int numOfPlayers){
         match = new Match();
@@ -177,12 +178,26 @@ public class GameController {
         notifySingleClient(clientController, new AviablePlayersResponse(playersNickname));
     }
 
-    /*
-    public void placeWorkers(Stri){
 
+    public void placeWorkers(Player player, Point position){
+        Point point = new Point(position.getX(), position.getY());
+        try {
+            placeWorkerSetupHandler.setWorkerPosition(player, position);
+            if(placeWorkerSetupHandler.hasFinished())
+                notifyAllClients(new SimplyNotification("Operazioni completate, fine fase di setUp"));
+            else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))
+                notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", point ));
+            else
+                notifySingleClient(player, new PlaceWorkerResponse( true, true, "Secondo worker posizionato, attendi...", point ));
+        } catch (IllegalPlaceWorkerException e) {
+            notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",point ));
+        }
     }
 
-     */
+    public void sendPossibleWorkersSetupPoint(ClientController clientController){
+        List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
+        notifySingleClient(clientController, new AviablePlaceWorkerPointResponse(points));
+    }
 
 
 

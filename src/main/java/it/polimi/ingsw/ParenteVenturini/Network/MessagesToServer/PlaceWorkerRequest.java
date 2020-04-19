@@ -9,12 +9,10 @@ import java.util.List;
 public class PlaceWorkerRequest implements MessageToServer {
     private Point point;
     private String nickname;
-    private String numWorkers;
 
-    public PlaceWorkerRequest(Point point, String nickname, String numWorkers) {
+    public PlaceWorkerRequest(Point point, String nickname) {
         this.point = point;
         this.nickname = nickname;
-        this.numWorkers = numWorkers;
     }
 
     @Override
@@ -32,7 +30,7 @@ public class PlaceWorkerRequest implements MessageToServer {
 
     @Override
     public List<String> getValues() {
-        return Arrays.asList(numWorkers);
+        return null;
     }
 
     @Override

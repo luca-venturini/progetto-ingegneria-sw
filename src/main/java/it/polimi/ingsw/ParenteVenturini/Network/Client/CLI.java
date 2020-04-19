@@ -17,6 +17,7 @@ public class CLI implements ViewInterface {
 
     public CLI(ClientSideController clientInMessageHandler) {
         this.clientSideController = clientInMessageHandler;
+        this.lightWorkers = new ArrayList<>();
     }
 
     @Override
@@ -144,20 +145,23 @@ public class CLI implements ViewInterface {
             String number = stdIn.nextLine();
             choice = Integer.parseInt(number);
             if (choice == 1) {
-                MessageToServer message = new AviablePlayerRequest(nickname);
+                MessageToServer message = new AviablePlaceWorkerPointRequest();
                 clientSideController.sendMessage(message);
             } else if (choice == 2) {
-                printString("worker number (1 or 2) :");
-                String workerNum = stdIn.nextLine();
                 printString("x :");
                 String xPos = stdIn.nextLine();
                 printString("y :");
                 String yPos = stdIn.nextLine();
                 Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                MessageToServer message = new PlaceWorkerRequest(point, workerNum, nickname);
+                MessageToServer message = new PlaceWorkerRequest(point, nickname);
                 clientSideController.sendMessage(message);
             }
         }while(choice<1 || choice>2);
+    }
+
+    @Override
+    public void addLightWorker(Point point) {
+        lightWorkers.add(new LightWorker(point));
     }
 
 

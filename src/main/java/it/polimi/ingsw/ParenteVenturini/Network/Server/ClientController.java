@@ -82,9 +82,13 @@ public class ClientController implements ServerMessageHandler {
 
     @Override
     public void visit(PlaceWorkerRequest msg) {
+        if(msg.getNickname().equals(player.getNickname()))
+            gameController.placeWorkers(player, msg.getPoint());
+    }
 
-        //TO DO
-        //gameController.placeWorker(msg.getNickname(), msg.getPoint(), msg.getValues().get(0))
+    @Override
+    public void visit(AviablePlaceWorkerPointRequest msg) {
+        gameController.sendPossibleWorkersSetupPoint(this);
     }
 
 

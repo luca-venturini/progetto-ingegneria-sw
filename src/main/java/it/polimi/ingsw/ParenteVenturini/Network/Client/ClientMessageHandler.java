@@ -16,4 +16,5 @@ public interface ClientMessageHandler {
     void visit(SetStartingPlayerResponse msg);
     void visit(PlaceWorkerResponse msg);
     void visit(PlaceWorkersNotification msg);
+    void visit(AviablePlaceWorkerPointResponse msg);
 }

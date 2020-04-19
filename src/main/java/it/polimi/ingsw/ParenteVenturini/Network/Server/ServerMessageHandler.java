@@ -10,4 +10,5 @@ public interface ServerMessageHandler {
     void visit(AviablePlayerRequest msg);
     void visit(SetStartingPlayerRequest msg);
     void visit(PlaceWorkerRequest msg);
+    void visit(AviablePlaceWorkerPointRequest msg);
 }
