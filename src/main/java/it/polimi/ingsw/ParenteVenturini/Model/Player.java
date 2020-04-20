@@ -58,8 +58,8 @@ public class Player {
     }
 
 
-    public boolean hasWon(Board board){
-        return winCondition.hasWon(board, workers);
+    public boolean hasWon(Board board, Worker worker, List<Player> players){
+        return winCondition.hasWon(board, worker, players);
     }
 
 
@@ -96,8 +96,8 @@ public class Player {
         if(match.getOpponentEffectContainer().checkMovementPoint(p, myWorker,match.getBoard())){
             try {
                 move.walk(p, match.getBoard(), myWorker);
-                OpponentEffect temp= card.getOpponentEffect();
-                if(temp!= null && temp.isMovementValid(p, myWorker.getLastPosition(), match.getBoard())){  // it was myWorker.getPosition() but it's wrong
+                OpponentEffect temp = card.getOpponentEffect();
+                if(temp!= null && temp.isEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
                 if(move.getHasEnded()){
@@ -119,7 +119,7 @@ public class Player {
             try {
                 move.build(p, match.getBoard(), myWorker);
                 OpponentEffect temp = card.getOpponentEffect();
-                if(temp!= null && temp.isConstructionValid(p, myWorker.getPosition(), match.getBoard())){
+                if(temp!= null && temp.isEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
                 if(move.getHasEnded()){
@@ -141,7 +141,7 @@ public class Player {
             try {
                 move.specialBuild(p, match.getBoard(), myWorker);
                 OpponentEffect temp= card.getOpponentEffect();
-                if(temp!= null && temp.isConstructionValid(p, myWorker.getPosition(), match.getBoard())){
+                if(temp!= null && temp.isEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
                 if(move.getHasEnded()){

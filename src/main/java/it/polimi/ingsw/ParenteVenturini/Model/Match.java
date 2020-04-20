@@ -29,7 +29,11 @@ public class Match {
         this.opponentEffectContainer = new OpponentEffectContainer();
         this.typeOfMatch = 2;
         this.challenger=null;
-        this.turn= null;
+        this.turn = null;
+    }
+
+    public void setTurn() {
+        this.turn = new Turn(players);
     }
 
     public void addPlayer(String nickname) throws NoMorePlayersException, AlreadyPresentPlayerException {

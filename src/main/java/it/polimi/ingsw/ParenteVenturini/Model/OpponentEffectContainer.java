@@ -45,7 +45,7 @@ public class OpponentEffectContainer {
 
     public boolean checkMovementPoint(Point nextPoint, Worker worker, Board board ){
         for(OpponentEffect eff: getActiveEffects()){
-            if(!eff.equals(worker.getEffect())){
+            if(!eff.equals(worker.getEffect()) ){
                 if(!eff.isMovementValid(nextPoint, worker.getPosition(), board))
                     return false;
             }
