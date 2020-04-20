@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
@@ -81,7 +80,7 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
-    public void visit(AviableCardResponse msg) {
+    public void visit(AvailableCardResponse msg) {
         for(String s: msg.getValues())
             client.displayMessage(s);
         client.displayChooseCardMenu();
@@ -93,7 +92,7 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
-    public void visit(AviablePlayersResponse msg) {
+    public void visit(AvailablePlayersResponse msg) {
         for(String s: msg.getValues())
             client.displayMessage(s);
         client.displayChooseStartingPlayerMenu();
@@ -112,9 +111,34 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
-    public void visit(AviablePlaceWorkerPointResponse msg) {
+    public void visit(AvailablePlaceWorkerPointResponse msg) {
         client.displayMessage(msg.getPoints().toString());
         client.displayPlaceWorkerMenu();
+    }
+
+    @Override
+    public void visit(BoardUpdateNotification msg) {
+        client.displayBoard(msg.getBlocks(),msg.getPositionworker(),msg.getColours());
+    }
+
+    @Override
+    public void visit(AvailableMovePointResponse msg) {
+        if(msg.getPoints() != null) {
+            client.displayMessage(msg.getPoints().toString());
+        }
+        else {
+            client.displayMessage("Nessuna azione possibile");
+            client.displaySelectWorker();
+        }
+    }
+
+    @Override
+    public void visit(SelectWorkerResponse msg) {
+        client.displayMessage(msg.getMessage());
+        if(!msg.isSet())
+            client.displaySelectWorker();
+        else
+            client.displayMoveMenu();
     }
 
     @Override

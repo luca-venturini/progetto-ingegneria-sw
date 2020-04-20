@@ -2,6 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +74,15 @@ public class Board {
             return null;
     }
 
+    public Worker findByPosition(int x, int y) {
+        Point point= new Point(x,y);
+        for (Worker w : workers) {
+            if (w.getPosition().equals(point))
+                return w;
+        }
+        return null;
+    }
+
     public boolean isValidPoint(Point point){
         return point.getX() >= 0 && point.getX() <= 4 && point.getY() >= 0 && point.getY() <= 4;
     }
@@ -85,5 +95,11 @@ public class Board {
         return point.getX() == 0 || point.getX() == 4 || point.getY() == 0 || point.getY() == 4;
     }
 
+    public Block getBlock(int x, int y){
+        return board[x][y];
+    }
 
+    public List<Worker> getWorkers() {
+        return workers;
+    }
 }

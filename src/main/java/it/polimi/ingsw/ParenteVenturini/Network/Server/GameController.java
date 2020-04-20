@@ -6,7 +6,6 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Player;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
-import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
@@ -20,6 +19,7 @@ public class GameController {
     private Match match;
     private CardSetupHandler cardSetupHandler;
     private PlaceWorkerSetupHandler placeWorkerSetupHandler;
+    private MoveHandler moveHandler;
     private Deck deck = new Deck();
 
     public GameController(int numOfPlayers){
@@ -141,7 +141,7 @@ public class GameController {
         for(Card c: cardSetupHandler.getPossibleCards()){
             cardsName.add(c.getName());
         }
-        notifySingleClient(clientController, new AviableCardResponse(cardsName));
+        notifySingleClient(clientController, new AvailableCardResponse(cardsName));
     }
 
 
@@ -175,7 +175,7 @@ public class GameController {
             playersNickname = null;
             e.printStackTrace();
         }
-        notifySingleClient(clientController, new AviablePlayersResponse(playersNickname));
+        notifySingleClient(clientController, new AvailablePlayersResponse(playersNickname));
     }
 
 
@@ -183,8 +183,11 @@ public class GameController {
         Point point = new Point(position.getX(), position.getY());
         try {
             placeWorkerSetupHandler.setWorkerPosition(player, position);
-            if(placeWorkerSetupHandler.hasFinished())
+            if(placeWorkerSetupHandler.hasFinished()){
                 notifyAllClients(new SimplyNotification("Operazioni completate, fine fase di setUp"));
+                notifyAllClients(new SimplyNotification("Inizio della fase di gioco"));
+                sendBoard();
+            }
             else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))
                 notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", position ));
             else
@@ -196,11 +199,37 @@ public class GameController {
 
     public void sendPossibleWorkersSetupPoint(ClientController clientController){
         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
-        notifySingleClient(clientController, new AviablePlaceWorkerPointResponse(points));
+        notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points));
     }
 
+    public void sendBoard(){
+        match.setTurn();
+        notifyAllClients(new BoardUpdateNotification(match.getBoard()) );
+    }
 
+    public void selectWorker(ClientController clientController, String nickname, int index){
+        if(match.getTurn().getCurrentPlayer().equals(nickname)){
+            match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
+            notifySingleClient(clientController,new SelectWorkerResponse("Worker selezionato",true));
+        }
+        else notifySingleClient(clientController,new SelectWorkerResponse("Non è il tuo turno",false));
+    }
 
+    /*public void doMove(ClientController clientController, String typeOfMove,String nickname){
+        switch (typeOfMove){
+            case "Movement":
+                moveHandler.getMovementsActions
+            case "Construction":
+
+            case "EndMove":
+                moveHandler.doEndMove(nickname);
+        }
+    }
+
+    public  void doMove(ClientController clientController,Point x, String nickname){
+
+    }
+*/
     public int getNumOfPlayers(){
         return clients.size();
     }

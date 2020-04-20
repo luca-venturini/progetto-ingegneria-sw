@@ -2,7 +2,9 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 
-public class Worker {
+import java.io.Serializable;
+
+public class Worker implements Serializable {
 
     private Point position;
     private Point lastPosition;

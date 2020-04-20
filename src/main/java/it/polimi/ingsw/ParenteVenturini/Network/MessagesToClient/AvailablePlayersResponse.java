@@ -5,10 +5,10 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 
 import java.util.List;
 
-public class AviablePlayersResponse implements MessageToClient {
+public class AvailablePlayersResponse implements MessageToClient {
     private List<String> players;
 
-    public AviablePlayersResponse(List<String> cards) {
+    public AvailablePlayersResponse(List<String> cards) {
         this.players = cards;
     }
 

@@ -10,10 +10,11 @@ public class Turn {
     private Worker currentWorker;
     private int numTurn;
 
-    public Turn(List<Player> players) {
+    public Turn(List<Player> players, OpponentEffectContainer op) {
         this.players = players;
         this.currentPlayer = players.get(0);
         this.numTurn=1;
+        this.opponentEffectContainer=op;
     }
 
     public void setNextPlayer() {
@@ -43,5 +44,9 @@ public class Turn {
 
     public Worker getCurrentWorker() {
         return currentWorker;
+    }
+
+    public int getNumTurn() {
+        return numTurn;
     }
 }

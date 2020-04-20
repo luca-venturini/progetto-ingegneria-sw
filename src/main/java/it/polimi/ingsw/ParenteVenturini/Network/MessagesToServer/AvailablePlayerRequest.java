@@ -1,14 +1,16 @@
 package it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer;
 
+import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;
+import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient;
 import it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;
 
 import java.util.List;
 
-public class AviableCardRequest implements MessageToServer {
+public class AvailablePlayerRequest implements MessageToServer {
 
     private String nickname;
 
-    public AviableCardRequest(String nickname) {
+    public AvailablePlayerRequest(String nickname) {
         this.nickname = nickname;
     }
 

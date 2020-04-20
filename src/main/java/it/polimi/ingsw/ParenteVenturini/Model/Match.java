@@ -33,7 +33,7 @@ public class Match {
     }
 
     public void setTurn() {
-        this.turn = new Turn(players);
+        this.turn = new Turn(players,opponentEffectContainer);
     }
 
     public void addPlayer(String nickname) throws NoMorePlayersException, AlreadyPresentPlayerException {

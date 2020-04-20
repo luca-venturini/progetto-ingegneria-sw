@@ -60,7 +60,7 @@ public class ClientController implements ServerMessageHandler {
     }
 
     @Override
-    public void visit(AviableCardRequest msg) {
+    public void visit(AvailableCardRequest msg) {
         gameController.sendPossibleCards(this);
     }
 
@@ -71,7 +71,7 @@ public class ClientController implements ServerMessageHandler {
     }
 
     @Override
-    public void visit(AviablePlayerRequest msg) {
+    public void visit(AvailablePlayerRequest msg) {
         gameController.sendPossiblePlayers(this);
     }
 
@@ -87,8 +87,28 @@ public class ClientController implements ServerMessageHandler {
     }
 
     @Override
-    public void visit(AviablePlaceWorkerPointRequest msg) {
+    public void visit(AvailablePlaceWorkerPointRequest msg) {
         gameController.sendPossibleWorkersSetupPoint(this);
+    }
+
+    @Override
+    public void visit(MovementRequest msg) {
+        gameController.doMove(this,"Movement",msg.getNickname());
+    }
+
+    @Override
+    public void visit(ConstructionRequest msg) {
+        gameController.doMove(this,"Construction",msg.getNickname());
+    }
+
+    @Override
+    public void visit(EndMoveRequest msg) {
+        gameController.doMove(this,"EndMove",msg.getNickname());
+    }
+
+    @Override
+    public void visit(SelectWorkerRequest msg) {
+        gameController.selectWorker(this,msg.getNickname(),msg.getIndex());
     }
 
 

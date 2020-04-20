@@ -39,6 +39,10 @@ public class Point implements Serializable {
         return (this.x == p.getX() && this.y == p.getY());
     }
 
+    public boolean equals(int x, int y){
+        return (this.x == x && this.y == y );
+    }
+
     public String toString(){
         return "("+x+", "+y+")";
     }

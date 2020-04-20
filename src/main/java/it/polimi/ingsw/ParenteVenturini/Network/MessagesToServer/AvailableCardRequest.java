@@ -4,15 +4,12 @@ import it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;
 
 import java.util.List;
 
-public class ConstructionRequest implements MessageToServer {
+public class AvailableCardRequest implements MessageToServer {
+
     private String nickname;
 
-    public ConstructionRequest(String nickname) {
+    public AvailableCardRequest(String nickname) {
         this.nickname = nickname;
-    }
-
-    public String getNickname() {
-        return nickname;
     }
 
     @Override
@@ -27,6 +24,6 @@ public class ConstructionRequest implements MessageToServer {
 
     @Override
     public void accept(ServerMessageHandler msgHandler) {
-
+        msgHandler.visit(this);
     }
 }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.PlaceWorkerResponse;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
 import java.util.ArrayList;
@@ -14,10 +14,12 @@ public class CLI implements ViewInterface {
     private ClientSideController clientSideController;
     private String nickname;
     private List<LightWorker> lightWorkers;
+    private ColourPrint colourPrint;
 
     public CLI(ClientSideController clientInMessageHandler) {
         this.clientSideController = clientInMessageHandler;
         this.lightWorkers = new ArrayList<>();
+        this.colourPrint = new ColourPrint();
     }
 
     @Override
@@ -30,7 +32,7 @@ public class CLI implements ViewInterface {
             MessageToServer message = new AccessGameMessageRequest(name, numOfPlayers);
             clientSideController.sendMessage(message);
             System.out.println("Message inviato");
-            System.out.println("Il tuo nickanme è: "+name);
+            System.out.println("Il tuo nickname è: "+name);
             nickname = name;
             return name;
         }
@@ -74,6 +76,11 @@ public class CLI implements ViewInterface {
         System.out.println(s);
     }
 
+    private void print(String s){
+        System.out.print(s);
+    }
+
+
     @Override
     public void displayMenu(){
         while(true) {
@@ -96,7 +103,7 @@ public class CLI implements ViewInterface {
             String number = stdIn.nextLine();
             choice = Integer.parseInt(number);
             if (choice == 1) {
-                MessageToServer message = new AviableCardRequest(nickname);
+                MessageToServer message = new AvailableCardRequest(nickname);
                 clientSideController.sendMessage(message);
             } else if (choice == 2) {
                 printString("card name:");
@@ -105,6 +112,29 @@ public class CLI implements ViewInterface {
                 clientSideController.sendMessage(message);
             }
         }while(choice<1 || choice>2);
+    }
+
+    @Override
+    public void displayBoard(Block blocks[][], List<Point>workers,List<String>colours) {
+        printString("     0     1     2     3     4   ");
+        //printString("1 | " + "  " + "| " + "  " + "| " + "  " + "|     ""|     ""|");
+        for(int i=0;i<5;i++) {
+            printString("  -------------------------------");
+            print(i+" | ");
+            for (int j = 0; j < 5; j++) {
+                if(workers.get(j).equals(i,j) ) {
+                    int k=Integer.parseInt(colours.get(j));
+                    colourPrint.print(k,"&");
+                }
+                else if(blocks[i][j].isDome()){
+                    print("O");
+                }
+                print("  ");
+                print(" "+blocks[i][j].getLevel()+"| ");
+            }
+            print("\n");
+        }
+        printString("  -------------------------------");
     }
 
     @Override
@@ -123,7 +153,7 @@ public class CLI implements ViewInterface {
             String number = stdIn.nextLine();
             choice = Integer.parseInt(number);
             if (choice == 1) {
-                MessageToServer message = new AviablePlayerRequest(nickname);
+                MessageToServer message = new AvailablePlayerRequest(nickname);
                 clientSideController.sendMessage(message);
             } else if (choice == 2) {
                 printString("player name:");
@@ -145,10 +175,9 @@ public class CLI implements ViewInterface {
             String number = stdIn.nextLine();
             choice = Integer.parseInt(number);
             if (choice == 1) {
-                MessageToServer message = new AviablePlaceWorkerPointRequest();
+                MessageToServer message = new AvailablePlaceWorkerPointRequest();
                 clientSideController.sendMessage(message);
-            }
-            else if (choice == 2) {
+            } else if (choice == 2) {
                 printString("x :");
                 String xPos = stdIn.nextLine();
                 printString("y :");
@@ -157,27 +186,56 @@ public class CLI implements ViewInterface {
                 MessageToServer message = new PlaceWorkerRequest(point, nickname);
                 clientSideController.sendMessage(message);
             }
-            else if( choice == 3) {
-                System.exit(0);
-            }
-
-        }while(choice<1 || choice>3);
-    }
-
-    @Override
-    public void addLightWorker(LightWorker lightWorker) {
-        lightWorkers.add(lightWorker);
+        }while(choice<1 || choice>2);
     }
 
     @Override
     public void addLightWorker(Point point) {
-        /*
-        if(point == null)
-            System.out.println("nullo");
-        System.out.println(point);
-
-         */
         lightWorkers.add(new LightWorker(point));
+    }
+
+    @Override
+    public void displayMoveMenu() {
+        int choice;
+         do{
+            printString("--Menu Worker's move--");
+            printString("Scelta: ");
+            printString("1- Muovi");
+            printString("2- Costruisci");
+            printString("3- Finisci turno");
+            printString("Scelta: ");
+            String number= stdIn.nextLine();
+            choice = Integer.parseInt(number);
+            if (choice == 1) {
+                MessageToServer message = new MovementRequest(nickname);
+                clientSideController.sendMessage(message);
+            } else if (choice == 2) {
+                MessageToServer message = new ConstructionRequest(nickname);
+                clientSideController.sendMessage(message);
+            }
+            else if(choice == 3){
+                MessageToServer message = new EndMoveRequest(nickname);
+                clientSideController.sendMessage(message);
+            }
+        }while(choice<1 || choice>3);
+    }
+
+    @Override
+    public void displaySelectWorker() {
+        {
+            int choice;
+            do {
+                printString("Seleziona il worker (1 o 2): ");
+                printString("1- Worker 1");
+                printString("2- Worker 2");
+                printString("Choice: ");
+                String number = stdIn.nextLine();
+                choice = Integer.parseInt(number);
+                MessageToServer message = new SelectWorkerRequest(nickname,number);
+                clientSideController.sendMessage(message);
+            }while(choice<1 || choice>2);
+        }
+
     }
 
 }

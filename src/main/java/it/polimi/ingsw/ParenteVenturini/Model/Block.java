@@ -2,7 +2,9 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
 
-public class Block {
+import java.io.Serializable;
+
+public class Block implements Serializable {
 
     private int level;
     private boolean dome;

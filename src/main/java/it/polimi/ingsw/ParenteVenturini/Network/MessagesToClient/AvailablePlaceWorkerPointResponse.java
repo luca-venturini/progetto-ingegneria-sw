@@ -6,11 +6,11 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 
 import java.util.List;
 
-public class AviablePlaceWorkerPointResponse implements MessageToClient {
+public class AvailablePlaceWorkerPointResponse implements MessageToClient {
 
     private List<Point> points;
 
-    public AviablePlaceWorkerPointResponse(List<Point> points) {
+    public AvailablePlaceWorkerPointResponse(List<Point> points) {
         this.points = points;
     }
 

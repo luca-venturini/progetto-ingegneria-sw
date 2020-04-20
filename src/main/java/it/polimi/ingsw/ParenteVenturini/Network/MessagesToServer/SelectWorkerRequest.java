@@ -4,7 +4,23 @@ import it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;
 
 import java.util.List;
 
-public class AviablePlaceWorkerPointRequest implements MessageToServer {
+public class SelectWorkerRequest implements MessageToServer {
+    private String nickname;
+    private String index;
+
+    public SelectWorkerRequest(String nickname, String index) {
+        this.nickname = nickname;
+        this.index = index;
+    }
+
+    public int getIndex(){
+        return Integer.parseInt(index);
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
     @Override
     public MessageType getMessageType() {
         return null;
@@ -17,6 +33,6 @@ public class AviablePlaceWorkerPointRequest implements MessageToServer {
 
     @Override
     public void accept(ServerMessageHandler msgHandler) {
-        msgHandler.visit(this);
+
     }
 }

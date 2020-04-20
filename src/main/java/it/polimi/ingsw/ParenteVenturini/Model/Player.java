@@ -89,10 +89,10 @@ public class Player {
         return card.getOpponentEffect();
     }
 
-    public void walk(Point p, int n) throws OpponentEffectException {
+    public void walk(Point p) throws OpponentEffectException {
         if( this.move== null )
             this.move = callMove();
-        Worker myWorker = selectWorker(n);
+        Worker myWorker = match.getTurn().getCurrentWorker();
         if(match.getOpponentEffectContainer().checkMovementPoint(p, myWorker,match.getBoard())){
             try {
                 move.walk(p, match.getBoard(), myWorker);
@@ -111,10 +111,10 @@ public class Player {
             throw new OpponentEffectException();
     }
 
-    public void build(Point p, int n) throws OpponentEffectException {
+    public void build(Point p) throws OpponentEffectException {
         if( this.move== null )
             this.move = callMove();
-        Worker myWorker = selectWorker(n);
+        Worker myWorker = match.getTurn().getCurrentWorker();
         if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard()) ){
             try {
                 move.build(p, match.getBoard(), myWorker);
@@ -133,10 +133,10 @@ public class Player {
             throw new OpponentEffectException();
     }
 
-    public void specialBuild(Point p, int n) throws OpponentEffectException {
+    public void specialBuild(Point p) throws OpponentEffectException {
         if( this.move== null )
             this.move = callMove();
-        Worker myWorker = selectWorker(n);
+        Worker myWorker = match.getTurn().getCurrentWorker();
         if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard())){
             try {
                 move.specialBuild(p, match.getBoard(), myWorker);
@@ -155,19 +155,19 @@ public class Player {
             throw new OpponentEffectException();
     }
 
-    public List<Point> getPossibleMovements(int n) {
+    public List<Point> getPossibleMovements() {
         if( this.move== null )
             this.move = callMove();
-        Worker myWorker =selectWorker(n);
+        Worker myWorker = match.getTurn().getCurrentWorker();
         List<Point> temp = move.possibleMovements(match.getBoard(), myWorker);
         temp = match.getOpponentEffectContainer().removeMovementPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());
         return temp;
     }
 
-    public List<Point> getPossibleBuildings(int n) {
+    public List<Point> getPossibleBuildings() {
         if( this.move== null )
             this.move = callMove();
-        Worker myWorker = selectWorker(n);
+        Worker myWorker = match.getTurn().getCurrentWorker();
         List<Point> temp = move.possibleBuildings(match.getBoard(), myWorker);
         temp = match.getOpponentEffectContainer().removeConstructionPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());
         return temp;

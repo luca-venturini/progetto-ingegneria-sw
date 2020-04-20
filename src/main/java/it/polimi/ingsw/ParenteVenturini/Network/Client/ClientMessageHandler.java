@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
+import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SelectWorkerRequest;
 
 public interface ClientMessageHandler {
     void visit(ErrorLoginNotification msg);
@@ -10,11 +11,14 @@ public interface ClientMessageHandler {
     void visit(StartGameNotification msg);
     void visit(ChooseCardNotification msg);
     void visit(SetPlayerCardResponse msg);
-    void visit(AviableCardResponse msg);
+    void visit(AvailableCardResponse msg);
     void visit(ChooseStartingPlayerNotification msg);
-    void visit(AviablePlayersResponse msg);
+    void visit(AvailablePlayersResponse msg);
     void visit(SetStartingPlayerResponse msg);
     void visit(PlaceWorkerResponse msg);
     void visit(PlaceWorkersNotification msg);
-    void visit(AviablePlaceWorkerPointResponse msg);
+    void visit(AvailablePlaceWorkerPointResponse msg);
+    void visit(BoardUpdateNotification msg);
+    void visit(AvailableMovePointResponse msg);
+    void visit(SelectWorkerResponse msg);
 }
