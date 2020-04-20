@@ -12,5 +12,6 @@ public interface ViewInterface {
     void displayMessage(String s);
     void displayChooseStartingPlayerMenu();
     void displayPlaceWorkerMenu();
+    void addLightWorker(LightWorker lightWorker);
     void addLightWorker(Point point);
 }

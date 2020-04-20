@@ -28,12 +28,13 @@ public class AthenaEffect implements OpponentEffect {
     }
 
     @Override
-    public boolean isMovementValid(Point nextPoint, Point actualPoint, Board board) {
-        return board.blockLevel(actualPoint) >= board.blockLevel(nextPoint);
+    public boolean isMovementValid(Point nextPoint, Point beforePoint, Board board) {
+        //before: return board.blockLevel(actualPoint) >= board.blockLevel(nextPoint);
+        return board.blockLevel(beforePoint) < board.blockLevel(nextPoint);
     }
 
     @Override
     public boolean isConstructionValid(Point nextPoint, Point actualPoint, Board board) {
-        return true;
+        return false; //it was true
     }
 }

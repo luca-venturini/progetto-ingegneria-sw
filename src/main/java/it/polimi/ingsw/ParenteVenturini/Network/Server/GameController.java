@@ -186,11 +186,11 @@ public class GameController {
             if(placeWorkerSetupHandler.hasFinished())
                 notifyAllClients(new SimplyNotification("Operazioni completate, fine fase di setUp"));
             else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))
-                notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", point ));
+                notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", position ));
             else
-                notifySingleClient(player, new PlaceWorkerResponse( true, true, "Secondo worker posizionato, attendi...", point ));
+                notifySingleClient(player, new PlaceWorkerResponse( true, true, "Secondo worker posizionato, attendi...", position ));
         } catch (IllegalPlaceWorkerException e) {
-            notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",point ));
+            notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",position ));
         }
     }
 

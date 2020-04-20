@@ -97,7 +97,7 @@ public class Player {
             try {
                 move.walk(p, match.getBoard(), myWorker);
                 OpponentEffect temp= card.getOpponentEffect();
-                if(temp!= null && temp.isMovementValid(p, myWorker.getPosition(), match.getBoard())){
+                if(temp!= null && temp.isMovementValid(p, myWorker.getLastPosition(), match.getBoard())){  // it was myWorker.getPosition() but it's wrong
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
                 if(move.getHasEnded()){
@@ -118,7 +118,7 @@ public class Player {
         if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard()) ){
             try {
                 move.build(p, match.getBoard(), myWorker);
-                OpponentEffect temp= card.getOpponentEffect();
+                OpponentEffect temp = card.getOpponentEffect();
                 if(temp!= null && temp.isConstructionValid(p, myWorker.getPosition(), match.getBoard())){
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }

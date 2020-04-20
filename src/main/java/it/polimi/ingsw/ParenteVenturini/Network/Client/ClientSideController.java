@@ -121,7 +121,9 @@ public class ClientSideController implements ClientMessageHandler {
     public void visit(PlaceWorkerResponse msg) {
         System.out.println(msg.getSettedPoint().toString());
         if(msg.isSet()) {
-            client.addLightWorker(new Point(msg.getSettedPoint().getX(), msg.getSettedPoint().getY()) );
+            //client.addLightWorker(new LightWorker(msg.getSettedPoint() ));
+            client.addLightWorker(msg.getSettedPoint());
+            System.out.println("fatto");
         }
 
         client.displayMessage(msg.getMessage());

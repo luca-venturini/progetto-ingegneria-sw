@@ -7,7 +7,7 @@ public class Deck {
     private List<Card> cards;
 
     public Deck(){
-        cards= new ArrayList<Card>();
+        cards = new ArrayList<Card>();
 
         cards.add( new ApolloCard() );
         cards.add( new ArtemisCard() );
@@ -18,6 +18,9 @@ public class Deck {
         cards.add( new MinotaurCard() );
         cards.add( new PanCard() );
         cards.add( new PrometheusCard() );
+        cards.add(new HestiaCard() );
+        cards.add(new TritonCard() );
+        cards.add(new ZeusCard() );
     }
 
     public Card selectByName(String name){

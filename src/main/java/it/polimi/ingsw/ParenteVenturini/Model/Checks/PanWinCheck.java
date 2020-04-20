@@ -10,7 +10,7 @@ public class PanWinCheck implements WinCheck {
     @Override
     public boolean hasWon(Board board, List<Worker> workers) {
         for(Worker w: workers) {
-            if (board.blockLevel(w.getPosition()) == 3)
+            if (board.blockLevel(w.getPosition()) == 3 && board.blockLevel(w.getLastPosition()) != 3)
                 return true;
             if( board.blockLevel(w.getLastPosition()) -  board.blockLevel(w.getPosition()) >=2 )
                 return true;

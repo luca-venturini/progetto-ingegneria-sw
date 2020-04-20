@@ -147,7 +147,8 @@ public class CLI implements ViewInterface {
             if (choice == 1) {
                 MessageToServer message = new AviablePlaceWorkerPointRequest();
                 clientSideController.sendMessage(message);
-            } else if (choice == 2) {
+            }
+            else if (choice == 2) {
                 printString("x :");
                 String xPos = stdIn.nextLine();
                 printString("y :");
@@ -156,13 +157,27 @@ public class CLI implements ViewInterface {
                 MessageToServer message = new PlaceWorkerRequest(point, nickname);
                 clientSideController.sendMessage(message);
             }
-        }while(choice<1 || choice>2);
+            else if( choice == 3) {
+                System.exit(0);
+            }
+
+        }while(choice<1 || choice>3);
+    }
+
+    @Override
+    public void addLightWorker(LightWorker lightWorker) {
+        lightWorkers.add(lightWorker);
     }
 
     @Override
     public void addLightWorker(Point point) {
+        /*
+        if(point == null)
+            System.out.println("nullo");
+        System.out.println(point);
+
+         */
         lightWorkers.add(new LightWorker(point));
     }
-
 
 }

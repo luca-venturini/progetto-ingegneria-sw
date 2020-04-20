@@ -37,7 +37,7 @@ public class ClientDiProva {
         try {
             System.out.println("test");
             c.startClient();
-        } catch (IOException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
