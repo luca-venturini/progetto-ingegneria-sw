@@ -118,7 +118,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(BoardUpdateNotification msg) {
-        client.displayBoard(msg.getBlocks(),msg.getPositionworker(),msg.getColours());
+        client.displayBoard(msg.getBlocks(),msg.getWorkerpositions(),msg.getColours());
     }
 
     @Override
@@ -150,6 +150,17 @@ public class ClientSideController implements ClientMessageHandler {
             client.displayMessage("Il tuo turno è finito. Attendi...");
             client.displaySelectWorker();
         }
+    }
+
+    @Override
+    public void visit(YourTurnNotification msg) {
+        client.displayMessage("E' il tuo turno");
+        client.displaySelectWorker();
+    }
+
+    @Override
+    public void visit(WinNotification msg) {
+
     }
 
     @Override

@@ -18,4 +18,5 @@ public interface ViewInterface {
     void displayChooseStartingPlayerMenu();
     void displayPlaceWorkerMenu();
     void addLightWorker(Point point);
+    void displaySelectPoint();
 }

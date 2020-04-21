@@ -1,11 +1,9 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Server;
 
+import it.polimi.ingsw.ParenteVenturini.Model.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
-import it.polimi.ingsw.ParenteVenturini.Model.Match;
-import it.polimi.ingsw.ParenteVenturini.Model.Player;
-import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
@@ -187,12 +185,14 @@ public class GameController {
                 notifyAllClients(new SimplyNotification("Operazioni completate, fine fase di setUp"));
                 notifyAllClients(new SimplyNotification("Inizio della fase di gioco"));
                 sendBoard();
+                match.setTurn();
+                notifyYourTurn();
             }
             else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))
                 notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", position ));
             else
                 notifySingleClient(player, new PlaceWorkerResponse( true, true, "Secondo worker posizionato, attendi...", position ));
-        } catch (IllegalPlaceWorkerException e) {
+        } catch (IllegalPlaceWorkerException | IllegalBlockUpdateException e) {
             notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",position ));
         }
     }
@@ -202,14 +202,32 @@ public class GameController {
         notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points));
     }
 
-    public void sendBoard(){
-        match.setTurn();
-        notifyAllClients(new BoardUpdateNotification(match.getBoard()) );
+    public void sendBoard() throws IllegalBlockUpdateException {
+        Block[][] blocks= new Block[5][5];
+        List<Point> positionworker= new ArrayList<>();
+        List<String> colours= new ArrayList<>();
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                blocks[i][j]=match.getBoard().getBlock(i,j);
+            }
+        }
+        List<Worker> workers=match.getBoard().getWorkers();
+        for(Worker w: workers) {
+            positionworker.add(w.getPosition());
+            colours.add(String.valueOf(w.getColour()));
+        }
+        notifyAllClients(new BoardUpdateNotification(blocks,positionworker,colours) );
+    }
+
+    public void notifyYourTurn(){
+        notifyAllClients(new SimplyNotification("E' il turno di "+match.getTurn().getCurrentPlayer().getNickname()));
+        notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification());
     }
 
     public void selectWorker(ClientController clientController, String nickname, int index){
         if(match.getTurn().getCurrentPlayer().equals(nickname)){
             match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
+            moveHandler= new MoveHandler(this.match);
             notifySingleClient(clientController,new SelectWorkerResponse("Worker selezionato",true));
         }
         else notifySingleClient(clientController,new SelectWorkerResponse("Non è il tuo turno",false));
@@ -218,13 +236,22 @@ public class GameController {
     public void doMove(ClientController clientController, String typeOfMove,String nickname){
         switch (typeOfMove){
             case "Movement":
-                moveHandler.getMovementsActions(nickname);
+                try {
+                    moveHandler.getMovementsActions(nickname);
+                } catch (NotYourTurnException e) {
+                    e.printStackTrace();
+                }
             case "Construction":
-                moveHandler.getConstructionActions(nickname);
+                try {
+                    moveHandler.getConstructionActions(nickname);
+                } catch (NotYourTurnException e) {
+                    e.printStackTrace();
+                }
             case "EndMove":
                 try {
                     moveHandler.doEndMove(nickname);
                     notifySingleClient(clientController,new EndMoveResponse("Turno terminato",true));
+                    notifyYourTurn();
                 } catch (NotYourTurnException e) {
                     notifySingleClient(clientController,new EndMoveResponse("Non è il tuo turno",false));
                 } catch (NotPossibleEndMoveException e) {
@@ -233,8 +260,35 @@ public class GameController {
         }
     }
 
-    public  void doMove(ClientController clientController,Point x, String nickname){
-
+    public  void doMove(ClientController clientController,Point x, String nickname) {
+        try {
+            try {
+                moveHandler.doAction(nickname,x);
+                if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
+                    notifyAllClients(new WinNotification());
+                }
+            } catch (OpponentEffectException e) {
+                notifySingleClient(clientController,new ActionPointResponse("Mossa non consentita da carta avversaria",false));
+            } catch (AlreadyBuiltException e) {
+                notifySingleClient(clientController,new ActionPointResponse("Hai già costruito",false));
+            } catch (IllegalBuildingException e) {
+                notifySingleClient(clientController,new ActionPointResponse("Costruzione non valida",false));
+            } catch (IllegalMovementException e) {
+                notifySingleClient(clientController,new ActionPointResponse("Movimento non valido",false));
+            } catch (NotPossibleEndMoveException e) {
+                e.printStackTrace();
+            } catch (AlreadyWalkedException e) {
+                notifySingleClient(clientController,new ActionPointResponse("Hai già mosso",false));
+            } catch (endedMoveException e) {
+                notifySingleClient(clientController,new ActionPointResponse("Hai terminato già la tua mossa",false));
+            } catch (OutOfOrderMoveException e) {
+                notifySingleClient(clientController,new ActionPointResponse("Devi prima muovere",false));
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
+        } catch (NotYourTurnException e) {
+            notifySingleClient(clientController,new ActionPointResponse("Non è il tuo turno",false));
+        }
     }
 
     public int getNumOfPlayers(){

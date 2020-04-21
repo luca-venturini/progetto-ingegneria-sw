@@ -1,0 +1,1305 @@
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ClientMessageHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.Client;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;\r\n\r\npublic interface ClientMessageHandler {\r\n    void visit(ErrorLoginNotification msg);\r\n    void visit(SetUpNotification msg);\r\n    void visit(SelectCardNotification msg);\r\n    void visit(SimplyNotification msg);\r\n    void visit(StartGameNotification msg);\r\n    void visit(ChooseCardNotification msg);\r\n    void visit(SetPlayerCardResponse msg);\r\n    void visit(AviableCardResponse msg);\r\n    void visit(ChooseStartingPlayerNotification msg);\r\n    void visit(AviablePlayersResponse msg);\r\n    void visit(SetStartingPlayerResponse msg);\r\n    void visit(PlaceWorkerResponse msg);\r\n    void visit(PlaceWorkersNotification msg);\r\n    void visit(AviablePlaceWorkerPointResponse msg);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ClientMessageHandler.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ClientMessageHandler.java	(date 1587317573932)
+@@ -10,11 +10,12 @@
+     void visit(StartGameNotification msg);
+     void visit(ChooseCardNotification msg);
+     void visit(SetPlayerCardResponse msg);
+-    void visit(AviableCardResponse msg);
++    void visit(AvailableCardResponse msg);
+     void visit(ChooseStartingPlayerNotification msg);
+-    void visit(AviablePlayersResponse msg);
++    void visit(AvailablePlayersResponse msg);
+     void visit(SetStartingPlayerResponse msg);
+     void visit(PlaceWorkerResponse msg);
+     void visit(PlaceWorkersNotification msg);
+-    void visit(AviablePlaceWorkerPointResponse msg);
++    void visit(AvailablePlaceWorkerPointResponse msg);
++    void visit(BoardUpdateNotification msg);
+ }
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ViewInterface.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.Client;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\n\r\nimport java.util.List;\r\n\r\npublic interface ViewInterface {\r\n    String login();\r\n    void chooseCards(List<String> cardsName, int numberOfCardsRequired);\r\n    void displayMenu();\r\n    void displayChooseCardMenu();\r\n    void displayMessage(String s);\r\n    void displayChooseStartingPlayerMenu();\r\n    void displayPlaceWorkerMenu();\r\n    void addLightWorker(Point point);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ViewInterface.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ViewInterface.java	(date 1587318433206)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Network.Client;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Board;
+ import it.polimi.ingsw.ParenteVenturini.Model.Point;
+ 
+ import java.util.List;
+@@ -7,8 +8,10 @@
+ public interface ViewInterface {
+     String login();
+     void chooseCards(List<String> cardsName, int numberOfCardsRequired);
+-    void displayMenu();
+     void displayChooseCardMenu();
++    void displayBoard(Board board);
++    void displayMenu();
++    void displayMoveMenu();
+     void displayMessage(String s);
+     void displayChooseStartingPlayerMenu();
+     void displayPlaceWorkerMenu();
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Board.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class Board {\r\n\r\n    private Block[][] board;\r\n    private List<Worker> workers;\r\n\r\n    public Board() {\r\n        board = new Block[5][5];\r\n        workers = new ArrayList<Worker>();\r\n\r\n        for(int i = 0; i<5; i++){\r\n            for (int j = 0; j<5; j++){\r\n                board[i][j] = new Block();\r\n            }\r\n        }\r\n    }\r\n\r\n    public void setWorker(Worker w) {\r\n        workers.add(w);\r\n    }\r\n\r\n    public boolean isOccupied(Point point) {\r\n        for (Worker w : workers) {\r\n            if (w.getPosition().equals(point))\r\n                return true;\r\n        }\r\n        return false;\r\n    }\r\n\r\n    public boolean isOccupied(int x, int y) {\r\n        Point pointTemp = new Point(x, y);\r\n        for (Worker w : workers) {\r\n            if (w.getPosition().equals(pointTemp))\r\n                return true;\r\n            }\r\n        return false;\r\n    }\r\n\r\n    public boolean isThereDome(Point point) {\r\n        return board[point.getX()][point.getY()].isDome();\r\n    }\r\n\r\n    public boolean isThereDome(int x, int y) {\r\n        return board[x][y].isDome();\r\n    }\r\n\r\n    public int blockLevel(Point point) {\r\n        return board[point.getX()][point.getY()].getLevel();\r\n    }\r\n\r\n    public int blockLevel(int x, int y) {\r\n            return board[x][y].getLevel();\r\n    }\r\n\r\n    public void setBlockLevel(Point point, int level) throws IllegalBlockUpdateException {\r\n            board[point.getX()][point.getY()].updateLevel(level);\r\n    }\r\n    public void setDome(Point point,boolean x) {\r\n            board[point.getX()][point.getY()].setDome(x);\r\n    }\r\n\r\n    public Worker findByPosition(Point point) {\r\n        for (Worker w : workers) {\r\n            if (w.getPosition().equals(point))\r\n                return w;\r\n            }\r\n            return null;\r\n    }\r\n\r\n    public boolean isValidPoint(Point point){\r\n        return point.getX() >= 0 && point.getX() <= 4 && point.getY() >= 0 && point.getY() <= 4;\r\n    }\r\n\r\n    public boolean isValidPoint(int x, int y){\r\n        return x >= 0 && x <= 4 && y >= 0 && y <= 4;\r\n    }\r\n\r\n    public boolean isPerimeterPoint(Point point){\r\n        return point.getX() == 0 || point.getX() == 4 || point.getY() == 0 || point.getY() == 4;\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Board.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Board.java	(date 1587318734241)
+@@ -2,10 +2,11 @@
+ 
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ 
++import java.io.Serializable;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-public class Board {
++public class Board implements Serializable {
+ 
+     private Block[][] board;
+     private List<Worker> workers;
+@@ -72,6 +73,15 @@
+             }
+             return null;
+     }
++
++    public Worker findByPosition(int x, int y) {
++        Point point=new Point(x,y);
++        for (Worker w : workers) {
++            if (w.getPosition().equals(point))
++                return w;
++        }
++        return null;
++    }
+ 
+     public boolean isValidPoint(Point point){
+         return point.getX() >= 0 && point.getX() <= 4 && point.getY() >= 0 && point.getY() <= 4;
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/ClientController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.Server;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Exceptions.InvalidNicknameException;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.ErrorLoginNotification;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.SimplyNotification;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;\r\n\r\npublic class ClientController implements ServerMessageHandler {\r\n\r\n    private ClientThreadFromServer clientThread;\r\n    private GameController gameController;\r\n    private Player player;\r\n\r\n    public ClientController(ClientThreadFromServer clientThread) {\r\n        this.clientThread = clientThread;\r\n        gameController = null;\r\n    }\r\n\r\n    public void sendMessage(MessageToClient msg){\r\n        clientThread.sendMessage(msg);\r\n    }\r\n\r\n\r\n    private void insertPlayerInGame(String nickname, String numOfPlayers){\r\n        GameDispatcher gameDispatcher = GameDispatcher.getInstance();\r\n        if(Integer.parseInt(numOfPlayers) != 2 && Integer.parseInt(numOfPlayers) != 3) {\r\n            sendMessage(new ErrorLoginNotification(nickname, \"Sono possibili partite solo da 2 o 3 giocatori\"));\r\n            return;\r\n        }\r\n        try {\r\n            gameController = gameDispatcher.getGameController(nickname, Integer.parseInt(numOfPlayers));\r\n        } catch (InvalidNicknameException e) {\r\n            sendMessage(new ErrorLoginNotification(nickname, \"Nickname non disponibile\"));\r\n            return;\r\n        }\r\n        if(gameController.getNumOfPlayers() != 0)\r\n            sendMessage(new SimplyNotification(\"Partita già inizializzata, sei stato aggiunto a quella\"));\r\n        player = gameController.addPlayer(this, nickname);\r\n        gameController.startSetup();\r\n        System.out.println(\"giocatore aggiunto: \"+player.getNickname());\r\n    }\r\n\r\n\r\n    @Override\r\n    public void visit(AccessGameMessageRequest msg) {\r\n        System.out.println(\"Messaggio arrivato\");\r\n        insertPlayerInGame(msg.getNickname(), msg.getValues().get(0));\r\n    }\r\n\r\n    @Override\r\n    public void visit(StoreSelectedCardsRequest msg) {\r\n        try {\r\n            gameController.addCardsToMatch(msg.getNickname(), msg.getValues());\r\n        } catch (IllegalCardException e) {\r\n            sendMessage(new SimplyNotification(\"Questo non dovrebbe succedere...\"));\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void visit(AviableCardRequest msg) {\r\n        gameController.sendPossibleCards(this);\r\n    }\r\n\r\n    @Override\r\n    public void visit(SetPlayerCardRequest msg) {\r\n        String card = msg.getValues().get(0);\r\n        gameController.setPlayerCard(player, card);\r\n    }\r\n\r\n    @Override\r\n    public void visit(AviablePlayerRequest msg) {\r\n        gameController.sendPossiblePlayers(this);\r\n    }\r\n\r\n    @Override\r\n    public void visit(SetStartingPlayerRequest msg) {\r\n        gameController.setStartingPlayer(this.player.getNickname(), msg.getValues().get(0));\r\n    }\r\n\r\n    @Override\r\n    public void visit(PlaceWorkerRequest msg) {\r\n        if(msg.getNickname().equals(player.getNickname()))\r\n            gameController.placeWorkers(player, msg.getPoint());\r\n    }\r\n\r\n    @Override\r\n    public void visit(AviablePlaceWorkerPointRequest msg) {\r\n        gameController.sendPossibleWorkersSetupPoint(this);\r\n    }\r\n\r\n\r\n    public Player getPlayer() {\r\n        return player;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/ClientController.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/ClientController.java	(date 1587317573870)
+@@ -3,6 +3,7 @@
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
+ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.InvalidNicknameException;
++import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.BoardUpdateNotification;
+ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.ErrorLoginNotification;
+ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient;
+ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.SimplyNotification;
+@@ -60,7 +61,7 @@
+     }
+ 
+     @Override
+-    public void visit(AviableCardRequest msg) {
++    public void visit(AvailableCardRequest msg) {
+         gameController.sendPossibleCards(this);
+     }
+ 
+@@ -71,7 +72,7 @@
+     }
+ 
+     @Override
+-    public void visit(AviablePlayerRequest msg) {
++    public void visit(AvailablePlayerRequest msg) {
+         gameController.sendPossiblePlayers(this);
+     }
+ 
+@@ -87,7 +88,7 @@
+     }
+ 
+     @Override
+-    public void visit(AviablePlaceWorkerPointRequest msg) {
++    public void visit(AvailablePlaceWorkerPointRequest msg) {
+         gameController.sendPossibleWorkersSetupPoint(this);
+     }
+ 
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/PlaceWorkersNotification.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;\r\n\r\nimport java.util.List;\r\n\r\npublic class PlaceWorkersNotification implements MessageToClient {\r\n    @Override\r\n    public MessageType getMessageType() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<String> getValues() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void accept(ClientMessageHandler msgHandler) {\r\n        msgHandler.visit(this);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/PlaceWorkersNotification.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/PlaceWorkersNotification.java	(date 1587316286169)
+@@ -6,6 +6,8 @@
+ import java.util.List;
+ 
+ public class PlaceWorkersNotification implements MessageToClient {
++
++
+     @Override
+     public MessageType getMessageType() {
+         return null;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/ApolloMovementTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Actions;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport java.util.List;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass ApolloMovementTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Action tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new ApolloMovement();\r\n    }\r\n\r\n    @Test\r\n    void doAction() throws IllegalBuildingException, IllegalMovementException, IllegalBlockUpdateException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(0,0);\r\n        Point p4= new Point(3,0);\r\n        //check if worker moves on his own position\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p3,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves in a valid position\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(player.selectWorker(0).getPosition(),p1);\r\n\r\n        //check if worker moves on invalid positions\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p4,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on a position occupied by another worker\r\n        Point p5= new Point(1,0);\r\n        player.placeWorker(1,p5,instance.getBoard());\r\n        tester.doAction(p5,instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(p5,player.selectWorker(0).getPosition());\r\n        assertEquals(player.selectWorker(0).getLastPosition(),player.selectWorker(1).getPosition());\r\n        assertEquals(player.selectWorker(0).getPosition(),player.selectWorker(1).getLastPosition());\r\n\r\n        //check if worker moves on a position with dome\r\n        Point p6= new Point(0,1);\r\n        instance.getBoard().setDome(p6, true);\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on a too high position\r\n        instance.getBoard().setBlockLevel(p1,2);\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void isValid() {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(0,0);\r\n        Point p4= new Point(1,0);\r\n        instance.getBoard().setDome(p4,true);\r\n        assertTrue(tester.isValid(p1,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p3,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p4,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void getPossibleActions() throws IllegalBuildingException, IllegalMovementException {\r\n        List<Point> positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(3, positions.size());\r\n        assertTrue(positions.get(0).getX()==0 &&positions.get(0).getY()==1);\r\n        assertTrue(positions.get(1).getX()==1 &&positions.get(1).getY()==0);\r\n        assertTrue(positions.get(2).getX()==1 &&positions.get(2).getY()==1);\r\n\r\n        Point p1= new Point(1,1);\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(8, positions.size());\r\n\r\n        Point p2= new Point(1,0);\r\n        tester.doAction(p2,instance.getBoard(),player.selectWorker(0));\r\n        positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(5, positions.size());\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/ApolloMovementTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/ApolloMovementTest.java	(date 1587312739393)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Actions;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/GameController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.Server;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Worker;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerException;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class GameController {\r\n    private List<ClientController> clients = new ArrayList<>();\r\n    private Match match;\r\n    private CardSetupHandler cardSetupHandler;\r\n    private PlaceWorkerSetupHandler placeWorkerSetupHandler;\r\n    private Deck deck = new Deck();\r\n\r\n    public GameController(int numOfPlayers){\r\n        match = new Match();\r\n        try {\r\n            match.setTypeOfMatch(numOfPlayers);\r\n        } catch (InvalidTypeOfMatch invalidTypeOfMatch) {\r\n            invalidTypeOfMatch.printStackTrace();\r\n        }\r\n        System.out.println(\"Creata partita da \"+numOfPlayers+\" giocatori\");\r\n    }\r\n\r\n    public Player addPlayer(ClientController client, String nickname){\r\n\r\n        int i = 1;\r\n        String originalNickname = nickname;\r\n        while (!isValidNickname(nickname)){\r\n            nickname = originalNickname+\" (\"+i+\")\";\r\n            i++;\r\n        }\r\n        try {\r\n            match.addPlayer(nickname);\r\n            System.out.println(\"add player\");\r\n            for (Player p: match.getPlayers())\r\n                System.out.println(\"---: \"+p.getNickname());\r\n        } catch (NoMorePlayersException | AlreadyPresentPlayerException | NoPlayerException e) {\r\n            System.out.println(\"Error\");\r\n            e.printStackTrace();\r\n        }\r\n        clients.add(client);\r\n        return match.selectPlayer(nickname);\r\n    }\r\n\r\n    public boolean isValidNickname(String nickname){\r\n        return match.selectPlayer(nickname) == null;\r\n    }\r\n\r\n    public void startSetup(){\r\n        if(match.getTypeOfMatch() == clients.size()) {\r\n            notifyAllClients(new SimplyNotification( \"E' iniziata la fase di setUp, tra poco tocca a te...\"));\r\n            try {\r\n                match.setChallenger();\r\n            } catch (NoPlayerException e) {\r\n                e.printStackTrace();\r\n            }\r\n            Player challenger = match.getChallenger();\r\n            notifySingleClient(challenger, new SelectCardNotification(deck.getCardNames(), match.getNumPlayers()));\r\n        }\r\n        else\r\n            notifyAllClients(new SimplyNotification( \"Attendi altri giocatori\"));\r\n    }\r\n\r\n    public void notifyAllClients(MessageToClient msg){\r\n        for (ClientController client: clients){\r\n            client.sendMessage(msg);\r\n        }\r\n    }\r\n\r\n    public void notifySingleClient(ClientController client, MessageToClient msg){\r\n        client.sendMessage(msg);\r\n    }\r\n\r\n    public void notifySingleClient(Player player, MessageToClient msg){\r\n        for (ClientController c: clients){\r\n            if(c.getPlayer().getNickname().equals(player.getNickname())) {\r\n                c.sendMessage(msg);\r\n                break;\r\n            }\r\n        }\r\n    }\r\n\r\n    public void addCardsToMatch(String nickname, List<String> values) throws IllegalCardException {\r\n        List<Card> chosenCards = new ArrayList<>();\r\n\r\n        if(nickname.equals(match.getChallenger().getNickname())){\r\n            for (String s: values){\r\n                Card card = deck.selectByName(s);\r\n                if(!chosenCards.contains(card))\r\n                    chosenCards.add(card);\r\n                else\r\n                    throw new IllegalCardException();\r\n            }\r\n\r\n        }\r\n        if(chosenCards.size() == match.getNumPlayers()){\r\n            match.setChosenCards(chosenCards);\r\n            try {\r\n                cardSetupHandler = new CardSetupHandler(chosenCards, match.getPlayers(), match.getChallenger());\r\n            } catch (NoPlayerException e) {\r\n                e.printStackTrace();\r\n            }\r\n            notifyAllClients(new SimplyNotification( \"A turno ogni giocatore sceglie una carta, inizia \"+cardSetupHandler.getNextPlayer()));\r\n            notifyAllClients(new ChooseCardNotification());\r\n        }\r\n        else{\r\n            throw new IllegalCardException();\r\n        }\r\n    }\r\n\r\n    public void setPlayerCard(Player player, String card){\r\n        try {\r\n            cardSetupHandler.setCard(player, deck.selectByName(card));\r\n            notifySingleClient(player, new SetPlayerCardResponse( true, \"Carta aggiunta\"));\r\n            if(cardSetupHandler.getNextPlayer() != null)\r\n                notifyAllClients(new SimplyNotification(player.getNickname()+\" ha scelto la sua carta, tocca a \"+cardSetupHandler.getNextPlayer()));\r\n            else {\r\n                notifyAllClients(new SimplyNotification(\"Inizio nuova fase, attendi...\"));\r\n                notifySingleClient(match.getChallenger(), new ChooseStartingPlayerNotification());\r\n            }\r\n        } catch (NotYourTurnException e) {\r\n            notifySingleClient(player, new SetPlayerCardResponse( false, \"Non è il tuo turno\"));\r\n        } catch (IllegalCardException e) {\r\n            notifySingleClient(player, new SetPlayerCardResponse( false, \"La carta scelta non è disponibile\"));\r\n        }\r\n    }\r\n\r\n    public void sendPossibleCards(ClientController clientController){\r\n        List<String> cardsName = new ArrayList<>();\r\n        for(Card c: cardSetupHandler.getPossibleCards()){\r\n            cardsName.add(c.getName());\r\n        }\r\n        notifySingleClient(clientController, new AviableCardResponse(cardsName));\r\n    }\r\n\r\n\r\n    public void setStartingPlayer(String nickname, String startingPlayerNickname){\r\n        if(nickname == match.getChallenger().getNickname()) {\r\n            try {\r\n                match.selectStarter(startingPlayerNickname);\r\n                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( true, \"Giocatore iniziale settato\"));\r\n                notifyAllClients(new SimplyNotification(\"Ogni giocatore dovrà posizionare i propri workers\"));\r\n                placeWorkerSetupHandler = new PlaceWorkerSetupHandler(match.getPlayers(), match.getBoard());\r\n                notifyAllClients(new PlaceWorkersNotification());\r\n            } catch (AlreadyChosenStarterException e) {\r\n                e.printStackTrace();\r\n            } catch (InvalidNamePlayerException e) {\r\n                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( false, \"Il nickname scelto non è disponibile\"));\r\n            } catch (NoPlayerException e) {\r\n                e.printStackTrace();\r\n            }\r\n        }else{\r\n            System.out.println(\"Error setStartingPlayer method in gameController\");\r\n        }\r\n    }\r\n\r\n    public void sendPossiblePlayers(ClientController clientController){\r\n        List<String> playersNickname = new ArrayList<>();\r\n        try {\r\n            List<Player> players = match.getPlayers();\r\n            for(Player p: players)\r\n                playersNickname.add(p.getNickname());\r\n        } catch (NoPlayerException e) {\r\n            playersNickname = null;\r\n            e.printStackTrace();\r\n        }\r\n        notifySingleClient(clientController, new AviablePlayersResponse(playersNickname));\r\n    }\r\n\r\n\r\n    public void placeWorkers(Player player, Point position){\r\n        Point point = new Point(position.getX(), position.getY());\r\n        try {\r\n            placeWorkerSetupHandler.setWorkerPosition(player, position);\r\n            if(placeWorkerSetupHandler.hasFinished())\r\n                notifyAllClients(new SimplyNotification(\"Operazioni completate, fine fase di setUp\"));\r\n            else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))\r\n                notifySingleClient(player, new PlaceWorkerResponse( true, false, \"Primo worker posizionato, procedi col secondo\", point ));\r\n            else\r\n                notifySingleClient(player, new PlaceWorkerResponse( true, true, \"Secondo worker posizionato, attendi...\", point ));\r\n        } catch (IllegalPlaceWorkerException e) {\r\n            notifySingleClient(player, new PlaceWorkerResponse( false, false, \"Il worker non può essere posizionato in qualla casella\",point ));\r\n        }\r\n    }\r\n\r\n    public void sendPossibleWorkersSetupPoint(ClientController clientController){\r\n        List<Point> points = placeWorkerSetupHandler.getPossiblePoint();\r\n        notifySingleClient(clientController, new AviablePlaceWorkerPointResponse(points));\r\n    }\r\n\r\n\r\n\r\n    public int getNumOfPlayers(){\r\n        return clients.size();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/GameController.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/GameController.java	(date 1587317573810)
+@@ -6,7 +6,6 @@
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+ import it.polimi.ingsw.ParenteVenturini.Model.Point;
+-import it.polimi.ingsw.ParenteVenturini.Model.Worker;
+ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
+ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerException;
+ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
+@@ -141,7 +140,7 @@
+         for(Card c: cardSetupHandler.getPossibleCards()){
+             cardsName.add(c.getName());
+         }
+-        notifySingleClient(clientController, new AviableCardResponse(cardsName));
++        notifySingleClient(clientController, new AvailableCardResponse(cardsName));
+     }
+ 
+ 
+@@ -175,7 +174,7 @@
+             playersNickname = null;
+             e.printStackTrace();
+         }
+-        notifySingleClient(clientController, new AviablePlayersResponse(playersNickname));
++        notifySingleClient(clientController, new AvailablePlayersResponse(playersNickname));
+     }
+ 
+ 
+@@ -183,8 +182,11 @@
+         Point point = new Point(position.getX(), position.getY());
+         try {
+             placeWorkerSetupHandler.setWorkerPosition(player, position);
+-            if(placeWorkerSetupHandler.hasFinished())
++            if(placeWorkerSetupHandler.hasFinished()) {
+                 notifyAllClients(new SimplyNotification("Operazioni completate, fine fase di setUp"));
++                notifyAllClients(new SimplyNotification("Inizio della fase di gioco"));
++
++            }
+             else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))
+                 notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", point ));
+             else
+@@ -196,10 +198,13 @@
+ 
+     public void sendPossibleWorkersSetupPoint(ClientController clientController){
+         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
+-        notifySingleClient(clientController, new AviablePlaceWorkerPointResponse(points));
++        notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points));
+     }
+ 
++    public void sendBoard(){
++        notifyAllClients(new BoardUpdateNotification(match.getBoard()) );
+ 
++    }
+ 
+     public int getNumOfPlayers(){
+         return clients.size();
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ClientSideController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.Client;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;\r\n\r\nimport java.io.IOException;\r\nimport java.io.ObjectInputStream;\r\nimport java.io.ObjectOutputStream;\r\nimport java.net.Socket;\r\nimport java.util.Scanner;\r\n\r\npublic class ClientSideController implements ClientMessageHandler {\r\n\r\n    private ObjectInputStream readStream;\r\n    private ObjectOutputStream writeStream;\r\n    private Scanner stdIn;\r\n    private Socket socket;\r\n    private ViewInterface client;\r\n\r\n    public ClientSideController(ObjectInputStream readStream, ObjectOutputStream writeStream, Scanner stdIn, Socket socket) {\r\n        this.readStream = readStream;\r\n        this.writeStream = writeStream;\r\n        this.socket = socket;\r\n        this.stdIn = stdIn;\r\n    }\r\n\r\n    public void setView(ViewInterface client){\r\n        this.client = client;\r\n    }\r\n\r\n    public void handleMessage(MessageToClient msg){\r\n        msg.accept(this);\r\n    }\r\n\r\n    public void sendMessage(MessageToServer msg){\r\n        try {\r\n            writeStream.writeObject(msg);\r\n            writeStream.flush();\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void visit(ErrorLoginNotification msg) {\r\n        client.displayMessage(msg.getNickname()+\": \"+msg.getValues().get(0));\r\n        client.login();\r\n    }\r\n\r\n    @Override\r\n    public void visit(SetUpNotification msg) {\r\n        client.displayMessage(\"Fase di setUp iniziata\");\r\n    }\r\n\r\n    @Override\r\n    public void visit(SelectCardNotification msg) {\r\n        client.chooseCards(msg.getValues(), msg.numberOfCardsRequired());\r\n    }\r\n\r\n    @Override\r\n    public void visit(SimplyNotification msg) {\r\n        client.displayMessage(msg.getValues().get(0));\r\n    }\r\n\r\n    @Override\r\n    public void visit(StartGameNotification msg) {\r\n        client.displayMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(ChooseCardNotification msg) {\r\n        client.displayChooseCardMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(SetPlayerCardResponse msg) {\r\n        client.displayMessage(msg.getValues().get(0));\r\n        if(! msg.isSet())\r\n            client.displayChooseCardMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(AviableCardResponse msg) {\r\n        for(String s: msg.getValues())\r\n            client.displayMessage(s);\r\n        client.displayChooseCardMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(ChooseStartingPlayerNotification msg) {\r\n        client.displayChooseStartingPlayerMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(AviablePlayersResponse msg) {\r\n        for(String s: msg.getValues())\r\n            client.displayMessage(s);\r\n        client.displayChooseStartingPlayerMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(SetStartingPlayerResponse msg) {\r\n        client.displayMessage(msg.getValues().get(0));\r\n        if(! msg.isSet())\r\n            client.displayChooseStartingPlayerMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(PlaceWorkersNotification msg) {\r\n        client.displayPlaceWorkerMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(AviablePlaceWorkerPointResponse msg) {\r\n        client.displayMessage(msg.getPoints().toString());\r\n        client.displayPlaceWorkerMenu();\r\n    }\r\n\r\n    @Override\r\n    public void visit(PlaceWorkerResponse msg) {\r\n        System.out.println(msg.getSettedPoint().toString());\r\n        if(msg.isSet()) {\r\n            client.addLightWorker(new Point(msg.getSettedPoint().getX(), msg.getSettedPoint().getY()) );\r\n        }\r\n\r\n        client.displayMessage(msg.getMessage());\r\n        if(!msg.isHasFinished()) {\r\n            client.displayPlaceWorkerMenu();\r\n        }\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ClientSideController.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ClientSideController.java	(date 1587317573948)
+@@ -81,7 +81,7 @@
+     }
+ 
+     @Override
+-    public void visit(AviableCardResponse msg) {
++    public void visit(AvailableCardResponse msg) {
+         for(String s: msg.getValues())
+             client.displayMessage(s);
+         client.displayChooseCardMenu();
+@@ -93,7 +93,7 @@
+     }
+ 
+     @Override
+-    public void visit(AviablePlayersResponse msg) {
++    public void visit(AvailablePlayersResponse msg) {
+         for(String s: msg.getValues())
+             client.displayMessage(s);
+         client.displayChooseStartingPlayerMenu();
+@@ -112,11 +112,16 @@
+     }
+ 
+     @Override
+-    public void visit(AviablePlaceWorkerPointResponse msg) {
++    public void visit(AvailablePlaceWorkerPointResponse msg) {
+         client.displayMessage(msg.getPoints().toString());
+         client.displayPlaceWorkerMenu();
+     }
+ 
++    @Override
++    public void visit(BoardUpdateNotification msg) {
++        client.displayBoard(msg.getBoard());
++    }
++
+     @Override
+     public void visit(PlaceWorkerResponse msg) {
+         System.out.println(msg.getSettedPoint().toString());
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/CLI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.Client;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.PlaceWorkerResponse;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Scanner;\r\n\r\npublic class CLI implements ViewInterface {\r\n\r\n    private Scanner stdIn = new Scanner(System.in);\r\n    private ClientSideController clientSideController;\r\n    private String nickname;\r\n    private List<LightWorker> lightWorkers;\r\n\r\n    public CLI(ClientSideController clientInMessageHandler) {\r\n        this.clientSideController = clientInMessageHandler;\r\n        this.lightWorkers = new ArrayList<>();\r\n    }\r\n\r\n    @Override\r\n    public String login(){\r\n        try {\r\n            System.out.println(\"Inserire nickname\");\r\n            String name = stdIn.nextLine();\r\n            System.out.println(\"Inserire numero giocatori\");\r\n            String numOfPlayers = stdIn.nextLine();\r\n            MessageToServer message = new AccessGameMessageRequest(name, numOfPlayers);\r\n            clientSideController.sendMessage(message);\r\n            System.out.println(\"Message inviato\");\r\n            System.out.println(\"Il tuo nickanme è: \"+name);\r\n            nickname = name;\r\n            return name;\r\n        }\r\n        catch(Exception e){\r\n            e.printStackTrace();\r\n        }\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void chooseCards(List<String> cardsName, int numberOfCardsRequired) {\r\n        System.out.println(\"Digita il numero delle carte che vuoi usare:\");\r\n        List<String> choosen = new ArrayList<>();\r\n\r\n        int i = 1;\r\n        for (String name: cardsName){\r\n            System.out.println(i+\" - \"+name);\r\n            i++;\r\n        }\r\n\r\n        while(choosen.size()!=numberOfCardsRequired){\r\n            System.out.println(\"numero: \");\r\n            String num = stdIn.nextLine();\r\n            if(!choosen.contains(cardsName.get(Integer.parseInt(num)-1)))\r\n                choosen.add(cardsName.get(Integer.parseInt(num)-1));\r\n            else\r\n                System.out.println(\"Carta già scelta\");\r\n        }\r\n\r\n        MessageToServer message = new StoreSelectedCardsRequest(nickname, choosen);\r\n        clientSideController.sendMessage(message);\r\n        System.out.println(\"Message inviato\");\r\n        try {\r\n            Thread.sleep(1000);\r\n        } catch (InterruptedException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    private void printString(String s){\r\n        System.out.println(s);\r\n    }\r\n\r\n    @Override\r\n    public void displayMenu(){\r\n        while(true) {\r\n            printString(\"--Menu--\");\r\n            printString(\"1- Scegli la tua carta\");\r\n            printString(\"2- Posiziona operai\");\r\n            printString(\"Scelta: \");\r\n            stdIn.nextLine();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void displayChooseCardMenu() {\r\n        int choice;\r\n        do {\r\n            printString(\"--Menu card SetUp--\");\r\n            printString(\"1- Get possible Cards\");\r\n            printString(\"2- Choose and send your card\");\r\n            printString(\"Choice: \");\r\n            String number = stdIn.nextLine();\r\n            choice = Integer.parseInt(number);\r\n            if (choice == 1) {\r\n                MessageToServer message = new AviableCardRequest(nickname);\r\n                clientSideController.sendMessage(message);\r\n            } else if (choice == 2) {\r\n                printString(\"card name:\");\r\n                String card = stdIn.nextLine();\r\n                MessageToServer message = new SetPlayerCardRequest(nickname, card);\r\n                clientSideController.sendMessage(message);\r\n            }\r\n        }while(choice<1 || choice>2);\r\n    }\r\n\r\n    @Override\r\n    public void displayMessage(String s) {\r\n        printString(s);\r\n    }\r\n\r\n    @Override\r\n    public void displayChooseStartingPlayerMenu() {\r\n        int choice;\r\n        do {\r\n            printString(\"--Menu starting Player SetUp--\");\r\n            printString(\"1- Get possible Players\");\r\n            printString(\"2- Choose starting player\");\r\n            printString(\"Choice: \");\r\n            String number = stdIn.nextLine();\r\n            choice = Integer.parseInt(number);\r\n            if (choice == 1) {\r\n                MessageToServer message = new AviablePlayerRequest(nickname);\r\n                clientSideController.sendMessage(message);\r\n            } else if (choice == 2) {\r\n                printString(\"player name:\");\r\n                String playerName = stdIn.nextLine();\r\n                MessageToServer message = new SetStartingPlayerRequest(nickname, playerName);\r\n                clientSideController.sendMessage(message);\r\n            }\r\n        }while(choice<1 || choice>2);\r\n    }\r\n\r\n    @Override\r\n    public void displayPlaceWorkerMenu() {\r\n        int choice;\r\n        do {\r\n            printString(\"--Menu Place Worker setUp--\");\r\n            printString(\"1- Get possible Points\");\r\n            printString(\"2- Place worker\");\r\n            printString(\"Choice: \");\r\n            String number = stdIn.nextLine();\r\n            choice = Integer.parseInt(number);\r\n            if (choice == 1) {\r\n                MessageToServer message = new AviablePlaceWorkerPointRequest();\r\n                clientSideController.sendMessage(message);\r\n            } else if (choice == 2) {\r\n                printString(\"x :\");\r\n                String xPos = stdIn.nextLine();\r\n                printString(\"y :\");\r\n                String yPos = stdIn.nextLine();\r\n                Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));\r\n                MessageToServer message = new PlaceWorkerRequest(point, nickname);\r\n                clientSideController.sendMessage(message);\r\n            }\r\n        }while(choice<1 || choice>2);\r\n    }\r\n\r\n    @Override\r\n    public void addLightWorker(Point point) {\r\n        lightWorkers.add(new LightWorker(point));\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/CLI.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/CLI.java	(date 1587324336046)
+@@ -1,7 +1,7 @@
+ package it.polimi.ingsw.ParenteVenturini.Network.Client;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Board;
+ import it.polimi.ingsw.ParenteVenturini.Model.Point;
+-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.PlaceWorkerResponse;
+ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
+ 
+ import java.util.ArrayList;
+@@ -14,10 +14,12 @@
+     private ClientSideController clientSideController;
+     private String nickname;
+     private List<LightWorker> lightWorkers;
++    private ColourPrint colourPrint;
+ 
+     public CLI(ClientSideController clientInMessageHandler) {
+         this.clientSideController = clientInMessageHandler;
+         this.lightWorkers = new ArrayList<>();
++        this.colourPrint= new ColourPrint();
+     }
+ 
+     @Override
+@@ -30,7 +32,7 @@
+             MessageToServer message = new AccessGameMessageRequest(name, numOfPlayers);
+             clientSideController.sendMessage(message);
+             System.out.println("Message inviato");
+-            System.out.println("Il tuo nickanme è: "+name);
++            System.out.println("Il tuo nickname è: "+name);
+             nickname = name;
+             return name;
+         }
+@@ -74,6 +76,11 @@
+         System.out.println(s);
+     }
+ 
++    private void print(String s){
++        System.out.print(s);
++    }
++
++
+     @Override
+     public void displayMenu(){
+         while(true) {
+@@ -96,7 +103,7 @@
+             String number = stdIn.nextLine();
+             choice = Integer.parseInt(number);
+             if (choice == 1) {
+-                MessageToServer message = new AviableCardRequest(nickname);
++                MessageToServer message = new AvailableCardRequest(nickname);
+                 clientSideController.sendMessage(message);
+             } else if (choice == 2) {
+                 printString("card name:");
+@@ -107,6 +114,30 @@
+         }while(choice<1 || choice>2);
+     }
+ 
++    @Override
++    public void displayBoard(Board board) {
++        print("     1     2     3     4     5   ");
++        //printString("1 | " + "  " + "| " + "  " + "| " + "  " + "|     ""|     ""|");
++        for(int i=0;i<=5;i++) {
++            printString("  -----------------------------");
++            print(i+" | ");
++            for (int j = 0; j <= 5; j++) {
++                if(board.isOccupied(i,j)) {
++                    int k=board.findByPosition(i,j).getColour();
++                    colourPrint.colouredPrint(k,"&");
++                }
++                else if(board.isThereDome(i,j)){
++                    print("O");
++                }
++                print("  ");
++                print(board.blockLevel(i,j)+"| ");
++            }
++            printString(" |");
++        }
++
++
++    }
++
+     @Override
+     public void displayMessage(String s) {
+         printString(s);
+@@ -123,7 +154,7 @@
+             String number = stdIn.nextLine();
+             choice = Integer.parseInt(number);
+             if (choice == 1) {
+-                MessageToServer message = new AviablePlayerRequest(nickname);
++                MessageToServer message = new AvailablePlayerRequest(nickname);
+                 clientSideController.sendMessage(message);
+             } else if (choice == 2) {
+                 printString("player name:");
+@@ -145,7 +176,7 @@
+             String number = stdIn.nextLine();
+             choice = Integer.parseInt(number);
+             if (choice == 1) {
+-                MessageToServer message = new AviablePlaceWorkerPointRequest();
++                MessageToServer message = new AvailablePlaceWorkerPointRequest();
+                 clientSideController.sendMessage(message);
+             } else if (choice == 2) {
+                 printString("x :");
+@@ -164,5 +195,31 @@
+         lightWorkers.add(new LightWorker(point));
+     }
+ 
++    @Override
++    public void displayMoveMenu() {
++        int choice;
++         do{
++            printString("--Menu Worker's move--");
++            printString("1- Muovi");
++            printString("2- Costruisci");
++            printString("Scelta: ");
++            String number= stdIn.nextLine();
++            choice = Integer.parseInt(number);
++            if (choice == 1) {
++                MessageToServer message = new AvailablePlayerRequest(nickname);
++                clientSideController.sendMessage(message);
++            } else if (choice == 2) {
++                printString("worker number (1 or 2) :");
++                String MoveNum = stdIn.nextLine();
++                printString("x :");
++                String xPos = stdIn.nextLine();
++                printString("y :");
++                String yPos = stdIn.nextLine();
++                Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
++                MessageToServer message = new PlaceWorkerRequest(point, MoveNum, nickname);
++                clientSideController.sendMessage(message);
++            }
++        }while(choice<1 || choice>2);
++    }
+ 
+ }
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Match.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Random;\r\n\r\npublic class Match {\r\n    private List<Player> players;\r\n    private List<Card> chosenCards;\r\n    private Board board;\r\n    private Deck deck;\r\n    private Player starter;\r\n    private int typeOfMatch;\r\n    private OpponentEffectContainer opponentEffectContainer;\r\n    private Player currentPlayer;\r\n    private Turn turn;\r\n    private Player challenger;\r\n\r\n    public Match(){\r\n        this.board= new Board();\r\n        this.deck= new Deck();\r\n        this.players= new ArrayList<Player>();\r\n        this.chosenCards= new ArrayList<Card>();\r\n        this.opponentEffectContainer = new OpponentEffectContainer();\r\n        this.typeOfMatch = 2;\r\n        this.challenger=null;\r\n        this.turn= null;\r\n    }\r\n\r\n    public void addPlayer(String nickname) throws NoMorePlayersException, AlreadyPresentPlayerException {\r\n        if(getNumPlayers() < getTypeOfMatch()) {\r\n            if(selectPlayer(nickname)==null) {\r\n                Player p = new Player(nickname, this);\r\n                players.add(p);\r\n            }\r\n            else throw new AlreadyPresentPlayerException();\r\n        }\r\n        else throw new NoMorePlayersException();\r\n    }\r\n\r\n    public boolean gameOver(){\r\n        Move move = currentPlayer.callMove();\r\n        Worker currentWorker = turn.getCurrentWorker();\r\n        boolean result = false;\r\n        if(move.forcedMovement(board, turn.getCurrentWorker())){\r\n            result = gameOverMovement(move, board, currentWorker);\r\n        }\r\n        else if(move.forcedBuilding(board, turn.getCurrentWorker())){\r\n            result = gameOverBuilding(move, board, currentWorker);\r\n        }\r\n        else if( !move.forcedMovement(board, turn.getCurrentWorker()) && !move.forcedBuilding(board, turn.getCurrentWorker()))\r\n            return (gameOverMovement(move, board, currentWorker) || gameOverBuilding(move, board, currentWorker));\r\n        return result;\r\n    }\r\n\r\n    private boolean gameOverMovement(Move move, Board board, Worker currentWorker){\r\n        List<Point> points = move.possibleMovements(board, currentWorker);\r\n        points = opponentEffectContainer.removeMovementPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);\r\n        return points == null;\r\n    }\r\n\r\n    private boolean gameOverBuilding(Move move, Board board, Worker currentWorker){\r\n        List<Point> points = move.possibleBuildings(board, currentWorker);\r\n        points = opponentEffectContainer.removeConstructionPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);\r\n        return points == null;\r\n    }\r\n\r\n    public Board getBoard() {\r\n        return board;\r\n    }\r\n\r\n    public Player getChallenger() {\r\n        return challenger;\r\n    }\r\n\r\n    public List<Player> getPlayers() throws NoPlayerException {\r\n        if( !players.isEmpty() )\r\n            return players;\r\n        else throw new NoPlayerException();\r\n    }\r\n\r\n    public OpponentEffectContainer getOpponentEffectContainer() {\r\n        return opponentEffectContainer;\r\n    }\r\n\r\n    public int getNumPlayers() {\r\n        if( !players.isEmpty() )\r\n            return players.size();\r\n        else return 0;\r\n    }\r\n\r\n    public int getTypeOfMatch() {\r\n        return typeOfMatch;\r\n    }\r\n\r\n    public Player getStarter() {\r\n        return starter;\r\n    }\r\n\r\n    public void setTypeOfMatch(int typeOfMatch) throws InvalidTypeOfMatch {\r\n        if(typeOfMatch==3 || typeOfMatch==2)\r\n            this.typeOfMatch = typeOfMatch;\r\n        else throw new InvalidTypeOfMatch();\r\n    }\r\n\r\n    public void setChallenger() throws NoPlayerException {\r\n        if( !players.isEmpty() ) {\r\n            Random rand = new Random();\r\n            this.challenger = players.get(rand.nextInt(players.size()));\r\n        }\r\n        else throw new NoPlayerException();\r\n    }\r\n\r\n    public Player selectPlayer(String name){\r\n        if( !players.isEmpty() ) {\r\n            for (Player p : players) {\r\n                if (name.equals(p.getNickname())) {\r\n                    return p;\r\n                }\r\n            }\r\n            return null;\r\n        }\r\n        else return null;\r\n    }\r\n\r\n    public void selectCardFromDeck(String name) throws InvalidCardException, NoMoreCardsException {\r\n        Card c = this.deck.selectByName(name);\r\n        if (chosenCards.size() < getTypeOfMatch()){\r\n            if (c != null && !chosenCards.contains(c)) {\r\n                chosenCards.add(c);\r\n            } else throw new InvalidCardException();\r\n        }else throw  new NoMoreCardsException();\r\n    }\r\n\r\n    public void selectStarter(String nickname) throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException {\r\n        if( !players.isEmpty() ) {\r\n            if (starter == null) {\r\n                Player p = selectPlayer(nickname);\r\n                if (p != null) {\r\n                    this.starter = p;\r\n                    try {\r\n                        orderPlayers();\r\n                    } catch (NoStarterException | NoPlayerException e) {\r\n                        e.printStackTrace();\r\n                    }\r\n                } else throw new InvalidNamePlayerException();\r\n            } else throw new AlreadyChosenStarterException();\r\n        }\r\n        else throw new NoPlayerException();\r\n    }\r\n\r\n    public List<Card> getChosenCards(){\r\n        return chosenCards;\r\n    }\r\n\r\n    public void orderPlayers() throws NoStarterException, NoPlayerException {\r\n        if( !players.isEmpty() ) {\r\n            if (this.starter != null) {\r\n                List<Player> p = new ArrayList<Player>();\r\n                p.add(this.starter);\r\n                for (Player i : players) {\r\n                    if (!i.equals(starter)) {\r\n                        p.add(i);\r\n                    }\r\n                }\r\n                this.players = p;\r\n            } else throw new NoStarterException();\r\n        }\r\n        else throw new NoPlayerException();\r\n    }\r\n\r\n    public void setChosenCards(List<Card> cards){\r\n        chosenCards = cards;\r\n    }\r\n\r\n    public Turn getTurn() {\r\n        return turn;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Match.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Match.java	(date 1587314604818)
+@@ -43,6 +43,10 @@
+         else throw new NoMorePlayersException();
+     }
+ 
++    public void startGame(){
++        turn=new Turn(players,opponentEffectContainer);
++    }
++
+     public boolean gameOver(){
+         Move move = currentPlayer.callMove();
+         Worker currentWorker = turn.getCurrentWorker();
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/ServerMessageHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.Server;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;\r\n\r\npublic interface ServerMessageHandler {\r\n    void visit(AccessGameMessageRequest msg);\r\n    void visit(StoreSelectedCardsRequest msg);\r\n    void visit(AviableCardRequest msg);\r\n    void visit(SetPlayerCardRequest msg);\r\n    void visit(AviablePlayerRequest msg);\r\n    void visit(SetStartingPlayerRequest msg);\r\n    void visit(PlaceWorkerRequest msg);\r\n    void visit(AviablePlaceWorkerPointRequest msg);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/ServerMessageHandler.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Server/ServerMessageHandler.java	(date 1587316285923)
+@@ -5,10 +5,10 @@
+ public interface ServerMessageHandler {
+     void visit(AccessGameMessageRequest msg);
+     void visit(StoreSelectedCardsRequest msg);
+-    void visit(AviableCardRequest msg);
++    void visit(AvailableCardRequest msg);
+     void visit(SetPlayerCardRequest msg);
+-    void visit(AviablePlayerRequest msg);
++    void visit(AvailablePlayerRequest msg);
+     void visit(SetStartingPlayerRequest msg);
+     void visit(PlaceWorkerRequest msg);
+-    void visit(AviablePlaceWorkerPointRequest msg);
++    void visit(AvailablePlaceWorkerPointRequest msg);
+ }
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Effects/AthenaEffect.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Effects;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Board;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Worker;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class AthenaEffect implements OpponentEffect {\r\n\r\n    //todo correct removeMovementPoints\r\n\r\n    @Override\r\n    public List<Point> removeMovementPoints(List<Point> movements, Point actualPoint, Board board) {\r\n        List<Point> futureMovements = new ArrayList<>(movements);\r\n        int level = board.blockLevel(actualPoint);\r\n        for(Point p: futureMovements){\r\n            if(board.blockLevel(p)>level)\r\n                futureMovements.remove(p);\r\n        }\r\n        return futureMovements;\r\n    }\r\n\r\n    @Override\r\n    public List<Point> removeConstructionPoints(List<Point> movements, Point actualPoint, Board board) {\r\n        return movements;\r\n    }\r\n\r\n    @Override\r\n    public boolean isMovementValid(Point nextPoint, Point actualPoint, Board board) {\r\n        return board.blockLevel(actualPoint) >= board.blockLevel(nextPoint);\r\n    }\r\n\r\n    @Override\r\n    public boolean isConstructionValid(Point nextPoint, Point actualPoint, Board board) {\r\n        return true;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Effects/AthenaEffect.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Effects/AthenaEffect.java	(date 1587312739486)
+@@ -9,17 +9,16 @@
+ 
+ public class AthenaEffect implements OpponentEffect {
+ 
+-    //todo correct removeMovementPoints
+-
+     @Override
+     public List<Point> removeMovementPoints(List<Point> movements, Point actualPoint, Board board) {
+         List<Point> futureMovements = new ArrayList<>(movements);
++        List<Point> checkedMovements= new ArrayList<>();
+         int level = board.blockLevel(actualPoint);
+         for(Point p: futureMovements){
+-            if(board.blockLevel(p)>level)
+-                futureMovements.remove(p);
++            if(board.blockLevel(p)<=level)
++                checkedMovements.add(p);
+         }
+-        return futureMovements;
++        return checkedMovements;
+     }
+ 
+     @Override
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/OpponentEffectContainerTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/OpponentEffectContainerTest.java	(date 1587312739707)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/OpponentEffectContainerTest.java	(date 1587312739707)
+@@ -0,0 +1,46 @@
++package it.polimi.ingsw.ParenteVenturini.Model;
++
++import it.polimi.ingsw.ParenteVenturini.Model.Effects.AthenaEffect;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++class OpponentEffectContainerTest {
++    private Match instance;
++    private Player player;
++    private OpponentEffectContainer test;
++
++    @BeforeEach
++    void setUp() {
++        instance= new Match();
++        player= new Player("player",instance);
++        test= instance.getOpponentEffectContainer();
++    }
++
++    @Test
++    void addEffects_switchToNewTurn() {
++        assertNotNull(test.getActiveEffects());
++        assertTrue(test.getActiveEffects().isEmpty());
++        test.addEffect(new AthenaEffect());
++        assertTrue(test.getActiveEffects().isEmpty());
++        test.switchToNewTurn();
++        assertTrue(!test.getActiveEffects().isEmpty());
++    }
++
++    @Test
++    void removeMovementPoint() {
++    }
++
++    @Test
++    void removeConstructionPoint() {
++    }
++
++    @Test
++    void checkMovementPoint() {
++    }
++
++    @Test
++    void checkConstructionPoint() {
++    }
++}
+\ No newline at end of file
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/BoardUpdateNotification.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/BoardUpdateNotification.java	(date 1587317573854)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/BoardUpdateNotification.java	(date 1587317573854)
+@@ -0,0 +1,34 @@
++package it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient;
++
++import it.polimi.ingsw.ParenteVenturini.Model.Board;
++import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;
++import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
++
++import java.util.List;
++
++public class BoardUpdateNotification implements MessageToClient {
++    private Board board;
++
++    public BoardUpdateNotification(Board board){
++        this.board=board;
++    }
++
++    public Board getBoard() {
++        return board;
++    }
++
++    @Override
++    public MessageType getMessageType() {
++        return null;
++    }
++
++    @Override
++    public List<String> getValues() {
++        return null;
++    }
++
++    @Override
++    public void accept(ClientMessageHandler msgHandler) {
++        msgHandler.visit(this);
++    }
++}
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/BoardTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass BoardTest {\r\n    private Match instance;\r\n    private Board tester;\r\n    private Player player;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        tester= instance.getBoard();\r\n        player= new Player(\"player\",instance);\r\n    }\r\n\r\n    @Test\r\n    void isOccupied() {\r\n        Point p1= new Point(0,0);\r\n        Point p2= new Point(1,1);\r\n        Worker w= new Worker(p1,player,1);\r\n        tester.setWorker(w);\r\n        assertTrue(tester.isOccupied(p1));\r\n        assertFalse(tester.isOccupied(p2));\r\n        assertTrue(tester.isOccupied(0,0));\r\n        assertFalse(tester.isOccupied(1,0));\r\n    }\r\n\r\n    @Test\r\n    void setBlockLevel() throws IllegalBlockUpdateException {\r\n        Point p1= new Point(0,0);\r\n        Point p2= new Point(1,1);\r\n        tester.setBlockLevel(p1,1);\r\n        tester.setBlockLevel(p2,2);\r\n        assertEquals(1,tester.blockLevel(p1));\r\n        assertEquals(2,tester.blockLevel(p2));\r\n        assertEquals(0,tester.blockLevel(2,2));\r\n        assertThrows(IllegalBlockUpdateException.class,()->tester.setBlockLevel(p1,5));\r\n        assertThrows(IllegalBlockUpdateException.class,()->tester.setBlockLevel(p1,-3));\r\n    }\r\n\r\n    @Test\r\n    void setDoom() {\r\n        Point p1= new Point(0,0);\r\n        Point p2= new Point(1,1);\r\n        tester.setDome(p1,true);\r\n        tester.setDome(p2,false);\r\n        assertTrue(tester.isThereDome(p1));\r\n        assertFalse(tester.isThereDome(p2));\r\n        tester.setDome(p1,false);\r\n        assertFalse(tester.isThereDome(0,0));\r\n    }\r\n\r\n    @Test\r\n    void findByPosition() {\r\n        Point p1= new Point(0,0);\r\n        Point p2= new Point(1,1);\r\n        Point p3= new Point(2,3);\r\n        Worker w1= new Worker(p1,player,1);\r\n        Worker w2= new Worker(p2,player,2);\r\n        tester.setWorker(w1);\r\n        tester.setWorker(w2);\r\n        assertNull(tester.findByPosition(p3));\r\n        assertEquals(w1,tester.findByPosition(p1));\r\n        assertEquals(w2,tester.findByPosition(p2));\r\n    }\r\n\r\n    @Test\r\n    void isValidPoint() {\r\n        Point p1= new Point(0,0);\r\n        Point p2= new Point(3,5);\r\n        Point p3= new Point(-2,-3);\r\n        Point p4= new Point(-12,32);\r\n        assertTrue(tester.isValidPoint(p1));\r\n        assertFalse(tester.isValidPoint(p2));\r\n        assertFalse(tester.isValidPoint(p3));\r\n        assertFalse(tester.isValidPoint(p4));\r\n    }\r\n\r\n    @Test\r\n    void isPerimeterPoint() {\r\n        Point p1= new Point(0,0);\r\n        Point p2= new Point(3,4);\r\n        Point p3= new Point(-2,-3);\r\n        Point p4= new Point(2,2);\r\n        assertTrue(tester.isPerimeterPoint(p1));\r\n        assertTrue(tester.isPerimeterPoint(p2));\r\n        assertFalse(tester.isPerimeterPoint(p3));\r\n        assertFalse(tester.isPerimeterPoint(p4));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/BoardTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/BoardTest.java	(date 1587312739502)
+@@ -61,7 +61,7 @@
+         Point p2= new Point(1,1);
+         Point p3= new Point(2,3);
+         Worker w1= new Worker(p1,player,1);
+-        Worker w2= new Worker(p2,player,2);
++        Worker w2= new Worker(p2,player,1);
+         tester.setWorker(w1);
+         tester.setWorker(w2);
+         assertNull(tester.findByPosition(p3));
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Checks/PanWinCheckTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Checks;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.PanCard;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass PanWinCheckTest {\r\n    private Match instance;\r\n    private Player player;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n    }\r\n\r\n    @Test\r\n    void hasWon() throws IllegalBlockUpdateException {\r\n        player.setCard(new PanCard());\r\n        assertFalse(player.hasWon(instance.getBoard()));\r\n        Point p1= new Point(1,0);\r\n        Point p2= new Point(0,0);\r\n        instance.getBoard().setBlockLevel(p1,3);\r\n        player.selectWorker(0).setPosition(p1);\r\n        assertTrue(player.hasWon(instance.getBoard()));\r\n        player.selectWorker(0).setPosition(p2);\r\n        assertTrue(player.hasWon(instance.getBoard()));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Checks/PanWinCheckTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Checks/PanWinCheckTest.java	(date 1587312739518)
+@@ -2,6 +2,7 @@
+ 
+ import it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;
+ import it.polimi.ingsw.ParenteVenturini.Model.Cards.PanCard;
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Checks/BasicWinCheckTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Checks;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Actions.Action;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.MinotaurCard;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass BasicWinCheckTest {\r\n    private Match instance;\r\n    private Player player;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n    }\r\n\r\n    @Test\r\n    void hasWon() throws IllegalBlockUpdateException {\r\n        player.setCard(new ApolloCard());\r\n        assertFalse(player.hasWon(instance.getBoard()));\r\n        Point p= new Point(0,0);\r\n        instance.getBoard().setBlockLevel(p,3);\r\n        assertTrue(player.hasWon(instance.getBoard()));\r\n        player.setCard(new MinotaurCard());\r\n        assertTrue(player.hasWon(instance.getBoard()));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Checks/BasicWinCheckTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Checks/BasicWinCheckTest.java	(date 1587312739518)
+@@ -3,6 +3,7 @@
+ import it.polimi.ingsw.ParenteVenturini.Model.Actions.Action;
+ import it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;
+ import it.polimi.ingsw.ParenteVenturini.Model.Cards.MinotaurCard;
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_12\" default=\"false\" project-jdk-name=\"13\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ .idea/misc.xml	(date 1587312739571)
+@@ -7,7 +7,7 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="13" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="13.0.2" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/TurnTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/TurnTest.java	(date 1587312739597)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/TurnTest.java	(date 1587312739597)
+@@ -0,0 +1,44 @@
++package it.polimi.ingsw.ParenteVenturini.Model;
++
++import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyPresentPlayerException;
++import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoMorePlayersException;
++import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoPlayerException;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++
++import static org.junit.jupiter.api.Assertions.*;
++
++class TurnTest {
++    private Match instance;
++    private Turn tester;
++
++    @BeforeEach
++    void setUp() throws NoMorePlayersException, AlreadyPresentPlayerException, NoPlayerException {
++        instance= new Match();
++        instance.addPlayer("player1");
++        instance.addPlayer("player2");
++        tester= new Turn(instance.getPlayers(),instance.getOpponentEffectContainer());
++    }
++
++    @Test
++    void setNextPlayer() {
++        assertTrue(tester.getNumTurn()==1);
++        assertTrue(tester.getCurrentPlayer().getNickname().equals("player1"));
++        tester.setNextPlayer();
++        assertTrue(tester.getCurrentPlayer().getNickname().equals("player2"));
++        assertTrue(tester.getNumTurn()==1);
++        tester.setNextPlayer();
++        assertTrue(tester.getNumTurn()==2);
++        assertTrue(tester.getCurrentPlayer().getNickname().equals("player1"));
++    }
++
++    @Test
++    void setActualWorker() throws NoPlayerException {
++        assertNull(tester.getCurrentWorker());
++        Point p= new Point(0,0);
++        instance.getPlayers().get(0).placeWorker(1,p,instance.getBoard());
++        tester.setActualWorker(instance.getPlayers().get(0).selectWorker(0));
++        assertNotNull(tester.getCurrentWorker());
++    }
++
++}
+\ No newline at end of file
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Turn.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model;\r\n\r\nimport java.util.List;\r\n\r\npublic class Turn {\r\n\r\n    private List<Player> players;\r\n    private OpponentEffectContainer opponentEffectContainer;\r\n    private Player currentPlayer;\r\n    private Worker currentWorker;\r\n    private int numTurn;\r\n\r\n    public Turn(List<Player> players) {\r\n        this.players = players;\r\n        this.currentPlayer = players.get(0);\r\n        this.numTurn=1;\r\n    }\r\n\r\n    public void setNextPlayer() {\r\n        int lastPlayer = players.indexOf(currentPlayer);\r\n        if(lastPlayer == players.size()-1 ) {\r\n            currentPlayer = players.get(0);\r\n            updateNewTurn();\r\n        }\r\n        else\r\n            currentPlayer = players.get(lastPlayer+1);\r\n        currentWorker = null;\r\n    }\r\n\r\n    private void updateNewTurn(){\r\n        numTurn++;\r\n        opponentEffectContainer.switchToNewTurn();\r\n    }\r\n\r\n    public void setActualWorker(Worker w){\r\n        if(currentWorker == null)\r\n            currentWorker = w;\r\n    }\r\n\r\n    public Player getCurrentPlayer() {\r\n        return currentPlayer;\r\n    }\r\n\r\n    public Worker getCurrentWorker() {\r\n        return currentWorker;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Turn.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Turn.java	(date 1587312739377)
+@@ -10,10 +10,11 @@
+     private Worker currentWorker;
+     private int numTurn;
+ 
+-    public Turn(List<Player> players) {
++    public Turn(List<Player> players, OpponentEffectContainer op) {
+         this.players = players;
+         this.currentPlayer = players.get(0);
+         this.numTurn=1;
++        this.opponentEffectContainer=op;
+     }
+ 
+     public void setNextPlayer() {
+@@ -44,4 +45,8 @@
+     public Worker getCurrentWorker() {
+         return currentWorker;
+     }
++
++    public int getNumTurn() {
++        return numTurn;
++    }
+ }
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Effects/AthenaEffectTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Effects;\r\n\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass AthenaEffectTest {\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n    }\r\n\r\n    @Test\r\n    void removeMovementPoints() {\r\n    }\r\n\r\n    @Test\r\n    void removeConstructionPoints() {\r\n    }\r\n\r\n    @Test\r\n    void isMovementValid() {\r\n    }\r\n\r\n    @Test\r\n    void isConstructionValid() {\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Effects/AthenaEffectTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Effects/AthenaEffectTest.java	(date 1587312739580)
+@@ -1,29 +1,57 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Effects;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
++import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
++import it.polimi.ingsw.ParenteVenturini.Model.Match;
++import it.polimi.ingsw.ParenteVenturini.Model.Player;
++import it.polimi.ingsw.ParenteVenturini.Model.Point;
+ import org.junit.jupiter.api.BeforeEach;
+ import org.junit.jupiter.api.Test;
+ 
++import java.util.ArrayList;
++import java.util.List;
++
+ import static org.junit.jupiter.api.Assertions.*;
+ 
+ class AthenaEffectTest {
++    private Match instance;
++    private Player player;
++    private AthenaEffect testeffect;
+ 
+     @BeforeEach
+     void setUp() {
+-    }
+-
+-    @Test
+-    void removeMovementPoints() {
++        instance= new Match();
++        player= new Player("player",instance);
++        testeffect= new AthenaEffect();
+     }
+ 
+     @Test
+-    void removeConstructionPoints() {
+-    }
++    void removeMovementPoints() throws IllegalBlockUpdateException {
++        Point p1= new Point(1,1);
++        Point p2= new Point(1,0);
++        Point p3= new Point(0,1);
++        Point p4= new Point(2,1);
++        Point p5= new Point(2,2);
++        Point p6= new Point(2,0);
++        Point p7= new Point(0,2);
++        List<Point> movements= new ArrayList<>();
++        movements.add(p2);
++        movements.add(p3);
++        movements.add(p4);
++        movements.add(p5);
++        movements.add(p6);
++        movements.add(p7);
++        instance.getBoard().setBlockLevel(p2,2);
++        instance.getBoard().setBlockLevel(p4,3);
++        instance.getBoard().setBlockLevel(p5,4);
++        instance.getBoard().setBlockLevel(p7,1);
++        assertTrue( !testeffect.removeMovementPoints(movements,p1,instance.getBoard()).isEmpty() );
++        assertTrue( testeffect.removeMovementPoints(movements,p1,instance.getBoard()).contains(p3) );
++        assertTrue( !testeffect.removeMovementPoints(movements,p1,instance.getBoard()).contains(p2) );
++        assertTrue( !testeffect.removeMovementPoints(movements,p1,instance.getBoard()).contains(p4) );
++        assertTrue( !testeffect.removeMovementPoints(movements,p1,instance.getBoard()).contains(p5) );
++        assertTrue( !testeffect.removeMovementPoints(movements,p1,instance.getBoard()).contains(p7) );
+ 
+-    @Test
+-    void isMovementValid() {
+-    }
+ 
+-    @Test
+-    void isConstructionValid() {
+     }
+ }
+\ No newline at end of file
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Block.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\n\r\npublic class Block {\r\n\r\n    private int level;\r\n    private boolean dome;\r\n\r\n    public Block() {\r\n        this.level = 0;\r\n        this.dome = false;\r\n    }\r\n\r\n    public int getLevel() {\r\n        return level;\r\n    }\r\n\r\n    public boolean isDome() {\r\n        return dome;\r\n    }\r\n\r\n    public void updateLevel(int level) throws IllegalBlockUpdateException {\r\n        if(level>4 || level<0) {\r\n            throw new IllegalBlockUpdateException();\r\n        }\r\n        this.level = level;\r\n        if(level==4)\r\n            this.setDome(true);\r\n    }\r\n\r\n    public void setDome(boolean dome) {\r\n\r\n        this.dome = dome;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Block.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Block.java	(date 1587316285951)
+@@ -2,7 +2,9 @@
+ 
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ 
+-public class Block {
++import java.io.Serializable;
++
++public class Block implements Serializable {
+ 
+     private int level;
+     private boolean dome;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/AtlasConstructionTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Actions;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport java.util.List;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\nimport static org.junit.jupiter.api.Assertions.assertThrows;\r\n\r\nclass AtlasConstructionTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Action tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(1,1);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new AtlasConstruction();\r\n    }\r\n\r\n    @Test\r\n    void doAction() throws IllegalBuildingException, IllegalMovementException {\r\n        Point p1= new Point(2,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(1,1);\r\n        Point p4= new Point(3,0);\r\n        //check if worker build on his own position\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p3,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker build on a valid position\r\n        int i=instance.getBoard().blockLevel(p1);\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotEquals(i+1,instance.getBoard().blockLevel(p1));\r\n        assertTrue(instance.getBoard().isThereDome(p1));\r\n\r\n        //check if worker build on invalid positions\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p4,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker build on a position occupied by another worker\r\n        Point p5= new Point(1,0);\r\n        player.placeWorker(1,p5,instance.getBoard());\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p5,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker build on a position with dome\r\n        Point p6= new Point(0,1);\r\n        instance.getBoard().setDome(p6, true);\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void isValid() {\r\n        Point p1= new Point(2,1);\r\n        Point p2= new Point(-5,1);\r\n        Point p3= new Point(1,1);\r\n        Point p4= new Point(1,0);\r\n        Point p5= new Point(5,0);\r\n        instance.getBoard().setDome(p4,true);\r\n        assertTrue(tester.isValid(p1,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p3,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p4,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p5,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void getPossibleActions() {\r\n        List<Point> positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(8, positions.size());\r\n        assertTrue(positions.get(0).getX()==0 &&positions.get(0).getY()==0);\r\n        assertTrue(positions.get(1).getX()==0 &&positions.get(1).getY()==1);\r\n        assertTrue(positions.get(2).getX()==0 &&positions.get(2).getY()==2);\r\n        assertTrue(positions.get(3).getX()==1 &&positions.get(3).getY()==0);\r\n        assertTrue(positions.get(4).getX()==1 &&positions.get(4).getY()==2);\r\n        assertTrue(positions.get(5).getX()==2 &&positions.get(5).getY()==0);\r\n        assertTrue(positions.get(6).getX()==2 &&positions.get(6).getY()==1);\r\n        assertTrue(positions.get(7).getX()==2 &&positions.get(7).getY()==2);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/AtlasConstructionTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/AtlasConstructionTest.java	(date 1587312739605)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Actions;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AviablePlayersResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;\r\n\r\nimport java.util.List;\r\n\r\npublic class AviablePlayersResponse implements MessageToClient {\r\n    private List<String> players;\r\n\r\n    public AviablePlayersResponse(List<String> cards) {\r\n        this.players = cards;\r\n    }\r\n\r\n    @Override\r\n    public MessageType getMessageType() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<String> getValues() {\r\n        return players;\r\n    }\r\n\r\n    @Override\r\n    public void accept(ClientMessageHandler msgHandler) {\r\n        msgHandler.visit(this);\r\n    }\r\n}\r\n\r\n
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AviablePlayersResponse.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AvailablePlayersResponse.java	(date 1587316286019)
+@@ -5,10 +5,10 @@
+ 
+ import java.util.List;
+ 
+-public class AviablePlayersResponse implements MessageToClient {
++public class AvailablePlayersResponse implements MessageToClient {
+     private List<String> players;
+ 
+-    public AviablePlayersResponse(List<String> cards) {
++    public AvailablePlayersResponse(List<String> cards) {
+         this.players = cards;
+     }
+ 
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AviablePlayerRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;\r\n\r\nimport java.util.List;\r\n\r\npublic class AviablePlayerRequest implements MessageToServer {\r\n\r\n    private String nickname;\r\n\r\n    public AviablePlayerRequest(String nickname) {\r\n        this.nickname = nickname;\r\n    }\r\n\r\n    @Override\r\n    public MessageType getMessageType() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<String> getValues() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void accept(ServerMessageHandler msgHandler) {\r\n        msgHandler.visit(this);\r\n    }\r\n}\r\n
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AviablePlayerRequest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AvailablePlayerRequest.java	(date 1587316286091)
+@@ -6,11 +6,11 @@
+ 
+ import java.util.List;
+ 
+-public class AviablePlayerRequest implements MessageToServer {
++public class AvailablePlayerRequest implements MessageToServer {
+ 
+     private String nickname;
+ 
+-    public AviablePlayerRequest(String nickname) {
++    public AvailablePlayerRequest(String nickname) {
+         this.nickname = nickname;
+     }
+ 
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/PrometheusMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass PrometheusMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new PrometheusMove();\r\n    }\r\n\r\n    @Test\r\n    void walk_test1() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        Point p3= new Point(2,2);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void walk_test2() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.build(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build_test1() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build_test2() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.build(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {\r\n        Point p1= new Point(1,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/PrometheusMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/PrometheusMoveTest.java	(date 1587312739785)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/BasicMovementTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Actions;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Worker;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport java.util.List;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass BasicMovementTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Action tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new BasicMovement();\r\n    }\r\n    @Test\r\n    void doAction() throws IllegalBuildingException, IllegalMovementException, IllegalBlockUpdateException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(0,0);\r\n        Point p4= new Point(3,0);\r\n        //check if worker moves on his own position\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p3,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves in a valid position\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(player.selectWorker(0).getPosition(),p1);\r\n\r\n        //check if worker moves on invalid positions\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p4,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on a position occupied by another worker\r\n        Point p5= new Point(1,0);\r\n        player.placeWorker(1,p5,instance.getBoard());\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p5,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on a position with dome\r\n        Point p6= new Point(0,1);\r\n        instance.getBoard().setDome(p6, true);\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on a too high position\r\n        instance.getBoard().setBlockLevel(p1,2);\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void isValid() {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(0,0);\r\n        Point p4= new Point(1,0);\r\n        instance.getBoard().setDome(p4,true);\r\n        assertTrue(tester.isValid(p1,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p3,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p4,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void getPossibleActions() throws IllegalBuildingException, IllegalMovementException {\r\n        List<Point> positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(3, positions.size());\r\n        assertTrue(positions.get(0).getX()==0 &&positions.get(0).getY()==1);\r\n        assertTrue(positions.get(1).getX()==1 &&positions.get(1).getY()==0);\r\n        assertTrue(positions.get(2).getX()==1 &&positions.get(2).getY()==1);\r\n\r\n        Point p1= new Point(1,1);\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(8, positions.size());\r\n\r\n        Point p2= new Point(1,0);\r\n        tester.doAction(p2,instance.getBoard(),player.selectWorker(0));\r\n        positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(5, positions.size());\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/BasicMovementTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/BasicMovementTest.java	(date 1587312739785)
+@@ -1,12 +1,9 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Actions;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;
+-import it.polimi.ingsw.ParenteVenturini.Model.Match;
+-import it.polimi.ingsw.ParenteVenturini.Model.Player;
+-import it.polimi.ingsw.ParenteVenturini.Model.Point;
+-import it.polimi.ingsw.ParenteVenturini.Model.Worker;
+ import org.junit.jupiter.api.BeforeEach;
+ import org.junit.jupiter.api.Test;
+ 
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AviableCardRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;\r\n\r\nimport java.util.List;\r\n\r\npublic class AviableCardRequest implements MessageToServer {\r\n\r\n    private String nickname;\r\n\r\n    public AviableCardRequest(String nickname) {\r\n        this.nickname = nickname;\r\n    }\r\n\r\n    @Override\r\n    public MessageType getMessageType() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<String> getValues() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void accept(ServerMessageHandler msgHandler) {\r\n        msgHandler.visit(this);\r\n    }\r\n}\r\n
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AviableCardRequest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AvailableCardRequest.java	(date 1587316285963)
+@@ -4,11 +4,11 @@
+ 
+ import java.util.List;
+ 
+-public class AviableCardRequest implements MessageToServer {
++public class AvailableCardRequest implements MessageToServer {
+ 
+     private String nickname;
+ 
+-    public AviableCardRequest(String nickname) {
++    public AvailableCardRequest(String nickname) {
+         this.nickname = nickname;
+     }
+ 
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/BasicConstructionTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Actions;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport java.util.List;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass BasicConstructionTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Action tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(1,1);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new BasicConstruction();\r\n    }\r\n\r\n    @Test\r\n    void doAction() throws IllegalBuildingException, IllegalMovementException, IllegalBlockUpdateException {\r\n        Point p1= new Point(2,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(1,1);\r\n        Point p4= new Point(3,0);\r\n        //check if worker build on his own position\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p3,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker build on a valid position\r\n        int i=instance.getBoard().blockLevel(p1);\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(i+1,instance.getBoard().blockLevel(p1));\r\n        instance.getBoard().setBlockLevel(p1,3);\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertTrue(instance.getBoard().isThereDome(p1));\r\n\r\n        //check if worker build on invalid positions\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p4,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker build on a position occupied by another worker\r\n        Point p5= new Point(1,0);\r\n        player.placeWorker(1,p5,instance.getBoard());\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p5,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker build on a position with dome\r\n        Point p6= new Point(0,1);\r\n        instance.getBoard().setDome(p6, true);\r\n        assertThrows(IllegalBuildingException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void isValid() {\r\n        Point p1= new Point(2,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(1,1);\r\n        Point p4= new Point(1,0);\r\n        instance.getBoard().setDome(p4,true);\r\n        assertTrue(tester.isValid(p1,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p3,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p4,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void getPossibleActions() {\r\n        List<Point> positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(8, positions.size());\r\n        assertTrue(positions.get(0).getX()==0 &&positions.get(0).getY()==0);\r\n        assertTrue(positions.get(1).getX()==0 &&positions.get(1).getY()==1);\r\n        assertTrue(positions.get(2).getX()==0 &&positions.get(2).getY()==2);\r\n        assertTrue(positions.get(3).getX()==1 &&positions.get(3).getY()==0);\r\n        assertTrue(positions.get(4).getX()==1 &&positions.get(4).getY()==2);\r\n        assertTrue(positions.get(5).getX()==2 &&positions.get(5).getY()==0);\r\n        assertTrue(positions.get(6).getX()==2 &&positions.get(6).getY()==1);\r\n        assertTrue(positions.get(7).getX()==2 &&positions.get(7).getY()==2);\r\n\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/BasicConstructionTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/BasicConstructionTest.java	(date 1587312739800)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Actions;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/AtlasMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass AtlasMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new AtlasMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws endedMoveException, IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void specialBuild() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.specialBuild(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(endedMoveException.class,()->tester.specialBuild(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/AtlasMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/AtlasMoveTest.java	(date 1587312739800)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/HephaestusMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass HephaestusMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new HephaestusMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyBuiltException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, IllegalBlockUpdateException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        Point p3= new Point(0,1);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(IllegalBuildingException.class,()->tester.build(p3,instance.getBoard(),player.selectWorker(0)));\r\n        instance.getBoard().setBlockLevel(p2,3);\r\n        assertThrows(IllegalBuildingException.class,()->tester.build(p3,instance.getBoard(),player.selectWorker(0)));\r\n        instance.getBoard().setBlockLevel(p2,2);\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {\r\n        Point p1= new Point(1,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, IllegalBlockUpdateException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,2);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(1, tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)).size());\r\n        instance.getBoard().setBlockLevel(p2,3);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        instance.getBoard().setBlockLevel(p2,2);\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/HephaestusMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/HephaestusMoveTest.java	(date 1587312739816)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/DemeterMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass DemeterMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new DemeterMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        Point p3= new Point(2,2);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyBuiltException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p3,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        Point p3= new Point(2,2);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p3,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(endedMoveException.class,()->tester.specialBuild(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        Point p3= new Point(2,2);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p3,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/DemeterMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/DemeterMoveTest.java	(date 1587312739816)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AviablePlaceWorkerPointResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;\r\n\r\nimport java.util.List;\r\n\r\npublic class AviablePlaceWorkerPointResponse implements MessageToClient {\r\n\r\n    private List<Point> points;\r\n\r\n    public AviablePlaceWorkerPointResponse(List<Point> points) {\r\n        this.points = points;\r\n    }\r\n\r\n    public List<Point> getPoints() {\r\n        return points;\r\n    }\r\n\r\n    @Override\r\n    public MessageType getMessageType() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<String> getValues() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void accept(ClientMessageHandler msgHandler) {\r\n        msgHandler.visit(this);\r\n    }\r\n}\r\n
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AviablePlaceWorkerPointResponse.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AvailablePlaceWorkerPointResponse.java	(date 1587316286039)
+@@ -6,11 +6,11 @@
+ 
+ import java.util.List;
+ 
+-public class AviablePlaceWorkerPointResponse implements MessageToClient {
++public class AvailablePlaceWorkerPointResponse implements MessageToClient {
+ 
+     private List<Point> points;
+ 
+-    public AviablePlaceWorkerPointResponse(List<Point> points) {
++    public AvailablePlaceWorkerPointResponse(List<Point> points) {
+         this.points = points;
+     }
+ 
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/ArtemisMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass ArtemisMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new ArtemisMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p0= new Point(0,0);\r\n        Point p1= new Point(1,0);\r\n        Point p2= new Point(2,1);\r\n        Point p3= new Point(3,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(IllegalMovementException.class,()->tester.walk(p0,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p3,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/ArtemisMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/ArtemisMoveTest.java	(date 1587312739831)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AviablePlaceWorkerPointRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;\r\n\r\nimport java.util.List;\r\n\r\npublic class AviablePlaceWorkerPointRequest implements MessageToServer {\r\n    @Override\r\n    public MessageType getMessageType() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<String> getValues() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void accept(ServerMessageHandler msgHandler) {\r\n        msgHandler.visit(this);\r\n    }\r\n}\r\n
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AviablePlaceWorkerPointRequest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/AvailablePlaceWorkerPointRequest.java	(date 1587316285999)
+@@ -4,7 +4,7 @@
+ 
+ import java.util.List;
+ 
+-public class AviablePlaceWorkerPointRequest implements MessageToServer {
++public class AvailablePlaceWorkerPointRequest implements MessageToServer {
+     @Override
+     public MessageType getMessageType() {
+         return null;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/MinotaurMovementTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Actions;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport java.util.List;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass MinotaurMovementTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Action tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new MinotaurMovement();\r\n    }\r\n\r\n    @Test\r\n    void doAction() throws IllegalBuildingException, IllegalMovementException, IllegalBlockUpdateException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(0,0);\r\n        Point p4= new Point(3,0);\r\n        //check if worker moves on his own position\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p3,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves in a valid position\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(player.selectWorker(0).getPosition(),p1);\r\n\r\n        //check if worker moves on a too high position\r\n        instance.getBoard().setBlockLevel(p1,2);\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p1,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on invalid positions\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p4,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on a position occupied by another worker\r\n        Point p5= new Point(1,0);\r\n        Point p6= new Point(2,0);\r\n        player.selectWorker(0).setPosition(p3);\r\n        player.placeWorker(1,p5,instance.getBoard());\r\n        tester.doAction(p5,instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(player.selectWorker(0).getPosition().getX(), p5.getX());\r\n        assertEquals(player.selectWorker(0).getPosition().getY(), p5.getY());\r\n        assertEquals(player.selectWorker(1).getPosition().getX(), p6.getX());\r\n        assertEquals(player.selectWorker(1).getPosition().getY(), p6.getY());\r\n        Point p= new Point(3,0);\r\n        instance.getBoard().setBlockLevel(p,4);\r\n        tester.doAction(p6,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));\r\n\r\n        //check if worker moves on a position with dome\r\n        Point p7= new Point(0,1);\r\n        instance.getBoard().setDome(p6, true);\r\n        assertThrows(IllegalMovementException.class,()->tester.doAction(p7,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void isValid() {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(-1,1);\r\n        Point p3= new Point(0,0);\r\n        Point p4= new Point(1,0);\r\n        instance.getBoard().setDome(p4,true);\r\n        assertTrue(tester.isValid(p1,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p3,instance.getBoard(),player.selectWorker(0)));\r\n        assertFalse(tester.isValid(p4,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void getPossibleActions() throws IllegalBuildingException, IllegalMovementException {\r\n        List<Point> positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(3, positions.size());\r\n        assertTrue(positions.get(0).getX()==0 &&positions.get(0).getY()==1);\r\n        assertTrue(positions.get(1).getX()==1 &&positions.get(1).getY()==0);\r\n        assertTrue(positions.get(2).getX()==1 &&positions.get(2).getY()==1);\r\n\r\n        Point p1= new Point(1,1);\r\n        tester.doAction(p1,instance.getBoard(),player.selectWorker(0));\r\n        positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(8, positions.size());\r\n\r\n        Point p2= new Point(1,0);\r\n        tester.doAction(p2,instance.getBoard(),player.selectWorker(0));\r\n        positions=tester.getPossibleActions(instance.getBoard(),player.selectWorker(0));\r\n        assertEquals(5, positions.size());\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/MinotaurMovementTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Actions/MinotaurMovementTest.java	(date 1587312739878)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Actions;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBuildingException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/MinotaurMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass MinotaurMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(2,2);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new MinotaurMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(0,0);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {\r\n        Point p1= new Point(1,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/MinotaurMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/MinotaurMoveTest.java	(date 1587312739894)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/ApolloMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass ApolloMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new ApolloMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/ApolloMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/ApolloMoveTest.java	(date 1587312739894)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/MovementRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/MovementRequest.java	(date 1587312739769)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToServer/MovementRequest.java	(date 1587312739769)
+@@ -0,0 +1,22 @@
++package it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer;
++
++import it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;
++
++import java.util.List;
++
++public class MovementRequest implements MessageToServer {
++    @Override
++    public MessageType getMessageType() {
++        return null;
++    }
++
++    @Override
++    public List<String> getValues() {
++        return null;
++    }
++
++    @Override
++    public void accept(ServerMessageHandler msgHandler) {
++
++    }
++}
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AviableCardResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;\r\n\r\nimport java.util.List;\r\n\r\npublic class AviableCardResponse implements MessageToClient {\r\n\r\n    private List<String> cards;\r\n\r\n    public AviableCardResponse(List<String> cards) {\r\n        this.cards = cards;\r\n    }\r\n\r\n    @Override\r\n    public MessageType getMessageType() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<String> getValues() {\r\n        return cards;\r\n    }\r\n\r\n    @Override\r\n    public void accept(ClientMessageHandler msgHandler) {\r\n        msgHandler.visit(this);\r\n    }\r\n}\r\n
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AviableCardResponse.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/MessagesToClient/AvailableCardResponse.java	(date 1587316286013)
+@@ -5,11 +5,11 @@
+ 
+ import java.util.List;
+ 
+-public class AviableCardResponse implements MessageToClient {
++public class AvailableCardResponse implements MessageToClient {
+ 
+     private List<String> cards;
+ 
+-    public AviableCardResponse(List<String> cards) {
++    public AvailableCardResponse(List<String> cards) {
+         this.cards = cards;
+     }
+ 
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/PanMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass PanMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new PanMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/PanMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/PanMoveTest.java	(date 1587312739910)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ColourPrint.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ColourPrint.java	(date 1587324336040)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Network/Client/ColourPrint.java	(date 1587324336040)
+@@ -0,0 +1,19 @@
++package it.polimi.ingsw.ParenteVenturini.Network.Client;
++
++public class ColourPrint {
++    static final String RESET = "\u001B[0m";
++    private static final String TEXT_RED = "\u001B[31m";
++    private static final String TEXT_BLUE = "\u001B[34m";
++    private static final String TEXT_GREEN = "\u001B[32m";
++
++    public void colouredPrint(int colour, String s){
++        switch (colour){
++            case 1:
++                System.out.print(TEXT_RED + s + RESET);
++            case 2:
++                System.out.print(TEXT_BLUE + s + RESET);
++            case 3:
++                System.out.print(TEXT_GREEN + s + RESET);
++        }
++    }
++}
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/AthenaMoveTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model.Moves;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Match;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Player;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass AthenaMoveTest {\r\n    private Match instance;\r\n    private Player player;\r\n    private Move tester;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        instance= new Match();\r\n        player= new Player(\"player\",instance);\r\n        Point x= new Point(0,0);\r\n        player.placeWorker(1,x,instance.getBoard());\r\n        tester= new AthenaMove();\r\n    }\r\n\r\n    @Test\r\n    void walk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void build() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertThrows(endedMoveException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n\r\n    @Test\r\n    void possibleBuildings() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {\r\n        Point p1= new Point(1,1);\r\n        Point p2= new Point(2,1);\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n        tester.walk(p1,instance.getBoard(),player.selectWorker(0));\r\n        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));\r\n        tester.build(p2,instance.getBoard(),player.selectWorker(0));\r\n        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/AthenaMoveTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/Moves/AthenaMoveTest.java	(date 1587312739925)
+@@ -1,5 +1,6 @@
+ package it.polimi.ingsw.ParenteVenturini.Model.Moves;
+ 
++import it.polimi.ingsw.ParenteVenturini.Model.Color;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
+ import it.polimi.ingsw.ParenteVenturini.Model.Match;
+ import it.polimi.ingsw.ParenteVenturini.Model.Player;
+Index: src/test/java/it/polimi/ingsw/ParenteVenturini/Model/PlayerTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.*;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Effects.AthenaEffect;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyPresentPlayerException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoMorePlayersException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoPlayerException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Moves.ApolloMove;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Moves.HephaestusMove;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Moves.PanMove;\r\nimport org.junit.jupiter.api.BeforeEach;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass PlayerTest {\r\n    private Match instance;\r\n    private Player testplayer;\r\n\r\n    @BeforeEach\r\n    void setUp() throws NoMorePlayersException, AlreadyPresentPlayerException, NoPlayerException {\r\n        instance= new Match();\r\n        instance.addPlayer(\"player\");\r\n        testplayer=instance.getPlayers().get(0);\r\n    }\r\n\r\n    @Test\r\n    void setCard() {\r\n        testplayer.setCard(new ApolloCard());\r\n        assertTrue(testplayer.getCard() instanceof ApolloCard);\r\n    }\r\n\r\n    @Test\r\n    void placeWorker_selectWorker() {\r\n        Point p1= new Point(3,3);\r\n        Point p2= new Point(2,2);\r\n        testplayer.placeWorker(1,p1,instance.getBoard());\r\n        testplayer.placeWorker(1,p2,instance.getBoard());\r\n        assertEquals(testplayer.selectWorker(0),instance.getBoard().findByPosition(p1));\r\n        assertEquals(testplayer.selectWorker(1),instance.getBoard().findByPosition(p2));\r\n    }\r\n\r\n    @Test\r\n    void callMove() {\r\n        testplayer.setCard(new ApolloCard());\r\n        assertTrue(testplayer.callMove() instanceof ApolloMove);\r\n        testplayer.setCard(new PanCard());\r\n        assertTrue(testplayer.callMove() instanceof PanMove);\r\n        testplayer.setCard(new HephaestusCard());\r\n        assertTrue(testplayer.callMove() instanceof HephaestusMove);\r\n    }\r\n\r\n    @Test\r\n    void setNickname() {\r\n        testplayer.setNickname(\"PLAYER\");\r\n        assertEquals(\"PLAYER\",testplayer.getNickname());\r\n    }\r\n\r\n    @Test\r\n    void chooseCard() {\r\n    }\r\n\r\n    @Test\r\n    void getNickname() {\r\n        assertNotNull(testplayer.getNickname());\r\n    }\r\n\r\n    @Test\r\n    void getOpponentEffectPlayer() {\r\n        testplayer.setCard(new ApolloCard());\r\n        assertNull(testplayer.getOpponentEffectPlayer());\r\n        testplayer.setCard(new AthenaCard());\r\n        assertTrue(testplayer.getOpponentEffectPlayer() instanceof AthenaEffect);\r\n    }\r\n\r\n    @Test\r\n    void walk() {\r\n    }\r\n\r\n    @Test\r\n    void build() {\r\n    }\r\n\r\n    @Test\r\n    void specialBuild() {\r\n    }\r\n\r\n    @Test\r\n    void getPossibleMovements() {\r\n    }\r\n\r\n    @Test\r\n    void getPossibleBuildings() {\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/it/polimi/ingsw/ParenteVenturini/Model/PlayerTest.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/test/java/it/polimi/ingsw/ParenteVenturini/Model/PlayerTest.java	(date 1587312739956)
+@@ -5,6 +5,7 @@
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyPresentPlayerException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoMorePlayersException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoPlayerException;
++import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.OpponentEffectException;
+ import it.polimi.ingsw.ParenteVenturini.Model.Moves.ApolloMove;
+ import it.polimi.ingsw.ParenteVenturini.Model.Moves.HephaestusMove;
+ import it.polimi.ingsw.ParenteVenturini.Model.Moves.PanMove;
+@@ -56,10 +57,6 @@
+         assertEquals("PLAYER",testplayer.getNickname());
+     }
+ 
+-    @Test
+-    void chooseCard() {
+-    }
+-
+     @Test
+     void getNickname() {
+         assertNotNull(testplayer.getNickname());
+@@ -74,7 +71,13 @@
+     }
+ 
+     @Test
+-    void walk() {
++    void walk() throws OpponentEffectException {
++        Point p1= new Point(0,0);
++        Point p2= new Point(1,1);
++        testplayer.placeWorker(1,p1,instance.getBoard());
++        testplayer.walk(p2,1);
++        assertTrue(testplayer.selectWorker(0).getPosition().equals(p2));
++
+     }
+ 
+     @Test
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Player.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.Model;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Checks.BasicWinCheck;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Exceptions.OpponentEffectException;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class Player {\r\n\r\n    private Card card;\r\n    private List<Worker> workers;\r\n    private String nickname;\r\n    private WinCheck winCondition;\r\n    private Match match;\r\n    private Move move;\r\n\r\n\r\n    public Player(String nickname, Match match) {\r\n        this.nickname = nickname;\r\n        workers = new ArrayList<Worker>();\r\n        this.match= match;\r\n        this.move=null;\r\n    }\r\n\r\n    public void setCard(Card card){\r\n        this.card = card;\r\n        setWinCondition();\r\n    }\r\n\r\n    private void setWinCondition(){\r\n        if(card == null || card.getWinCheck() == null)\r\n            this.winCondition = new BasicWinCheck();\r\n        else\r\n            this.winCondition = card.getWinCheck();\r\n    }\r\n\r\n    public void placeWorker(int colour , Point point, Board board){\r\n        Worker worker= new Worker(point, this, colour);\r\n        addWorker(worker);\r\n        board.setWorker(worker);\r\n    }\r\n    private void addWorker(Worker worker){\r\n        workers.add(worker);\r\n    }\r\n\r\n    public Worker selectWorker(int num){\r\n        return workers.get(num);\r\n    }\r\n\r\n    public Move callMove(){\r\n        return card.getMove();\r\n    }\r\n\r\n\r\n    public boolean hasWon(Board board){\r\n        return winCondition.hasWon(board, workers);\r\n    }\r\n\r\n\r\n    public Card getCard() {\r\n        return card;\r\n    }\r\n\r\n    public void setNickname(String nickname) {\r\n        this.nickname = nickname;\r\n    }\r\n\r\n    public void chooseCard(String nameCard) throws InvalidCardException {\r\n        List<Card> cards=match.getChosenCards();\r\n        for(Card c:cards) {\r\n            if ( nameCard.equals(c.getName()) ) {\r\n                setCard(c);\r\n            }\r\n            else throw new InvalidCardException();\r\n        }\r\n    }\r\n\r\n    public String getNickname() {\r\n        return nickname;\r\n    }\r\n\r\n    public OpponentEffect getOpponentEffectPlayer(){\r\n        return card.getOpponentEffect();\r\n    }\r\n\r\n    public void walk(Point p, int n) throws OpponentEffectException {\r\n        if( this.move== null )\r\n            this.move = callMove();\r\n        Worker myWorker = selectWorker(n);\r\n        if(match.getOpponentEffectContainer().checkMovementPoint(p, myWorker,match.getBoard())){\r\n            try {\r\n                move.walk(p, match.getBoard(), myWorker);\r\n                OpponentEffect temp= card.getOpponentEffect();\r\n                if(temp!= null && temp.isMovementValid(p, myWorker.getPosition(), match.getBoard())){\r\n                    match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());\r\n                }\r\n                if(move.getHasEnded()){\r\n                    endMove();\r\n                }\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n        else\r\n            throw new OpponentEffectException();\r\n    }\r\n\r\n    public void build(Point p, int n) throws OpponentEffectException {\r\n        if( this.move== null )\r\n            this.move = callMove();\r\n        Worker myWorker = selectWorker(n);\r\n        if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard()) ){\r\n            try {\r\n                move.build(p, match.getBoard(), myWorker);\r\n                OpponentEffect temp= card.getOpponentEffect();\r\n                if(temp!= null && temp.isConstructionValid(p, myWorker.getPosition(), match.getBoard())){\r\n                    match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());\r\n                }\r\n                if(move.getHasEnded()){\r\n                    endMove();\r\n                }\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n        else\r\n            throw new OpponentEffectException();\r\n    }\r\n\r\n    public void specialBuild(Point p, int n) throws OpponentEffectException {\r\n        if( this.move== null )\r\n            this.move = callMove();\r\n        Worker myWorker = selectWorker(n);\r\n        if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard())){\r\n            try {\r\n                move.specialBuild(p, match.getBoard(), myWorker);\r\n                OpponentEffect temp= card.getOpponentEffect();\r\n                if(temp!= null && temp.isConstructionValid(p, myWorker.getPosition(), match.getBoard())){\r\n                    match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());\r\n                }\r\n                if(move.getHasEnded()){\r\n                    endMove();\r\n                }\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n        else\r\n            throw new OpponentEffectException();\r\n    }\r\n\r\n    public List<Point> getPossibleMovements(int n) {\r\n        if( this.move== null )\r\n            this.move = callMove();\r\n        Worker myWorker =selectWorker(n);\r\n        List<Point> temp = move.possibleMovements(match.getBoard(), myWorker);\r\n        temp = match.getOpponentEffectContainer().removeMovementPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());\r\n        return temp;\r\n    }\r\n\r\n    public List<Point> getPossibleBuildings(int n) {\r\n        if( this.move== null )\r\n            this.move = callMove();\r\n        Worker myWorker = selectWorker(n);\r\n        List<Point> temp = move.possibleBuildings(match.getBoard(), myWorker);\r\n        temp = match.getOpponentEffectContainer().removeConstructionPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());\r\n        return temp;\r\n    }\r\n\r\n    public void endMove(){\r\n        if(this.move.getHasEnded() || this.move.getHasWalkedandBuilt() ){\r\n            move = null;\r\n            match.getTurn().setNextPlayer();\r\n        }\r\n    }\r\n\r\n    public List<Worker> getWorkers(){\r\n        return workers;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Player.java	(revision 3d6610cdc58ed08aad72bc8c378bf5baea978b0f)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/Model/Player.java	(date 1587312739424)
+@@ -71,6 +71,7 @@
+         this.nickname = nickname;
+     }
+ 
++/* not used
+     public void chooseCard(String nameCard) throws InvalidCardException {
+         List<Card> cards=match.getChosenCards();
+         for(Card c:cards) {
+@@ -80,7 +81,7 @@
+             else throw new InvalidCardException();
+         }
+     }
+-
++*/
+     public String getNickname() {
+         return nickname;
+     }

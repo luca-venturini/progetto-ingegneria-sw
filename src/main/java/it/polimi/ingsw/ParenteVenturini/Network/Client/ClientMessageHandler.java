@@ -21,4 +21,6 @@ public interface ClientMessageHandler {
     void visit(AvailableMovePointResponse msg);
     void visit(SelectWorkerResponse msg);
     void visit(EndMoveResponse msg);
+    void visit(YourTurnNotification msg);
+    void visit(WinNotification msg);
 }

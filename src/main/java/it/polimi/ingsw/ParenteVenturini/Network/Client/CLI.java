@@ -121,14 +121,18 @@ public class CLI implements ViewInterface {
             printString("  -------------------------------");
             print(i+" | ");
             for (int j = 0; j < 5; j++) {
-                if(workers.get(j).equals(i,j) ) {
-                    int k=Integer.parseInt(colours.get(j));
-                    colourPrint.print(k,"&");
+                for(Point p: workers) {
+                    if (p.equals(i,j)) {
+                        int k = Integer.parseInt(colours.get(workers.indexOf(p)));
+                        colourPrint.print(k, "&");
+                    }
+                    else {
+                        print(" ");
+                    }
                 }
-                else if(blocks[i][j].isDome()){
+                if(blocks[i][j].isDome()){
                     print("O");
                 }
-                print("  ");
                 print(" "+blocks[i][j].getLevel()+"| ");
             }
             print("\n");
@@ -194,11 +198,35 @@ public class CLI implements ViewInterface {
     }
 
     @Override
+    public void displaySelectPoint() {
+        int choice;
+        do {
+            printString("--Menu Place Worker setUp--");
+            printString("1- Get possible Points");
+            printString("2- Place worker");
+            printString("Choice: ");
+            String number = stdIn.nextLine();
+            choice = Integer.parseInt(number);
+            if (choice == 1) {
+                MessageToServer message = new AvailablePlaceWorkerPointRequest();
+                clientSideController.sendMessage(message);
+            } else if (choice == 2) {
+                printString("x :");
+                String xPos = stdIn.nextLine();
+                printString("y :");
+                String yPos = stdIn.nextLine();
+                Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                MessageToServer message = new PlaceWorkerRequest(point, nickname);
+                clientSideController.sendMessage(message);
+            }
+        }while(choice<1 || choice>2);
+    }
+
+    @Override
     public void displayMoveMenu() {
         int choice;
          do{
             printString("--Menu Worker's move--");
-            printString("Scelta: ");
             printString("1- Muovi");
             printString("2- Costruisci");
             printString("3- Finisci turno");

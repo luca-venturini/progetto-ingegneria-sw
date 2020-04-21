@@ -15,4 +15,5 @@ public interface ServerMessageHandler {
     void visit(ConstructionRequest msg);
     void visit(EndMoveRequest msg);
     void visit(SelectWorkerRequest msg);
+    void visit(ActionPointRequest msg);
 }

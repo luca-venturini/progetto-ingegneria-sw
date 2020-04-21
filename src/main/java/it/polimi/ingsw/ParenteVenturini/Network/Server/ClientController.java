@@ -111,6 +111,11 @@ public class ClientController implements ServerMessageHandler {
         gameController.selectWorker(this,msg.getNickname(),msg.getIndex());
     }
 
+    @Override
+    public void visit(ActionPointRequest msg) {
+        gameController.doMove(this,msg.getPoint(), msg.getNickname());
+    }
+
 
     public Player getPlayer() {
         return player;
