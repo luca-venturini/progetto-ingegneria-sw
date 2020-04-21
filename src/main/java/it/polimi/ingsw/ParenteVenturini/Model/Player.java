@@ -5,6 +5,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Checks.BasicWinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Checks.WinCheck;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.InvalidCardException;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NotPossibleEndMoveException;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.OpponentEffectException;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
@@ -173,11 +174,12 @@ public class Player {
         return temp;
     }
 
-    public void endMove(){
+    public void endMove() throws NotPossibleEndMoveException {
         if(this.move.getHasEnded() || this.move.getHasWalkedandBuilt() ){
             move = null;
             match.getTurn().setNextPlayer();
         }
+        else throw  new NotPossibleEndMoveException();
     }
 
     public List<Worker> getWorkers(){

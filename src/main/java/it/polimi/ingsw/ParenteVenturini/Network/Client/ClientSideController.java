@@ -142,6 +142,17 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
+    public void visit(EndMoveResponse msg) {
+        client.displayMessage(msg.getMessage());
+        if(!msg.isDone())
+            client.displayMoveMenu();
+        else {
+            client.displayMessage("Il tuo turno è finito. Attendi...");
+            client.displaySelectWorker();
+        }
+    }
+
+    @Override
     public void visit(PlaceWorkerResponse msg) {
         System.out.println(msg.getSettedPoint().toString());
         if(msg.isSet()) {

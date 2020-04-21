@@ -215,21 +215,28 @@ public class GameController {
         else notifySingleClient(clientController,new SelectWorkerResponse("Non è il tuo turno",false));
     }
 
-    /*public void doMove(ClientController clientController, String typeOfMove,String nickname){
+    public void doMove(ClientController clientController, String typeOfMove,String nickname){
         switch (typeOfMove){
             case "Movement":
-                moveHandler.getMovementsActions
+                moveHandler.getMovementsActions(nickname);
             case "Construction":
-
+                moveHandler.getConstructionActions(nickname);
             case "EndMove":
-                moveHandler.doEndMove(nickname);
+                try {
+                    moveHandler.doEndMove(nickname);
+                    notifySingleClient(clientController,new EndMoveResponse("Turno terminato",true));
+                } catch (NotYourTurnException e) {
+                    notifySingleClient(clientController,new EndMoveResponse("Non è il tuo turno",false));
+                } catch (NotPossibleEndMoveException e) {
+                    notifySingleClient(clientController,new EndMoveResponse("Non è possibile terminare il turno",false));
+                }
         }
     }
 
     public  void doMove(ClientController clientController,Point x, String nickname){
 
     }
-*/
+
     public int getNumOfPlayers(){
         return clients.size();
     }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SelectWorkerRequest;
 
 public interface ClientMessageHandler {
     void visit(ErrorLoginNotification msg);
@@ -21,4 +20,5 @@ public interface ClientMessageHandler {
     void visit(BoardUpdateNotification msg);
     void visit(AvailableMovePointResponse msg);
     void visit(SelectWorkerResponse msg);
+    void visit(EndMoveResponse msg);
 }

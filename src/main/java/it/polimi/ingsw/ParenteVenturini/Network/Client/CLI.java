@@ -117,7 +117,6 @@ public class CLI implements ViewInterface {
     @Override
     public void displayBoard(Block blocks[][], List<Point>workers,List<String>colours) {
         printString("     0     1     2     3     4   ");
-        //printString("1 | " + "  " + "| " + "  " + "| " + "  " + "|     ""|     ""|");
         for(int i=0;i<5;i++) {
             printString("  -------------------------------");
             print(i+" | ");
