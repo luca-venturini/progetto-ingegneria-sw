@@ -11,9 +11,7 @@ public interface ServerMessageHandler {
     void visit(SetStartingPlayerRequest msg);
     void visit(PlaceWorkerRequest msg);
     void visit(AvailablePlaceWorkerPointRequest msg);
-    void visit(MovementRequest msg);
-    void visit(ConstructionRequest msg);
-    void visit(EndMoveRequest msg);
+    void visit(ActionRequest msg);
     void visit(SelectWorkerRequest msg);
     void visit(ActionPointRequest msg);
 }

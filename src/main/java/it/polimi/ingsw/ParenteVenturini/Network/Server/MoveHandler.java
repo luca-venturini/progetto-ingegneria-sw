@@ -5,6 +5,8 @@ import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
 
+import java.util.List;
+
 public class MoveHandler {
     private Match match;
     private boolean movement;
@@ -26,7 +28,7 @@ public class MoveHandler {
     }
 
     public void doMovement(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException {
-        if(match.getTurn().getCurrentPlayer().equals(nickname)) {
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().walk(x);
         }
         else{
@@ -36,7 +38,7 @@ public class MoveHandler {
     }
 
     public void doBuilding(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, OutOfOrderMoveException, NotPossibleEndMoveException, AlreadyBuiltException {
-        if(match.getTurn().getCurrentPlayer().equals(nickname)) {
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().build(x);
         }
         else{
@@ -45,7 +47,7 @@ public class MoveHandler {
     }
 
     public void doEndMove(String nickname) throws NotYourTurnException, NotPossibleEndMoveException {
-        if(match.getTurn().getCurrentPlayer().equals(nickname)) {
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().endMove();
         }
         else{
@@ -54,20 +56,20 @@ public class MoveHandler {
 
     }
 
-    public void getMovementsActions(String nickname) throws NotYourTurnException {
-        if(match.getTurn().getCurrentPlayer().equals(nickname)) {
-            match.getTurn().getCurrentPlayer().getPossibleMovements();
+    public List<Point> getMovementsActions(String nickname) throws NotYourTurnException {
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             movement= true;
+           return match.getTurn().getCurrentPlayer().getPossibleMovements();
         }
         else{
             throw new NotYourTurnException();
         }
     }
 
-    public void getConstructionActions(String nickname) throws NotYourTurnException {
-        if(match.getTurn().getCurrentPlayer().equals(nickname)) {
-            match.getTurn().getCurrentPlayer().getPossibleBuildings();
+    public List<Point> getConstructionActions(String nickname) throws NotYourTurnException {
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             construction= true;
+            return match.getTurn().getCurrentPlayer().getPossibleBuildings();
         }
         else{
             throw new NotYourTurnException();

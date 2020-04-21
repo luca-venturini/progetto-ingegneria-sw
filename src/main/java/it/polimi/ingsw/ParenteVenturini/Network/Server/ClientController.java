@@ -92,18 +92,8 @@ public class ClientController implements ServerMessageHandler {
     }
 
     @Override
-    public void visit(MovementRequest msg) {
-        gameController.doMove(this,"Movement",msg.getNickname());
-    }
-
-    @Override
-    public void visit(ConstructionRequest msg) {
-        gameController.doMove(this,"Construction",msg.getNickname());
-    }
-
-    @Override
-    public void visit(EndMoveRequest msg) {
-        gameController.doMove(this,"EndMove",msg.getNickname());
+    public void visit(ActionRequest msg) {
+        gameController.doMove(this,msg.getTypeOfAction(),msg.getNickname());
     }
 
     @Override
@@ -113,7 +103,7 @@ public class ClientController implements ServerMessageHandler {
 
     @Override
     public void visit(ActionPointRequest msg) {
-        gameController.doMove(this,msg.getPoint(), msg.getNickname());
+        gameController.doAction(this,msg.getPoint(), msg.getNickname());
     }
 
 

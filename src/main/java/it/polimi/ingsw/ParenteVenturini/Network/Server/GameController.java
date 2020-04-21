@@ -192,7 +192,7 @@ public class GameController {
                 notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", position ));
             else
                 notifySingleClient(player, new PlaceWorkerResponse( true, true, "Secondo worker posizionato, attendi...", position ));
-        } catch (IllegalPlaceWorkerException | IllegalBlockUpdateException e) {
+        } catch (IllegalPlaceWorkerException e) {
             notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",position ));
         }
     }
@@ -202,9 +202,9 @@ public class GameController {
         notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points));
     }
 
-    public void sendBoard() throws IllegalBlockUpdateException {
+    public void sendBoard() {
         Block[][] blocks= new Block[5][5];
-        List<Point> positionworker= new ArrayList<>();
+        List<Point> positionworker = new ArrayList<>();
         List<String> colours= new ArrayList<>();
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
@@ -221,31 +221,35 @@ public class GameController {
 
     public void notifyYourTurn(){
         notifyAllClients(new SimplyNotification("E' il turno di "+match.getTurn().getCurrentPlayer().getNickname()));
-        notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification());
+        notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification() );
+        System.out.println("Turno: "+match.getTurn().getNumTurn());
     }
 
     public void selectWorker(ClientController clientController, String nickname, int index){
-        if(match.getTurn().getCurrentPlayer().equals(nickname)){
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)){
             match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
-            moveHandler= new MoveHandler(this.match);
             notifySingleClient(clientController,new SelectWorkerResponse("Worker selezionato",true));
         }
         else notifySingleClient(clientController,new SelectWorkerResponse("Non è il tuo turno",false));
     }
 
     public void doMove(ClientController clientController, String typeOfMove,String nickname){
+        moveHandler= new MoveHandler(this.match);
+        List<Point> points;
         switch (typeOfMove){
             case "Movement":
                 try {
-                    moveHandler.getMovementsActions(nickname);
+                   points=moveHandler.getMovementsActions(nickname);
+                    notifySingleClient(clientController,new ActionResponse(points,"OK",true));
                 } catch (NotYourTurnException e) {
-                    e.printStackTrace();
+                    notifySingleClient(clientController,new ActionResponse(null,"Non è il tuo turno",false));
                 }
             case "Construction":
                 try {
-                    moveHandler.getConstructionActions(nickname);
+                    points=moveHandler.getConstructionActions(nickname);
+                    notifySingleClient(clientController,new ActionResponse(points,"OK",true));
                 } catch (NotYourTurnException e) {
-                    e.printStackTrace();
+                    notifySingleClient(clientController,new ActionResponse(null,"Non è il tuo turno",false));
                 }
             case "EndMove":
                 try {
@@ -260,10 +264,12 @@ public class GameController {
         }
     }
 
-    public  void doMove(ClientController clientController,Point x, String nickname) {
+    public  void doAction(ClientController clientController,Point x, String nickname) {
         try {
             try {
                 moveHandler.doAction(nickname,x);
+                notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
+                sendBoard();
                 if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification());
                 }

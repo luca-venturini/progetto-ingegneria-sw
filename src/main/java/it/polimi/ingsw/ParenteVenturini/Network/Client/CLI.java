@@ -119,7 +119,7 @@ public class CLI implements ViewInterface {
         printString("     0     1     2     3     4   ");
         for(int i=0;i<5;i++) {
             printString("  -------------------------------");
-            print(i+" | ");
+            print(i+" |");
             for (int j = 0; j < 5; j++) {
                 for(Point p: workers) {
                     if (p.equals(i,j)) {
@@ -133,7 +133,7 @@ public class CLI implements ViewInterface {
                 if(blocks[i][j].isDome()){
                     print("O");
                 }
-                print(" "+blocks[i][j].getLevel()+"| ");
+                print(" "+blocks[i][j].getLevel()+"|");
             }
             print("\n");
         }
@@ -199,27 +199,14 @@ public class CLI implements ViewInterface {
 
     @Override
     public void displaySelectPoint() {
-        int choice;
-        do {
-            printString("--Menu Place Worker setUp--");
-            printString("1- Get possible Points");
-            printString("2- Place worker");
-            printString("Choice: ");
-            String number = stdIn.nextLine();
-            choice = Integer.parseInt(number);
-            if (choice == 1) {
-                MessageToServer message = new AvailablePlaceWorkerPointRequest();
-                clientSideController.sendMessage(message);
-            } else if (choice == 2) {
-                printString("x :");
-                String xPos = stdIn.nextLine();
-                printString("y :");
-                String yPos = stdIn.nextLine();
-                Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                MessageToServer message = new PlaceWorkerRequest(point, nickname);
-                clientSideController.sendMessage(message);
-            }
-        }while(choice<1 || choice>2);
+        printString("Seleziona punto:");
+        printString("x :");
+        String xPos = stdIn.nextLine();
+        printString("y :");
+        String yPos = stdIn.nextLine();
+        Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
+        MessageToServer message = new ActionPointRequest(point, nickname);
+        clientSideController.sendMessage(message);
     }
 
     @Override
@@ -234,14 +221,14 @@ public class CLI implements ViewInterface {
             String number= stdIn.nextLine();
             choice = Integer.parseInt(number);
             if (choice == 1) {
-                MessageToServer message = new MovementRequest(nickname);
+                MessageToServer message = new ActionRequest(nickname,"Movement");
                 clientSideController.sendMessage(message);
             } else if (choice == 2) {
-                MessageToServer message = new ConstructionRequest(nickname);
+                MessageToServer message = new ActionRequest(nickname,"Construction");
                 clientSideController.sendMessage(message);
             }
             else if(choice == 3){
-                MessageToServer message = new EndMoveRequest(nickname);
+                MessageToServer message = new ActionRequest(nickname,"EndMove");
                 clientSideController.sendMessage(message);
             }
         }while(choice<1 || choice>3);

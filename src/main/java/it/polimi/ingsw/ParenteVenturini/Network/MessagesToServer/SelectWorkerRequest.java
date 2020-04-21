@@ -33,6 +33,6 @@ public class SelectWorkerRequest implements MessageToServer {
 
     @Override
     public void accept(ServerMessageHandler msgHandler) {
-
+        msgHandler.visit(this);
     }
 }

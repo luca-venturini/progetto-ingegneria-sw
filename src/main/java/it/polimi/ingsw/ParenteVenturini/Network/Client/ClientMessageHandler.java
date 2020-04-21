@@ -18,9 +18,10 @@ public interface ClientMessageHandler {
     void visit(PlaceWorkersNotification msg);
     void visit(AvailablePlaceWorkerPointResponse msg);
     void visit(BoardUpdateNotification msg);
-    void visit(AvailableMovePointResponse msg);
     void visit(SelectWorkerResponse msg);
     void visit(EndMoveResponse msg);
     void visit(YourTurnNotification msg);
     void visit(WinNotification msg);
+    void visit(ActionResponse msg);
+    void visit(ActionPointResponse msg);
 }

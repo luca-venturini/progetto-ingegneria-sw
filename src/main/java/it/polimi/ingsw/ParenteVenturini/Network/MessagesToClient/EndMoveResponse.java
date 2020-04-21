@@ -33,6 +33,6 @@ public class EndMoveResponse implements MessageToClient {
 
     @Override
     public void accept(ClientMessageHandler msgHandler) {
-
+        msgHandler.visit(this);
     }
 }

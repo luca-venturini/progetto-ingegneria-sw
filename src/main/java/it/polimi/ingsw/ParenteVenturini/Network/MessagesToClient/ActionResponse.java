@@ -6,18 +6,28 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 
 import java.util.List;
 
-public class AvailableMovePointResponse implements MessageToClient{
-
+public class ActionResponse implements  MessageToClient{
+    private boolean done;
     private List<Point> points;
+    private String message;
 
-    public AvailableMovePointResponse(List<Point> points) {
+    public ActionResponse(List<Point> points, String message, boolean done) {
         this.points = points;
+        this.message = message;
+        this.done = done;
     }
 
     public List<Point> getPoints() {
         return points;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
 
     @Override
     public MessageType getMessageType() {
@@ -31,6 +41,6 @@ public class AvailableMovePointResponse implements MessageToClient{
 
     @Override
     public void accept(ClientMessageHandler msgHandler) {
-
+        msgHandler.visit(this);
     }
 }

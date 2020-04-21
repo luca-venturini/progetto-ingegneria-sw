@@ -122,17 +122,6 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
-    public void visit(AvailableMovePointResponse msg) {
-        if(msg.getPoints() != null) {
-            client.displayMessage(msg.getPoints().toString());
-        }
-        else {
-            client.displayMessage("Nessuna azione possibile");
-            client.displaySelectWorker();
-        }
-    }
-
-    @Override
     public void visit(SelectWorkerResponse msg) {
         client.displayMessage(msg.getMessage());
         if(!msg.isSet())
@@ -161,6 +150,33 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(WinNotification msg) {
 
+    }
+
+    @Override
+    public void visit(ActionResponse msg) {
+        if(msg.isDone()) {
+            if (msg.getPoints() != null) {
+                client.displayMessage(msg.getPoints().toString());
+                client.displaySelectPoint();
+            } else {
+                client.displayMessage("Nessuna azione possibile");
+                client.displaySelectWorker();
+            }
+        }
+        else{
+            client.displayMessage(msg.getMessage());
+            client.displayMoveMenu();
+        }
+    }
+
+    @Override
+    public void visit(ActionPointResponse msg) {
+        client.displayMessage(msg.getMessage());
+        if(!msg.isDone())
+            client.displayMoveMenu();
+        else {
+            client.displayMoveMenu();
+        }
     }
 
     @Override

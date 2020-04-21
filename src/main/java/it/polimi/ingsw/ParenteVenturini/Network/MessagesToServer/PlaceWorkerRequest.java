@@ -3,7 +3,6 @@ package it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Server.ServerMessageHandler;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class PlaceWorkerRequest implements MessageToServer {

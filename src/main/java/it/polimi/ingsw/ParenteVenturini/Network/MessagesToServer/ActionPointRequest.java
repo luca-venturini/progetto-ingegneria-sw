@@ -34,6 +34,6 @@ public class ActionPointRequest implements MessageToServer {
 
     @Override
     public void accept(ServerMessageHandler msgHandler) {
-
+        msgHandler.visit(this);
     }
 }
