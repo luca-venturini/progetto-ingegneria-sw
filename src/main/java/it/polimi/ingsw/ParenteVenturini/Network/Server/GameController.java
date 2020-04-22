@@ -144,7 +144,7 @@ public class GameController {
 
 
     public void setStartingPlayer(String nickname, String startingPlayerNickname){
-        if(nickname == match.getChallenger().getNickname()) {
+        if(nickname.equals(match.getChallenger().getNickname())) {
             try {
                 match.selectStarter(startingPlayerNickname);
                 notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( true, "Giocatore iniziale settato"));
@@ -244,6 +244,8 @@ public class GameController {
                 } catch (NotYourTurnException e) {
                     notifySingleClient(clientController,new ActionResponse(null,"Non è il tuo turno",false));
                 }
+                break;
+
             case "Construction":
                 try {
                     points=moveHandler.getConstructionActions(nickname);
@@ -251,6 +253,8 @@ public class GameController {
                 } catch (NotYourTurnException e) {
                     notifySingleClient(clientController,new ActionResponse(null,"Non è il tuo turno",false));
                 }
+                break;
+
             case "EndMove":
                 try {
                     moveHandler.doEndMove(nickname);
@@ -261,6 +265,11 @@ public class GameController {
                 } catch (NotPossibleEndMoveException e) {
                     notifySingleClient(clientController,new EndMoveResponse("Non è possibile terminare il turno",false));
                 }
+                break;
+
+            default:
+                System.out.println("Errore inaspettato");
+                break;
         }
     }
 
@@ -268,8 +277,8 @@ public class GameController {
         try {
             try {
                 moveHandler.doAction(nickname,x);
-                notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
                 sendBoard();
+                notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
                 if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification());
                 }

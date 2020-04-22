@@ -137,7 +137,6 @@ public class ClientSideController implements ClientMessageHandler {
             client.displayMoveMenu();
         else {
             client.displayMessage("Il tuo turno è finito. Attendi...");
-            client.displaySelectWorker();
         }
     }
 
@@ -172,11 +171,7 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(ActionPointResponse msg) {
         client.displayMessage(msg.getMessage());
-        if(!msg.isDone())
-            client.displayMoveMenu();
-        else {
-            client.displayMoveMenu();
-        }
+        client.displayMoveMenu();
     }
 
     @Override

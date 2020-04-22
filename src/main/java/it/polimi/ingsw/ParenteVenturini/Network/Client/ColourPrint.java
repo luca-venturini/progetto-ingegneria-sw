@@ -9,13 +9,13 @@ public class ColourPrint {
     public void print(int colour, String s){
         switch (colour){
             case 1:
-                System.out.print(TEXT_RED+s+RESET);
+                System.out.print(TEXT_RED + s + RESET);
                 break;
             case 2:
-                System.out.print(TEXT_BLUE+s+RESET);
+                System.out.print(TEXT_BLUE + s + RESET);
                 break;
             case 3:
-                System.out.print(TEXT_GREEN+s+RESET);
+                System.out.print(TEXT_GREEN + s + RESET);
                 break;
             default:
                 System.out.print(s);
