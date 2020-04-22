@@ -115,10 +115,10 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void displayBoard(Block blocks[][], List<Point>workers,List<String>colours) {
-        printString("     0     1     2     3     4   ");
+    public void displayBoard(Block[][] blocks, List<Point>workers, List<String>colours) {
+        printString("     0       1       2       3       4   ");
         for(int i=0;i<5;i++) {
-            printString("  -------------------------------");
+            printString("  ------------------------------------");
             print(i+" |");
             for (int j = 0; j < 5; j++) {
                 for(Point p: workers) {
@@ -137,7 +137,7 @@ public class CLI implements ViewInterface {
             }
             print("\n");
         }
-        printString("  -------------------------------");
+        printString("  ------------------------------------");
     }
 
     @Override
@@ -214,9 +214,10 @@ public class CLI implements ViewInterface {
         int choice;
          do{
             printString("--Menu Worker's move--");
-            printString("1- Muovi");
-            printString("2- Costruisci");
-            printString("3- Finisci turno");
+            printString("1- Movement");
+            printString("2- Construction");
+            printString("3- Special Construction");
+            printString("4- End Move");
             printString("Scelta: ");
             String number= stdIn.nextLine();
             choice = Integer.parseInt(number);
@@ -226,12 +227,15 @@ public class CLI implements ViewInterface {
             } else if (choice == 2) {
                 MessageToServer message = new ActionRequest(nickname,"Construction");
                 clientSideController.sendMessage(message);
+            } else if (choice == 3) {
+                MessageToServer message = new ActionRequest(nickname,"SpecialConstruction");
+                clientSideController.sendMessage(message);
             }
-            else if(choice == 3){
+            else if(choice == 4){
                 MessageToServer message = new ActionRequest(nickname,"EndMove");
                 clientSideController.sendMessage(message);
             }
-        }while(choice<1 || choice>3);
+        }while(choice<1 || choice>4);
     }
 
     @Override
@@ -245,8 +249,10 @@ public class CLI implements ViewInterface {
                 printString("Choice: ");
                 String number = stdIn.nextLine();
                 choice = Integer.parseInt(number);
-                MessageToServer message = new SelectWorkerRequest(nickname,number);
-                clientSideController.sendMessage(message);
+                if(choice ==1 || choice ==2) {
+                    MessageToServer message = new SelectWorkerRequest(nickname, number);
+                    clientSideController.sendMessage(message);
+                }
             }while(choice<1 || choice>2);
         }
 

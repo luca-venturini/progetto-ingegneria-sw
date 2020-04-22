@@ -3,6 +3,7 @@ package it.polimi.ingsw.ParenteVenturini.Network.Server;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Match;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NoPossibleActionException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
 
 import java.util.List;
@@ -11,19 +12,31 @@ public class MoveHandler {
     private Match match;
     private boolean movement;
     private boolean construction;
+    private boolean specialconstruction;
 
     public MoveHandler(Match match) {
         this.match=match;
         this.construction= false;
         this.movement= false;
+        this.specialconstruction= false;
+
+    }
+
+    public void init(){
+        this.construction= false;
+        this.movement= false;
+        this.specialconstruction= false;
     }
 
     public void doAction(String nickname, Point x) throws NotYourTurnException, OpponentEffectException, AlreadyBuiltException, IllegalBuildingException, IllegalMovementException, NotPossibleEndMoveException, AlreadyWalkedException, endedMoveException, OutOfOrderMoveException {
-        if(movement == true) {
+        if(movement) {
             doMovement(nickname,x);
         }
-        else if(construction == true) {
+        else if(construction) {
             doBuilding(nickname, x);
+        }
+        else if(specialconstruction){
+            doSpecialBuilding(nickname, x);
         }
     }
 
@@ -37,9 +50,18 @@ public class MoveHandler {
 
     }
 
-    public void doBuilding(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, OutOfOrderMoveException, NotPossibleEndMoveException, AlreadyBuiltException {
+    public void doBuilding(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, OutOfOrderMoveException, NotPossibleEndMoveException, AlreadyBuiltException, AlreadyWalkedException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().build(x);
+        }
+        else{
+            throw new NotYourTurnException();
+        }
+    }
+
+    public void doSpecialBuilding(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, OutOfOrderMoveException, NotPossibleEndMoveException, AlreadyBuiltException, AlreadyWalkedException {
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
+            match.getTurn().getCurrentPlayer().specialBuild(x);
         }
         else{
             throw new NotYourTurnException();
@@ -56,20 +78,41 @@ public class MoveHandler {
 
     }
 
-    public List<Point> getMovementsActions(String nickname) throws NotYourTurnException {
+    public List<Point> getMovementsActions(String nickname) throws NotYourTurnException, NoPossibleActionException, AlreadyWalkedException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             movement= true;
-           return match.getTurn().getCurrentPlayer().getPossibleMovements();
+            if(match.getTurn().getCurrentPlayer().getPossibleMovements() != null) {
+                return match.getTurn().getCurrentPlayer().getPossibleMovements();
+            }
+            else throw new NoPossibleActionException();
         }
         else{
             throw new NotYourTurnException();
         }
     }
 
-    public List<Point> getConstructionActions(String nickname) throws NotYourTurnException {
+    public List<Point> getConstructionActions(String nickname) throws NotYourTurnException, NoPossibleActionException, OutOfOrderMoveException, AlreadyBuiltException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             construction= true;
-            return match.getTurn().getCurrentPlayer().getPossibleBuildings();
+            if(match.getTurn().getCurrentPlayer().getPossibleBuildings() != null) {
+                return match.getTurn().getCurrentPlayer().getPossibleBuildings();
+            }
+            else{
+                throw new NoPossibleActionException();
+            }
+        }
+        else{
+            throw new NotYourTurnException();
+        }
+    }
+
+    public List<Point> getSpecialConstructionActions(String nickname) throws NotYourTurnException, NoPossibleActionException, OutOfOrderMoveException, AlreadyBuiltException {
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
+            specialconstruction= true;
+            if(match.getTurn().getCurrentPlayer().getPossibleBuildings() != null) {
+                return match.getTurn().getCurrentPlayer().getPossibleBuildings();
+            }
+            else throw new NoPossibleActionException();
         }
         else{
             throw new NotYourTurnException();

@@ -2,9 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.AthenaEffect;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.AlreadyPresentPlayerException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoMorePlayersException;
-import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.NoPlayerException;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.ApolloMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.HephaestusMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.PanMove;
@@ -57,7 +55,11 @@ class PlayerTest {
     }
 
     @Test
-    void chooseCard() {
+    void chooseCard() throws InvalidCardException, NoMoreCardsException {
+        instance.selectCardFromDeck("Apollo");
+        instance.selectCardFromDeck("Zeus");
+        assertThrows(InvalidCardException.class,()->testplayer.chooseCard("Apollo-False"));
+        assertThrows(InvalidCardException.class,()->testplayer.chooseCard("Minotaur"));
     }
 
     @Test

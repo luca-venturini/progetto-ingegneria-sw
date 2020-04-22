@@ -6,6 +6,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalCardException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerException;
+import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NoPossibleActionException;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 
@@ -186,6 +187,7 @@ public class GameController {
                 notifyAllClients(new SimplyNotification("Inizio della fase di gioco"));
                 sendBoard();
                 match.setTurn();
+                moveHandler= new MoveHandler(this.match);
                 notifyYourTurn();
             }
             else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))
@@ -234,24 +236,49 @@ public class GameController {
     }
 
     public void doMove(ClientController clientController, String typeOfMove,String nickname){
-        moveHandler= new MoveHandler(this.match);
+        moveHandler.init();
         List<Point> points;
         switch (typeOfMove){
             case "Movement":
                 try {
                    points=moveHandler.getMovementsActions(nickname);
-                    notifySingleClient(clientController,new ActionResponse(points,"OK",true));
+                    notifySingleClient(clientController,new ActionResponse(points));
                 } catch (NotYourTurnException e) {
-                    notifySingleClient(clientController,new ActionResponse(null,"Non è il tuo turno",false));
+                    notifySingleClient(clientController,new ActionNotification("Non è il tuo turno"));
+                } catch (NoPossibleActionException e) {
+                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile"));
+                } catch (AlreadyWalkedException e) {
+                    notifySingleClient(clientController,new ActionNotification("Hai già mosso"));
                 }
                 break;
 
             case "Construction":
                 try {
                     points=moveHandler.getConstructionActions(nickname);
-                    notifySingleClient(clientController,new ActionResponse(points,"OK",true));
+                    notifySingleClient(clientController,new ActionResponse(points));
                 } catch (NotYourTurnException e) {
-                    notifySingleClient(clientController,new ActionResponse(null,"Non è il tuo turno",false));
+                    notifySingleClient(clientController,new ActionNotification("Non è il tuo turno"));
+                } catch (NoPossibleActionException e) {
+                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile"));
+                } catch (OutOfOrderMoveException e) {
+                    notifySingleClient(clientController,new ActionNotification("Devi prima muovere"));
+                } catch (AlreadyBuiltException e) {
+                    notifySingleClient(clientController,new ActionNotification("Hai già costruito"));
+                }
+                break;
+
+            case "SpecialConstruction":
+                try {
+                    points=moveHandler.getSpecialConstructionActions(nickname);
+                    notifySingleClient(clientController,new ActionResponse(points));
+                } catch (NotYourTurnException e) {
+                    notifySingleClient(clientController,new ActionNotification("Non è il tuo turno"));
+                } catch (NoPossibleActionException e) {
+                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile"));
+                } catch (OutOfOrderMoveException e) {
+                    notifySingleClient(clientController,new ActionNotification("Devi prima muovere"));
+                } catch (AlreadyBuiltException e) {
+                    notifySingleClient(clientController,new ActionNotification("Hai già costruito"));
                 }
                 break;
 

@@ -24,4 +24,5 @@ public interface ClientMessageHandler {
     void visit(WinNotification msg);
     void visit(ActionResponse msg);
     void visit(ActionPointResponse msg);
+    void visit(ActionNotification msg);
 }

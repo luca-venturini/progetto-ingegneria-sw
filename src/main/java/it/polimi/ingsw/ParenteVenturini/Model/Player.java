@@ -24,7 +24,7 @@ public class Player {
         this.nickname = nickname;
         workers = new ArrayList<Worker>();
         this.match= match;
-        this.move=null;
+        this.move= null;
     }
 
     public void setCard(Card card){
@@ -103,7 +103,7 @@ public class Player {
             throw new OpponentEffectException();
     }
 
-    public void build(Point p) throws OpponentEffectException, AlreadyBuiltException, IllegalBuildingException, OutOfOrderMoveException, endedMoveException, IllegalMovementException, NotPossibleEndMoveException {
+    public void build(Point p) throws OpponentEffectException, AlreadyBuiltException, IllegalBuildingException, OutOfOrderMoveException, endedMoveException, IllegalMovementException, NotPossibleEndMoveException, AlreadyWalkedException {
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
@@ -118,7 +118,7 @@ public class Player {
             throw new OpponentEffectException();
     }
 
-    public void specialBuild(Point p) throws OpponentEffectException, NotPossibleEndMoveException, OutOfOrderMoveException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {
+    public void specialBuild(Point p) throws OpponentEffectException, OutOfOrderMoveException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyWalkedException {
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
@@ -133,7 +133,7 @@ public class Player {
             throw new OpponentEffectException();
     }
 
-    public List<Point> getPossibleMovements() {
+    public List<Point> getPossibleMovements() throws AlreadyWalkedException {
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
@@ -142,7 +142,7 @@ public class Player {
         return temp;
     }
 
-    public List<Point> getPossibleBuildings() {
+    public List<Point> getPossibleBuildings() throws OutOfOrderMoveException, AlreadyBuiltException {
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
@@ -152,11 +152,12 @@ public class Player {
     }
 
     public void endMove() throws NotPossibleEndMoveException {
-        if(this.move.getHasEnded() || this.move.getHasWalkedandBuilt() ){
-            move = null;
-            match.getTurn().setNextPlayer();
-        }
-        else throw  new NotPossibleEndMoveException();
+        if(this.move != null) {
+            if (this.move.getHasEnded() || this.move.getHasWalkedandBuilt()) {
+                move = null;
+                match.getTurn().setNextPlayer();
+            } else throw new NotPossibleEndMoveException();
+        }else throw new NotPossibleEndMoveException();
     }
 
     public List<Worker> getWorkers(){

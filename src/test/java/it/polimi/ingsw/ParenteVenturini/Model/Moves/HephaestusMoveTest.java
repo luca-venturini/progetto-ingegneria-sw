@@ -56,22 +56,22 @@ class HephaestusMoveTest {
         Point p1= new Point(1,1);
         assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
-        assertNull(tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));
+        assertThrows(AlreadyWalkedException.class,()->tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));
     }
 
     @Test
     void possibleBuildings() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, IllegalBlockUpdateException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,2);
-        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
+        assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertEquals(1, tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)).size());
         instance.getBoard().setBlockLevel(p2,3);
-        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
+        assertThrows(OutOfOrderMoveException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
         instance.getBoard().setBlockLevel(p2,2);
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
-        assertNull(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
+        assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
     }
 }

@@ -153,25 +153,25 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(ActionResponse msg) {
-        if(msg.isDone()) {
-            if (msg.getPoints() != null) {
-                client.displayMessage(msg.getPoints().toString());
-                client.displaySelectPoint();
-            } else {
-                client.displayMessage("Nessuna azione possibile");
-                client.displaySelectWorker();
-            }
-        }
-        else{
-            client.displayMessage(msg.getMessage());
-            client.displayMoveMenu();
-        }
+        client.displayMessage(msg.getPoints().toString());
+        client.displaySelectPoint();
     }
 
     @Override
     public void visit(ActionPointResponse msg) {
         client.displayMessage(msg.getMessage());
         client.displayMoveMenu();
+    }
+
+    @Override
+    public void visit(ActionNotification msg) {
+        if(msg.getMessage().equals("Non è il tuo turno")){
+            client.displayMessage(msg.getMessage());
+        }
+        else{
+            client.displayMessage(msg.getMessage());
+            client.displayMoveMenu();
+        }
     }
 
     @Override

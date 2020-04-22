@@ -17,15 +17,15 @@ public abstract class Move {
 
     public abstract void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException;
 
-    public abstract void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException;
+    public abstract void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException, AlreadyWalkedException;
 
-    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
+    public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException, AlreadyWalkedException {
         build(point, board, worker);
     }
 
-    public abstract List<Point> possibleMovements(Board board, Worker worker);
+    public abstract List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException;
 
-    public abstract List<Point> possibleBuildings(Board board, Worker worker);
+    public abstract List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException;
 
     public boolean forcedMovement(Board board, Worker worker){
         return !hasWalked;

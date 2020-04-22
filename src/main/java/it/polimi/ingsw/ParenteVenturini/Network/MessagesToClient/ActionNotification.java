@@ -1,20 +1,19 @@
 package it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientMessageHandler;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 
 import java.util.List;
 
-public class ActionResponse implements  MessageToClient{
-    private List<Point> points;
+public class ActionNotification implements MessageToClient {
+    private String message;
 
-    public ActionResponse(List<Point> points) {
-        this.points = points;
+    public ActionNotification(String message){
+        this.message=message;
     }
 
-    public List<Point> getPoints() {
-        return points;
+    public String getMessage() {
+        return message;
     }
 
     @Override

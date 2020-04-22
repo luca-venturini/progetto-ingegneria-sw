@@ -33,7 +33,7 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, endedMoveException {
+    public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, endedMoveException, AlreadyWalkedException {
         if(!hasEnded) {
             if (!hasWalked && !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker)) {
                 Action action = new BasicConstruction();
@@ -49,24 +49,27 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker) {
+    public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
         if(!hasEnded && !hasWalked) {
             return action.getPossibleActions(board, worker);
         }
-        else return null;
+        else throw new AlreadyWalkedException();
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker) {
+    public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();
-        if(!hasEnded) {
-            return action.getPossibleActions(board, worker);
+        if(!hasEnded && !hasBuilt) {
+            if(hasWalked) {
+                return action.getPossibleActions(board, worker);
+            }
+            else throw new OutOfOrderMoveException();
         }
-        else return null;
+        else throw new AlreadyBuiltException();
     }
 
-    private boolean canUseSpecialEffect(Board board, Worker worker){
+    private boolean canUseSpecialEffect(Board board, Worker worker) throws AlreadyWalkedException {
         int level = board.blockLevel(worker.getPosition());
         List<Point> possiblePoints = possibleMovements(board, worker);
         for(Point p: possiblePoints){

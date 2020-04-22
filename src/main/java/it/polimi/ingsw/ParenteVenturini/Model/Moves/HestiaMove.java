@@ -61,16 +61,16 @@ public class HestiaMove extends Move {
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker) {
+    public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
         if(!hasEnded && !hasBuilt && !hasWalked) {
             return action.getPossibleActions(board, worker);
         }
-        else return null;
+        else throw new AlreadyWalkedException();
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker) {
+    public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();
         if(!hasEnded) {
             if(hasWalked) {
@@ -87,8 +87,8 @@ public class HestiaMove extends Move {
                     }
                     return returnPoints;
                 }
-            }else return null;
+            }else throw new OutOfOrderMoveException();
         }
-        else return null;
+        else throw new AlreadyBuiltException();
     }
 }

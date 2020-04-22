@@ -24,8 +24,8 @@ public class Match {
     public Match(){
         this.board= new Board();
         this.deck= new Deck();
-        this.players= new ArrayList<Player>();
-        this.chosenCards= new ArrayList<Card>();
+        this.players= new ArrayList<>();
+        this.chosenCards= new ArrayList<>();
         this.opponentEffectContainer = new OpponentEffectContainer();
         this.typeOfMatch = 2;
         this.challenger=null;
@@ -47,7 +47,7 @@ public class Match {
         else throw new NoMorePlayersException();
     }
 
-    public boolean gameOver(){
+    public boolean gameOver() throws AlreadyWalkedException, OutOfOrderMoveException, AlreadyBuiltException {
         Move move = currentPlayer.callMove();
         Worker currentWorker = turn.getCurrentWorker();
         boolean result = false;
@@ -62,13 +62,13 @@ public class Match {
         return result;
     }
 
-    private boolean gameOverMovement(Move move, Board board, Worker currentWorker){
+    private boolean gameOverMovement(Move move, Board board, Worker currentWorker) throws AlreadyWalkedException {
         List<Point> points = move.possibleMovements(board, currentWorker);
         points = opponentEffectContainer.removeMovementPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
         return points == null;
     }
 
-    private boolean gameOverBuilding(Move move, Board board, Worker currentWorker){
+    private boolean gameOverBuilding(Move move, Board board, Worker currentWorker) throws OutOfOrderMoveException, AlreadyBuiltException {
         List<Point> points = move.possibleBuildings(board, currentWorker);
         points = opponentEffectContainer.removeConstructionPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
         return points == null;

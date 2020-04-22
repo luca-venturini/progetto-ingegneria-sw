@@ -62,16 +62,16 @@ public class HephaestusMove extends Move{
     }
 
     @Override
-    public List<Point> possibleMovements(Board board, Worker worker) {
+    public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
         if(!hasEnded && !hasBuilt && !hasWalked) {
             return action.getPossibleActions(board, worker);
         }
-        else return null;
+        else throw new AlreadyWalkedException();
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker) {
+    public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();
         if(!hasEnded && hasWalked) {
             if(!hasBuilt) {
@@ -82,8 +82,8 @@ public class HephaestusMove extends Move{
                 p.add(firstBuilding);
                 return p;
             }
-            else return null;
+            else throw new OutOfOrderMoveException();
         }
-        else return null;
+        else throw new AlreadyBuiltException();
     }
 }

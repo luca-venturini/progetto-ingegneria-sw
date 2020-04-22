@@ -9,17 +9,16 @@ import java.util.List;
 
 public class AthenaEffect implements OpponentEffect {
 
-    //todo correct removeMovementPoints
-
     @Override
     public List<Point> removeMovementPoints(List<Point> movements, Point actualPoint, Board board) {
         List<Point> futureMovements = new ArrayList<>(movements);
+        List<Point> checkedMovements= new ArrayList<>();
         int level = board.blockLevel(actualPoint);
         for(Point p: futureMovements){
-            if(board.blockLevel(p)>level)
-                futureMovements.remove(p);
+            if(board.blockLevel(p)<=level)
+                checkedMovements.add(p);
         }
-        return futureMovements;
+        return checkedMovements;
     }
 
     @Override
@@ -45,9 +44,7 @@ public class AthenaEffect implements OpponentEffect {
 
     @Override
     public boolean isEffectEnabled(Point beforePoint, Point nextPoint, Board board) {
-        if(board.blockLevel(beforePoint) < board.blockLevel(nextPoint))
-            return true;
-        return false;
+        return board.blockLevel(beforePoint) < board.blockLevel(nextPoint);
     }
 
     @Override
