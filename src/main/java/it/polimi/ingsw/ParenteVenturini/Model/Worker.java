@@ -18,9 +18,6 @@ public class Worker implements Serializable {
         this.colour = colour;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
 
     public int getColour() {
         return colour;
