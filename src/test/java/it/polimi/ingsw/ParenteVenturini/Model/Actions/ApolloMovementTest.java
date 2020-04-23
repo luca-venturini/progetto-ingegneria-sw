@@ -21,7 +21,7 @@ class ApolloMovementTest {
     @BeforeEach
     void setUp() {
         instance= new Match();
-        player= new Player("player",instance);
+        player= new Player("player1",instance);
         Point x= new Point(0,0);
         player.placeWorker(1,x,instance.getBoard());
         tester= new ApolloMovement();
@@ -45,16 +45,20 @@ class ApolloMovementTest {
         assertThrows(IllegalMovementException.class,()->tester.doAction(p4,instance.getBoard(),player.selectWorker(0)));
 
         //check if worker moves on a position occupied by another worker
+        Player player2= new Player("player2",instance);
         Point p5= new Point(1,0);
-        player.placeWorker(1,p5,instance.getBoard());
+        Point p6= new Point(0,1);
+        player2.placeWorker(1,p5,instance.getBoard());
+        player.placeWorker(1,p6,instance.getBoard());
         tester.doAction(p5,instance.getBoard(),player.selectWorker(0));
         assertEquals(p5,player.selectWorker(0).getPosition());
-        assertEquals(player.selectWorker(0).getLastPosition(),player.selectWorker(1).getPosition());
-        assertEquals(player.selectWorker(0).getPosition(),player.selectWorker(1).getLastPosition());
+        assertEquals(player.selectWorker(0).getLastPosition(),player2.selectWorker(0).getPosition());
+        assertEquals(player.selectWorker(0).getPosition(),player2.selectWorker(0).getLastPosition());
+        assertThrows(IllegalMovementException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));
 
         //check if worker moves on a position with dome
-        Point p6= new Point(0,1);
-        instance.getBoard().setDome(p6, true);
+        Point p7= new Point(0,1);
+        instance.getBoard().setDome(p7, true);
         assertThrows(IllegalMovementException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));
 
         //check if worker moves on a too high position

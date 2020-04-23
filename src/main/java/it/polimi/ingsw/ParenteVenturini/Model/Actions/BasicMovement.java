@@ -31,7 +31,7 @@ public class BasicMovement extends Action {
         List<Point> possibleActions=super.getPossibleActions(board, worker);
         List<Point> checkedActions= new ArrayList<>();
         for(Point p: possibleActions){
-            if( !( board.isOccupied(p) || board.isThereDome(p) ) && board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1 ){
+            if( !( board.isOccupied(p) || board.isThereDome(p) ) && (board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1) ){
                 checkedActions.add(p);
             }
         }

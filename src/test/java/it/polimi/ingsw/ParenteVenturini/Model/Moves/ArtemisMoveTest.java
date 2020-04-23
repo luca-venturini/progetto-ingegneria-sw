@@ -24,7 +24,7 @@ class ArtemisMoveTest {
     }
 
     @Test
-    void walk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {
+    void walk_test1() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {
         Point p0= new Point(0,0);
         Point p1= new Point(1,0);
         Point p2= new Point(2,1);
@@ -35,6 +35,18 @@ class ArtemisMoveTest {
         assertThrows(AlreadyWalkedException.class,()->tester.walk(p3,instance.getBoard(),player.selectWorker(0)));
         tester.build(p1,instance.getBoard(),player.selectWorker(0));
         assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
+    void walk_test2() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException, IllegalBlockUpdateException {
+        Point p0= new Point(0,1);
+        Point p1= new Point(1,0);
+        Point p2= new Point(2,1);
+        instance.getBoard().setBlockLevel(p0,2);
+        instance.getBoard().setBlockLevel(p2,2);
+        assertThrows(IllegalMovementException.class,()->tester.walk(p0,instance.getBoard(),player.selectWorker(0)));
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        assertThrows(IllegalMovementException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
     }
 
     @Test

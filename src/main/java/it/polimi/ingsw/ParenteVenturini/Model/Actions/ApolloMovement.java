@@ -32,8 +32,15 @@ public class ApolloMovement extends Action {
         List<Point> possibleActions=super.getPossibleActions(board, worker);
         List<Point> checkedActions= new ArrayList<>();
         for(Point p: possibleActions){
-            if( !board.isThereDome(p) && board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1 && !p.equals(worker.getPosition()) ){
-                checkedActions.add(p);
+            if( !board.isThereDome(p) && (board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1) ){
+                if( !board.isOccupied(p) ) {
+                    checkedActions.add(p);
+                }
+                else{
+                    if(!board.findByPosition(p).getPlayer().getNickname().equals(worker.getPlayer().getNickname())){
+                        checkedActions.add(p);
+                    }
+                }
             }
         }
         return checkedActions;
