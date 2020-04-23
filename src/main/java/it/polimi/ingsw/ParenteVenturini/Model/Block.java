@@ -32,7 +32,6 @@ public class Block implements Serializable {
     }
 
     public void setDome(boolean dome) {
-
         this.dome = dome;
     }
 

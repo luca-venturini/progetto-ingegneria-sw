@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface WinCheck {
     boolean hasWon(Board board, Worker worker, List<Player> players);
+    boolean outOfTurnWon(Board board);
 }

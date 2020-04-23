@@ -102,4 +102,14 @@ public class Board {
     public List<Worker> getWorkers() {
         return workers;
     }
+
+    public List<Block> getBlocks(){
+        List<Block> blocks = new ArrayList<>();
+        for(int i = 0; i<5; i++){
+            for (int j = 0; j<5; j++){
+                blocks.add(board[i][j]);
+            }
+        }
+        return blocks;
+    }
 }

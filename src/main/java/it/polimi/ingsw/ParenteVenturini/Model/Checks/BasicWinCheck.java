@@ -24,4 +24,9 @@ public class BasicWinCheck implements WinCheck {
         return false;
 
     }
+
+    @Override
+    public boolean outOfTurnWon(Board board) {
+        return false;
+    }
 }

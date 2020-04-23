@@ -185,4 +185,12 @@ public class Match {
     public Turn getTurn() {
         return turn;
     }
+
+    public Player outOfTurnWin(){
+        for (Player p: players){
+            if(p.getCard().getWinCheck().outOfTurnWon(board))
+                return p;
+        }
+        return null;
+    }
 }
