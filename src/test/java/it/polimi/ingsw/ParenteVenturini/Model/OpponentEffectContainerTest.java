@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.AthenaEffect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,13 @@ class OpponentEffectContainerTest {
 
     @Test
     void checkMovementPoint() {
+        Point p1= new Point(1,3);
+        Point p2= new Point(1,2);
+        test.addEffect(new AthenaEffect());
+        test.switchToNewTurn();
+        player.placeWorker(1,p1,instance.getBoard());
+        player.setCard(new ApolloCard());
+        test.checkMovementPoint(p2,player.selectWorker(0),instance.getBoard());
     }
 
     @Test

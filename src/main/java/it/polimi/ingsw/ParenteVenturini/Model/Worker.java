@@ -39,6 +39,10 @@ public class Worker implements Serializable {
         this.position = point;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public Point getLastPosition() {
         return lastPosition;
     }

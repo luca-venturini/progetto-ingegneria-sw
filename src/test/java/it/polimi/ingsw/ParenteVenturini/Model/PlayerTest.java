@@ -76,7 +76,21 @@ class PlayerTest {
     }
 
     @Test
-    void walk() {
+    void walk() throws IllegalBlockUpdateException, NoMorePlayersException, AlreadyPresentPlayerException, AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException {
+        Point p0= new Point(2,2);
+        Point p1= new Point(1,1);
+        Point p3= new Point(2,1);
+        instance.addPlayer("player2");
+        testplayer.setCard(new ApolloCard());
+        instance.selectStarter("player");
+        instance.setTurn();
+        testplayer.placeWorker(1,p0,instance.getBoard());
+        instance.getBoard().setBlockLevel(p1,2);
+        instance.setTurn();
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        instance.getOpponentEffectContainer().addEffect(new AthenaEffect());
+        instance.getOpponentEffectContainer().switchToNewTurn();
+        assertThrows(OpponentEffectException.class,()->testplayer.walk(p1));
     }
 
     @Test
@@ -93,5 +107,9 @@ class PlayerTest {
 
     @Test
     void getPossibleBuildings() {
+    }
+
+    @Test
+    void endMove() {
     }
 }

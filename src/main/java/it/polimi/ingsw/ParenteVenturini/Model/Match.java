@@ -17,7 +17,6 @@ public class Match {
     private Player starter;
     private int typeOfMatch;
     private OpponentEffectContainer opponentEffectContainer;
-    private Player currentPlayer;
     private Turn turn;
     private Player challenger;
 
@@ -48,7 +47,7 @@ public class Match {
     }
 
     public boolean gameOver() throws AlreadyWalkedException, OutOfOrderMoveException, AlreadyBuiltException {
-        Move move = currentPlayer.callMove();
+        Move move = this.getTurn().getCurrentPlayer().callMove();
         Worker currentWorker = turn.getCurrentWorker();
         boolean result = false;
         if(move.forcedMovement(board, turn.getCurrentWorker())){

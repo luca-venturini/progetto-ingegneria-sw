@@ -156,7 +156,8 @@ public class GameController {
                 e.printStackTrace();
             } catch (InvalidNamePlayerException e) {
                 notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( false, "Il nickname scelto non è disponibile"));
-            } catch (NoPlayerException e) {
+            }
+            catch (NoPlayerException e) {
                 e.printStackTrace();
             }
         }else{
@@ -224,7 +225,7 @@ public class GameController {
     public void notifyYourTurn(){
         notifyAllClients(new SimplyNotification("E' il turno di "+match.getTurn().getCurrentPlayer().getNickname()));
         notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification() );
-        System.out.println("Turno: "+match.getTurn().getNumTurn());
+        System.out.println("Turno: "+match.getTurn().getNumTurn()+" Giocatore: "+match.getTurn().getCurrentPlayer().getNickname());
     }
 
     public void selectWorker(ClientController clientController, String nickname, int index){
@@ -306,9 +307,13 @@ public class GameController {
                 moveHandler.doAction(nickname,x);
                 sendBoard();
                 notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
-                if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
-                    notifyAllClients(new WinNotification());
+                //evaluate if the current player or another player won
+                /*if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
+                    notifyAllClients(new WinNotification(nickname));
                 }
+                else if(match.outOfTurnWin() != null){
+                    notifyAllClients(new WinNotification(match.outOfTurnWin().getNickname()));
+                }*/
             } catch (OpponentEffectException e) {
                 notifySingleClient(clientController,new ActionPointResponse("Mossa non consentita da carta avversaria",false));
             } catch (AlreadyBuiltException e) {
@@ -325,8 +330,6 @@ public class GameController {
                 notifySingleClient(clientController,new ActionPointResponse("Hai terminato già la tua mossa",false));
             } catch (OutOfOrderMoveException e) {
                 notifySingleClient(clientController,new ActionPointResponse("Devi prima muovere",false));
-            } catch (NoPlayerException e) {
-                e.printStackTrace();
             }
         } catch (NotYourTurnException e) {
             notifySingleClient(clientController,new ActionPointResponse("Non è il tuo turno",false));
