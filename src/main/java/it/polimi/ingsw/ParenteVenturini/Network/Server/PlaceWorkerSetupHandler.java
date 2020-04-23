@@ -3,6 +3,7 @@ package it.polimi.ingsw.ParenteVenturini.Network.Server;
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Player;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerException;
 
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class PlaceWorkerSetupHandler {
             mPlayer.placeWorker(color, mPoint, board);
             numberOfAdd++;
             updateCurrentPlayer();
+            for(Worker w: mPlayer.getWorkers()){
+                System.out.println("il nome è: "+ w.getPlayer().getNickname());
+            }
         }
         else
             throw new IllegalPlaceWorkerException();

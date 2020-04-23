@@ -2,6 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.Model.Actions;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Board;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalMovementException;
+import it.polimi.ingsw.ParenteVenturini.Model.Player;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
@@ -34,7 +35,15 @@ public class ApolloMovement extends Action {
         for(Point p: possibleActions){
             if( !board.isThereDome(p) && board.blockLevel(p) - board.blockLevel(worker.getPosition()) <= 1 && !p.equals(worker.getPosition()) ){
                 checkedActions.add(p);
+                Worker opponent = board.findByPosition(p);
+                if(opponent != null){
+                    Player pl = opponent.getPlayer();
+                    if(pl != null && pl.equals(worker.getPlayer())){
+                        checkedActions.remove(p);
+                    }
+                }
             }
+
         }
         return checkedActions;
     }

@@ -188,7 +188,7 @@ public class Match {
 
     public Player outOfTurnWin(){
         for (Player p: players){
-            if(p.getCard().getWinCheck().outOfTurnWon(board))
+            if(p.getCard().getWinCheck() != null && p.getCard().getWinCheck().outOfTurnWon(board))
                 return p;
         }
         return null;

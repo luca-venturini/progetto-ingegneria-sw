@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
@@ -31,6 +32,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     public void sendMessage(MessageToServer msg){
         try {
+            writeStream.reset();
             writeStream.writeObject(msg);
             writeStream.flush();
         } catch (IOException e) {
@@ -127,6 +129,15 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(BoardUpdateNotification msg) {
+        Block [][] b = msg.getBlocks();
+        /*
+        for(int i = 0; i<4; i++){
+            for(int j = 0; j<4; j++){
+                System.out.println("level: "+b[i][j].getLevel());
+            }
+        }
+
+         */
         client.displayBoard(msg.getBlocks(),msg.getWorkerpositions(),msg.getColours());
     }
 

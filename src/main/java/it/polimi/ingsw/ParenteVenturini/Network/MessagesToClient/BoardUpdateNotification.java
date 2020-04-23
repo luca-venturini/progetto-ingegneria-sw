@@ -16,6 +16,14 @@ public class BoardUpdateNotification implements MessageToClient {
         this.blocks=blocks;
         this.workerpositions=workerpositions;
         this.colours=colours;
+        /*
+        for(int i = 0; i<4; i++){
+            for(int j = 0; j<4; j++){
+                System.out.println("level: "+blocks[i][j].getLevel());
+            }
+        }
+        
+         */
     }
 
     public Block[][] getBlocks() {

@@ -39,6 +39,7 @@ public class ClientThreadFromServer {
             MessageToServer msg;
 
             do {
+                //readStream.reset();
                 msg = (MessageToServer) readStream.readObject();
                 if (msg != null)
                     handleMessage(msg);
@@ -67,11 +68,12 @@ public class ClientThreadFromServer {
 
     public void sendMessage(MessageToClient message){
         try {
+            writeStream.reset();
             writeStream.writeObject(message);
             writeStream.flush();
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 

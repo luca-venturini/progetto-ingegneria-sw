@@ -16,7 +16,7 @@ public class OpponentEffectContainer {
 
     public void switchToNewTurn(){
         thisTurn = nextTurn;
-        nextTurn = null;
+        nextTurn = new ArrayList<>();
     }
 
     public List<OpponentEffect> getActiveEffects(){

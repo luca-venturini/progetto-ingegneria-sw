@@ -10,7 +10,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player{
 
     private Card card;
     private List<Worker> workers;
@@ -163,4 +163,11 @@ public class Player {
     public List<Worker> getWorkers(){
         return workers;
     }
+
+    public boolean equals(Player other){
+        if(this.nickname == other.nickname)
+            return true;
+        return false;
+    }
+
 }
