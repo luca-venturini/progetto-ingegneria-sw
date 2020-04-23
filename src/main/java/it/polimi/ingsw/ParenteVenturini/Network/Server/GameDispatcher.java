@@ -41,4 +41,13 @@ public class GameDispatcher {
         return gameController;
     }
 
+    public synchronized void removeGame(GameController gc){
+        if(gameControllers.contains(gc))
+            gameControllers.remove(gc);
+        else{
+            gameController = null;
+            actualPlayers = 0;
+        }
+    }
+
 }

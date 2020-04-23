@@ -46,7 +46,18 @@ public class ClientThreadFromServer {
             System.out.println("Esco dal do");
         }
         catch (Exception e){
+            System.out.println("Exit");
+            clientController.endGame();
+        }
+    }
 
+    public void closeConnection(){
+        try {
+            readStream.close();
+            writeStream.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

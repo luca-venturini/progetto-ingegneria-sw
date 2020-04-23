@@ -21,6 +21,7 @@ public class Deck {
         cards.add(new HestiaCard() );
         cards.add(new TritonCard() );
         cards.add(new ZeusCard() );
+        cards.add(new ChronusCard() );
     }
 
     public Card selectByName(String name){

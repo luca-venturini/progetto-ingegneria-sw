@@ -13,32 +13,56 @@ public class ClientDiProva {
     private ObjectOutputStream writeStream;
     private ClientSideController clientSideController;
     private ViewInterface cli;
+    private Thread messageListener;
+    private Socket socket;
 
     public void startClient() throws IOException {
 
-        Socket socket = new Socket(ip, port);
+
+        socket = new Socket(ip, port);
         writeStream = new ObjectOutputStream(socket.getOutputStream());
         readStream = new ObjectInputStream(socket.getInputStream());
         Scanner stdIn = new Scanner(System.in);
 
 
-        clientSideController = new ClientSideController(readStream, writeStream, stdIn, socket);
+        clientSideController = new ClientSideController(stdIn, readStream, writeStream);
+        System.out.println("fase 4");
         cli = new CLI(clientSideController);
-        clientSideController.setView(cli);
 
-        new Thread(new MessageListener(clientSideController, readStream)).start();
+
+        clientSideController.setView(cli);
+        messageListener = new Thread(new MessageListener(clientSideController, readStream));
+        messageListener.start();
+
         cli.login();
 
+    }
+
+    public void quitClient(){
+        try {
+            messageListener.join();
+            System.out.println("Thread stopped ok");
+            socket.close();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("Thread stopped not ok");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
     public static void main(String[] args) {
         ClientDiProva c = new ClientDiProva();
+
         try {
             System.out.println("test");
             c.startClient();
+            c.quitClient();
+            c.startClient();
         } catch (Throwable e) {
-            e.printStackTrace();
+
+            System.out.println("Disconnected");
         }
     }
 }

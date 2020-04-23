@@ -6,7 +6,6 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientSideController implements ClientMessageHandler {
@@ -14,13 +13,11 @@ public class ClientSideController implements ClientMessageHandler {
     private ObjectInputStream readStream;
     private ObjectOutputStream writeStream;
     private Scanner stdIn;
-    private Socket socket;
     private ViewInterface client;
 
-    public ClientSideController(ObjectInputStream readStream, ObjectOutputStream writeStream, Scanner stdIn, Socket socket) {
-        this.readStream = readStream;
+    public ClientSideController(Scanner stdIn, ObjectInputStream readStream, ObjectOutputStream writeStream) {
         this.writeStream = writeStream;
-        this.socket = socket;
+        this.readStream = readStream;
         this.stdIn = stdIn;
     }
 
@@ -37,8 +34,20 @@ public class ClientSideController implements ClientMessageHandler {
             writeStream.writeObject(msg);
             writeStream.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Errore invio messaggio - connessione chiusa");
+            closeConnection();
+            //e.printStackTrace();
         }
+    }
+
+    public void closeConnection(){
+        try {
+            writeStream.close();
+            readStream.close();
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+
     }
 
     @Override

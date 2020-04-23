@@ -2,6 +2,8 @@ package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient;
 
+import javax.imageio.IIOException;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class MessageListener implements Runnable {
@@ -25,8 +27,17 @@ public class MessageListener implements Runnable {
             } while (msg != null);
             System.out.println("Esco dal do");
         }
-        catch (Exception e){
-
+        catch (IOException e){
+            try {
+                readStream.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("IOException - Thread listener in esecuzione");
         }
+        catch (ClassNotFoundException e){
+            System.out.println("ClassNotFoundException - Thread listener in esecuzione");
+        }
+
     }
 }

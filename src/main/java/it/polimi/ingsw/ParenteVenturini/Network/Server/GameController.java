@@ -337,4 +337,12 @@ public class GameController {
         return clients.size();
     }
 
+    public void disconnectAllPlayers(){
+        for(ClientController c: clients){
+            c.quitGame();
+        }
+        GameDispatcher gd = GameDispatcher.getInstance();
+        gd.removeGame(this);
+    }
+
 }

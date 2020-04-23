@@ -43,6 +43,16 @@ public class ClientController implements ServerMessageHandler {
         System.out.println("giocatore aggiunto: "+player.getNickname());
     }
 
+    public void endGame(){
+        if(gameController != null){
+            gameController.disconnectAllPlayers();
+        }
+    }
+
+    public void quitGame(){
+        clientThread.closeConnection();
+    }
+
 
     @Override
     public void visit(AccessGameMessageRequest msg) {
