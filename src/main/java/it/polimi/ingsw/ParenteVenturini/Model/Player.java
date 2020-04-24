@@ -95,7 +95,7 @@ public class Player{
         if(match.getOpponentEffectContainer().checkMovementPoint(p, myWorker,match.getBoard())){
                 move.walk(p, match.getBoard(), myWorker);
                 OpponentEffect temp = card.getOpponentEffect();
-                if(temp!= null && temp.isEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
+                if(temp!= null && temp.isMovementEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
         }
@@ -110,7 +110,7 @@ public class Player{
         if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard()) ){
                 move.build(p, match.getBoard(), myWorker);
                 OpponentEffect temp = card.getOpponentEffect();
-                if(temp!= null && temp.isEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
+                if(temp!= null && temp.isConstructionEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
         }
@@ -125,7 +125,7 @@ public class Player{
         if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard())){
                 move.specialBuild(p, match.getBoard(), myWorker);
                 OpponentEffect temp= card.getOpponentEffect();
-                if(temp!= null && temp.isEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
+                if(temp!= null && temp.isConstructionEffectEnabled(p, myWorker.getLastPosition(), match.getBoard())){
                     match.getOpponentEffectContainer().addEffect(card.getOpponentEffect());
                 }
         }

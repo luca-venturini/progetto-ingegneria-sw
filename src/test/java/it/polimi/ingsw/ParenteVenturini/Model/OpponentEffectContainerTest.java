@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.AthenaCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.AthenaEffect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,13 +11,28 @@ import static org.junit.jupiter.api.Assertions.*;
 class OpponentEffectContainerTest {
     private Match instance;
     private Player player;
+    private Player player1;
+    private Player player2;
     private OpponentEffectContainer test;
 
     @BeforeEach
     void setUp() {
         instance= new Match();
         player= new Player("player",instance);
-        test= instance.getOpponentEffectContainer();
+
+        /*
+        instance.addPlayer("player1");
+        instance.addPlayer("player2");
+
+        player1.setCard(new ApolloCard());
+        player2.setCard(new AthenaCard());
+        player1.placeWorker(1, new Point(0,0), instance.getBoard());
+        player1.placeWorker(1, new Point(1,1), instance.getBoard());
+        player2.placeWorker(1, new Point(0,0), instance.getBoard());
+        player2.placeWorker(1, new Point(1,1), instance.getBoard());
+        instance.setTurn();
+        */
+        test = instance.getOpponentEffectContainer();
     }
 
     @Test
@@ -51,4 +67,5 @@ class OpponentEffectContainerTest {
     @Test
     void checkConstructionPoint() {
     }
+
 }

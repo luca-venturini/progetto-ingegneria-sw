@@ -38,6 +38,10 @@ public class Turn {
             currentWorker = w;
     }
 
+    public void cleanCurrentWorker(){
+        currentWorker = null;
+    }
+
     public Player getCurrentPlayer() {
         return currentPlayer;
     }

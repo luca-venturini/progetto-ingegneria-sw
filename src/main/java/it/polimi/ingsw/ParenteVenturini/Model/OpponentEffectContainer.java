@@ -12,11 +12,14 @@ public class OpponentEffectContainer {
 
     public void addEffect(OpponentEffect effect){
         nextTurn.add(effect);
+        //System.out.println("Ho aggiunto un effetto");
     }
 
     public void switchToNewTurn(){
         thisTurn = nextTurn;
+        //System.out.println("grandezza thisTurn: "+thisTurn.size());
         nextTurn = new ArrayList<>();
+        //System.out.println("grandezza nextTurn: "+nextTurn.size());
     }
 
     public List<OpponentEffect> getActiveEffects(){
@@ -24,10 +27,15 @@ public class OpponentEffectContainer {
     }
 
     public List<Point> removeMovementPoint(List<Point> possiblePoints, Point yourPosition, OpponentEffect yourEffect, Board board ){
+        //System.out.println("your effect: "+yourEffect);
+        //System.out.println("Sono in removeMovementPoint");
         List<Point> tempPossiblePoints = new ArrayList<>(possiblePoints);
         for(OpponentEffect eff: getActiveEffects()){
+            //System.out.println("Sono nel for di removeMovementPoint");
             if(!eff.equals(yourEffect)){
+                //System.out.println("Sono prima if di removeMovementPoint");
                 possiblePoints = eff.removeMovementPoints(possiblePoints, yourPosition, board);
+                //System.out.println("Sono dopo if di removeMovementPoint");
             }
         }
         return possiblePoints;
