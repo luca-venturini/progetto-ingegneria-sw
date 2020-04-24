@@ -48,6 +48,7 @@ public class ClientThreadFromServer {
         }
         catch (Exception e){
             System.out.println("Exit");
+            e.printStackTrace();
             clientController.endGame();
         }
     }

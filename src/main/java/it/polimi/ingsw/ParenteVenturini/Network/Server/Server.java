@@ -34,9 +34,11 @@ public class Server {
                         ClientThreadFromServer clientHandler = new ClientThreadFromServer(socket);
                         clientHandler.handleConnection();
                     } catch (Throwable e) {
+                        e.printStackTrace();
                     }
                 });
             }catch(Exception e){
+                e.printStackTrace();
                 break;
             }
         }
