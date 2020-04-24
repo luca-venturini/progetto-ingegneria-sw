@@ -188,13 +188,13 @@ public class ClientSideController implements ClientMessageHandler {
         if(msg.getMessage().equals("Non è il tuo turno")){
             client.displayMessage(msg.getMessage());
         }
-        else if(msg.getMessage().equals("Nessuna azione possibile") ){
+        else if(msg.getMessage().equals("Nessuna azione possibile. Seleziona un altro worker") ){
             client.displayMessage(msg.getMessage());
-            client.displayMoveMenu();
+            client.displaySelectWorker();
         }
         else{
             client.displayMessage(msg.getMessage());
-            client.displaySelectWorker();
+            client.displayMoveMenu();
         }
     }
 

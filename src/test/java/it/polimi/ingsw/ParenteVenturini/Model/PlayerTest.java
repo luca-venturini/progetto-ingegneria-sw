@@ -63,6 +63,21 @@ class PlayerTest {
     }
 
     @Test
+    void hasWon() throws IllegalBlockUpdateException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, NoPlayerException {
+        Point p1= new Point(2,2);
+        Point p2= new Point(1,1);
+        testplayer.setCard(new ArtemisCard());
+        instance.setTurn();
+        testplayer.placeWorker(1,p1,instance.getBoard());
+        instance.getBoard().setBlockLevel(p1,2);
+        instance.getBoard().setBlockLevel(p2,3);
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        assertFalse(testplayer.hasWon(instance.getBoard(),testplayer.selectWorker(0),instance.getPlayers()));
+        testplayer.walk(p2);
+        assertTrue(testplayer.hasWon(instance.getBoard(),testplayer.selectWorker(0),instance.getPlayers()));
+    }
+
+    @Test
     void getNickname() {
         assertNotNull(testplayer.getNickname());
     }
@@ -79,7 +94,6 @@ class PlayerTest {
     void walk() throws IllegalBlockUpdateException, NoMorePlayersException, AlreadyPresentPlayerException, AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException {
         Point p0= new Point(2,2);
         Point p1= new Point(1,1);
-        Point p3= new Point(2,1);
         instance.addPlayer("player2");
         testplayer.setCard(new ApolloCard());
         instance.selectStarter("player");
@@ -111,5 +125,16 @@ class PlayerTest {
 
     @Test
     void endMove() {
+        Point p1= new Point(2,2);
+        Point p2= new Point(1,1);
+        Point p3= new Point(2,1);
+        assertThrows(NotPossibleEndMoveException.class,()->testplayer.endMove());
+        testplayer.setCard(new ArtemisCard());
+        instance.setTurn();
+        testplayer.placeWorker(1,p1,instance.getBoard());
+        testplayer.callMove();
+        assertThrows(NotPossibleEndMoveException.class,()->testplayer.endMove());
     }
+
+
 }

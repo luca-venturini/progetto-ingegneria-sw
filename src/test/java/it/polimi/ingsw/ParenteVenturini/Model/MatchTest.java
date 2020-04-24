@@ -1,5 +1,8 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.AthenaCard;
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.ChronusCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -142,5 +145,25 @@ class MatchTest {
         assertEquals(1,instance.getNumPlayers());
         instance.addPlayer("player2");
         assertEquals(2,instance.getNumPlayers());
+    }
+
+    @Test
+    void outOfTurnWin() throws NoMorePlayersException, AlreadyPresentPlayerException, IllegalBlockUpdateException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        Point p3= new Point(0,1);
+        Point p4= new Point(3,1);
+        Point p5= new Point(4,1);
+        instance.addPlayer("player1");
+        instance.addPlayer("player2");
+        instance.selectPlayer("player1").setCard(new ChronusCard());
+        instance.selectPlayer("player2").setCard(new AthenaCard());
+        assertNull(instance.outOfTurnWin());
+        instance.getBoard().setBlockLevel(p1,4);
+        instance.getBoard().setBlockLevel(p2,4);
+        instance.getBoard().setBlockLevel(p3,4);
+        instance.getBoard().setBlockLevel(p4,4);
+        instance.getBoard().setBlockLevel(p5,4);
+        assertTrue(instance.outOfTurnWin().getNickname().equals("player1"));
     }
 }

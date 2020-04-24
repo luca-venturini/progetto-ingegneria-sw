@@ -27,6 +27,6 @@ public class WinNotification implements MessageToClient {
 
     @Override
     public void accept(ClientMessageHandler msgHandler) {
-
+        msgHandler.visit(this);
     }
 }

@@ -305,14 +305,17 @@ public class GameController {
         try {
             try {
                 moveHandler.doAction(nickname,x);
-                sendBoard();
-                notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
+
                 //evaluate if the current player or another player won
                 if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification(nickname));
                 }
                 else if(match.outOfTurnWin() != null){
                     notifyAllClients(new WinNotification(match.outOfTurnWin().getNickname()));
+                }
+                else{
+                    notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
+                    sendBoard();
                 }
             } catch (OpponentEffectException e) {
                 notifySingleClient(clientController,new ActionPointResponse("Mossa non consentita da carta avversaria",false));
