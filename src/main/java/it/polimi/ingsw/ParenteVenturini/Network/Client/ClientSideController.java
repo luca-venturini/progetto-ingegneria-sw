@@ -168,7 +168,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(WinNotification msg) {
-
+        client.displayMessage("Il vincitore è: "+msg.getMessage());
     }
 
     @Override
@@ -188,9 +188,13 @@ public class ClientSideController implements ClientMessageHandler {
         if(msg.getMessage().equals("Non è il tuo turno")){
             client.displayMessage(msg.getMessage());
         }
-        else{
+        else if(msg.getMessage().equals("Nessuna azione possibile") ){
             client.displayMessage(msg.getMessage());
             client.displayMoveMenu();
+        }
+        else{
+            client.displayMessage(msg.getMessage());
+            client.displaySelectWorker();
         }
     }
 

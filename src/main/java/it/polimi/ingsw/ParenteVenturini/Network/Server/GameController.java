@@ -247,7 +247,7 @@ public class GameController {
                 } catch (NotYourTurnException e) {
                     notifySingleClient(clientController,new ActionNotification("Non è il tuo turno"));
                 } catch (NoPossibleActionException e) {
-                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile"));
+                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile. Seleziona un altro worker"));
                 } catch (AlreadyWalkedException e) {
                     notifySingleClient(clientController,new ActionNotification("Hai già mosso"));
                 }
@@ -308,12 +308,12 @@ public class GameController {
                 sendBoard();
                 notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
                 //evaluate if the current player or another player won
-                /*if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
+                if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification(nickname));
                 }
                 else if(match.outOfTurnWin() != null){
                     notifyAllClients(new WinNotification(match.outOfTurnWin().getNickname()));
-                }*/
+                }
             } catch (OpponentEffectException e) {
                 notifySingleClient(clientController,new ActionPointResponse("Mossa non consentita da carta avversaria",false));
             } catch (AlreadyBuiltException e) {
@@ -330,6 +330,8 @@ public class GameController {
                 notifySingleClient(clientController,new ActionPointResponse("Hai terminato già la tua mossa",false));
             } catch (OutOfOrderMoveException e) {
                 notifySingleClient(clientController,new ActionPointResponse("Devi prima muovere",false));
+            } catch (NoPlayerException e) {
+                System.out.println("Errore inaspettato: Non ci sono giocatori");
             }
         } catch (NotYourTurnException e) {
             notifySingleClient(clientController,new ActionPointResponse("Non è il tuo turno",false));

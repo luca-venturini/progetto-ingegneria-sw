@@ -61,11 +61,18 @@ class OpponentEffectContainerTest {
         test.switchToNewTurn();
         player.placeWorker(1,p1,instance.getBoard());
         player.setCard(new ApolloCard());
-        test.checkMovementPoint(p2,player.selectWorker(0),instance.getBoard());
+        assertTrue(test.checkMovementPoint(p2,player.selectWorker(0),instance.getBoard()));
     }
 
     @Test
     void checkConstructionPoint() {
+        Point p1= new Point(1,3);
+        Point p2= new Point(1,2);
+        test.addEffect(new AthenaEffect());
+        test.switchToNewTurn();
+        player.placeWorker(1,p1,instance.getBoard());
+        player.setCard(new ApolloCard());
+        assertFalse(test.checkConstructionPoint(p2,player.selectWorker(0),instance.getBoard()));
     }
 
 }
