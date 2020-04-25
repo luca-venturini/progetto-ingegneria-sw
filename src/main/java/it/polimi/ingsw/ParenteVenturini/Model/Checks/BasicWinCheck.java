@@ -14,7 +14,7 @@ public class BasicWinCheck implements WinCheck {
     public boolean hasWon(Board board, Worker worker, List<Player> players) {
         for(Player p: players){
             OpponentEffect eff = p.getCard().getOpponentEffect();
-            if (eff != null && eff.isWinEffect()){
+            if (eff != null && eff.isWinEffect() && !eff.equals(worker.getEffect())){
                 if(!eff.isWinner(board, worker))
                     return false;
             }

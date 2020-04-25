@@ -28,6 +28,10 @@ public class MoveHandler {
         this.specialconstruction= false;
     }
 
+    public boolean isMovement() {
+        return movement;
+    }
+
     public void doAction(String nickname, Point x) throws NotYourTurnException, OpponentEffectException, AlreadyBuiltException, IllegalBuildingException, IllegalMovementException, NotPossibleEndMoveException, AlreadyWalkedException, endedMoveException, OutOfOrderMoveException {
         if(movement) {
             doMovement(nickname,x);

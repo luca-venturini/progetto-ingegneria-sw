@@ -58,6 +58,7 @@ public class Match {
 
     public boolean gameOver()  {
         Move move = this.getTurn().getCurrentPlayer().getMove();
+
         List<Worker> workers = this.getTurn().getCurrentPlayer().getWorkers();
         boolean result = false;
         if(move.forcedMovement()){

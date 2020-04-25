@@ -332,7 +332,7 @@ public class GameController {
                 moveHandler.doAction(nickname,x);
 
                 //evaluate if the current player or another player won
-                if(match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
+                if(moveHandler.isMovement() && match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification(nickname));
                 }
                 else if(match.outOfTurnWin() != null){

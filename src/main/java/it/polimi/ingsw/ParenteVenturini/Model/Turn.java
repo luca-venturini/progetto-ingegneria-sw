@@ -15,6 +15,7 @@ public class Turn {
         this.currentPlayer = players.get(0);
         this.numTurn=1;
         this.opponentEffectContainer=op;
+        currentPlayer.setMove(currentPlayer.callMove());
     }
 
     public void setNextPlayer() {
@@ -26,6 +27,8 @@ public class Turn {
         else
             currentPlayer = players.get(lastPlayer+1);
         currentWorker = null;
+        currentPlayer.setMove(currentPlayer.callMove());
+
     }
 
     private void updateNewTurn(){

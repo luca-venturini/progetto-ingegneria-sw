@@ -78,7 +78,7 @@ public class PrometheusMove extends Move {
         int level = board.blockLevel(worker.getPosition());
         List<Point> possiblePoints = possibleMovements(board, worker);
         for(Point p: possiblePoints){
-            if(board.blockLevel(p)>level)
+            if(board.blockLevel(p)>level && board.blockLevel(p)-level<=1)
                 return false;
         }
         return true;
