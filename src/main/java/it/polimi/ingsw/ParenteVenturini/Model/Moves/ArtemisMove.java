@@ -8,6 +8,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArtemisMove extends Move {
@@ -67,8 +68,13 @@ public class ArtemisMove extends Move {
             }
             else if(numOfMovements==1){
                 List<Point> possiblePoints = action.getPossibleActions(board, worker);
-                possiblePoints.remove(worker.getLastPosition());
-                return possiblePoints;
+                List<Point> allowedPoints = new ArrayList<>();
+                for(Point p: possiblePoints){
+                    if(!p.equals(worker.getLastPosition())){
+                        allowedPoints.add(p);
+                    }
+                }
+                return allowedPoints;
             }
             else throw new AlreadyWalkedException();
         }

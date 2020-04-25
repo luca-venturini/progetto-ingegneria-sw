@@ -8,6 +8,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DemeterMove extends Move {
@@ -79,8 +80,13 @@ public class DemeterMove extends Move {
                 }
                 else{
                     List<Point> possiblePoints = action.getPossibleActions(board, worker);
-                    possiblePoints.remove(firstBuilding);
-                    return possiblePoints;
+                    List<Point> allowedPoints = new ArrayList<>();
+                    for(Point p: possiblePoints){
+                        if(!p.equals(firstBuilding)){
+                            allowedPoints.add(p);
+                        }
+                    }
+                    return allowedPoints;
                 }
             }else throw new OutOfOrderMoveException();
         }
