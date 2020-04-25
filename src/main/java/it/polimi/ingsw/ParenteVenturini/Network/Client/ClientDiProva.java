@@ -1,5 +1,8 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
+import it.polimi.ingsw.ParenteVenturini.View.CLI.CLI;
+import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

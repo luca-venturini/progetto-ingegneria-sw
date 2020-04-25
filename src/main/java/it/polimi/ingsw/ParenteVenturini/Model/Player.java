@@ -22,7 +22,7 @@ public class Player{
 
     public Player(String nickname, Match match) {
         this.nickname = nickname;
-        workers = new ArrayList<Worker>();
+        workers = new ArrayList<>();
         this.match= match;
         this.move= null;
     }
@@ -56,11 +56,17 @@ public class Player{
         return card.getMove();
     }
 
+    public Move getMove() {
+        return move;
+    }
 
     public boolean hasWon(Board board, Worker worker, List<Player> players){
         return winCondition.hasWon(board, worker, players);
     }
 
+    public void setMove(Move move) {
+        this.move = move;
+    }
 
     public Card getCard() {
         return card;
@@ -142,7 +148,7 @@ public class Player{
         return temp;
     }
 
-    public List<Point> getPossibleBuildings() throws OutOfOrderMoveException, AlreadyBuiltException {
+    public List<Point> getPossibleBuildings() throws OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
@@ -165,9 +171,7 @@ public class Player{
     }
 
     public boolean equals(Player other){
-        if(this.nickname == other.nickname)
-            return true;
-        return false;
+        return this.nickname.equals(other.nickname);
     }
 
 }

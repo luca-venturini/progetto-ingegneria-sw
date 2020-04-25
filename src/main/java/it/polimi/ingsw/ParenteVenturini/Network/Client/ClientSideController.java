@@ -3,6 +3,7 @@ package it.polimi.ingsw.ParenteVenturini.Network.Client;
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
+import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -196,6 +197,11 @@ public class ClientSideController implements ClientMessageHandler {
             client.displayMessage(msg.getMessage());
             client.displayMoveMenu();
         }
+    }
+
+    @Override
+    public void visit(GameOverNotification msg) {
+        client.displayMessage("Hai Perso ");
     }
 
     @Override

@@ -1,7 +1,10 @@
-package it.polimi.ingsw.ParenteVenturini.Network.Client;
+package it.polimi.ingsw.ParenteVenturini.View.CLI;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
+import it.polimi.ingsw.ParenteVenturini.Network.Client.ColourPrint;
+import it.polimi.ingsw.ParenteVenturini.Network.Client.LightWorker;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
 import java.util.ArrayList;

@@ -91,7 +91,7 @@ public class MoveHandler {
         }
     }
 
-    public List<Point> getConstructionActions(String nickname) throws NotYourTurnException, NoPossibleActionException, OutOfOrderMoveException, AlreadyBuiltException {
+    public List<Point> getConstructionActions(String nickname) throws NotYourTurnException, NoPossibleActionException, OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             construction= true;
             if(!match.getTurn().getCurrentPlayer().getPossibleBuildings().isEmpty()) {
@@ -106,7 +106,7 @@ public class MoveHandler {
         }
     }
 
-    public List<Point> getSpecialConstructionActions(String nickname) throws NotYourTurnException, NoPossibleActionException, OutOfOrderMoveException, AlreadyBuiltException {
+    public List<Point> getSpecialConstructionActions(String nickname) throws NotYourTurnException, NoPossibleActionException, OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             specialconstruction= true;
             if(!match.getTurn().getCurrentPlayer().getPossibleBuildings().isEmpty()) {

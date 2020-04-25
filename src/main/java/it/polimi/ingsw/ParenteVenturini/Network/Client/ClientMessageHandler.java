@@ -25,4 +25,5 @@ public interface ClientMessageHandler {
     void visit(ActionResponse msg);
     void visit(ActionPointResponse msg);
     void visit(ActionNotification msg);
+    void visit(GameOverNotification msg);
 }

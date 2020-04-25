@@ -3,6 +3,7 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.AthenaCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.AthenaEffect;
+import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +43,7 @@ class OpponentEffectContainerTest {
         test.addEffect(new AthenaEffect());
         assertTrue(test.getActiveEffects().isEmpty());
         test.switchToNewTurn();
-        assertTrue(!test.getActiveEffects().isEmpty());
+        assertFalse(test.getActiveEffects().isEmpty());
     }
 
     @Test
@@ -54,7 +55,7 @@ class OpponentEffectContainerTest {
     }
 
     @Test
-    void checkMovementPoint() {
+    void checkMovementPoint() throws IllegalBlockUpdateException {
         Point p1= new Point(1,3);
         Point p2= new Point(1,2);
         test.addEffect(new AthenaEffect());
@@ -62,6 +63,8 @@ class OpponentEffectContainerTest {
         player.placeWorker(1,p1,instance.getBoard());
         player.setCard(new ApolloCard());
         assertTrue(test.checkMovementPoint(p2,player.selectWorker(0),instance.getBoard()));
+        instance.getBoard().setBlockLevel(p2,1);
+        assertFalse(test.checkMovementPoint(p2,player.selectWorker(0),instance.getBoard()));
     }
 
     @Test
@@ -72,7 +75,8 @@ class OpponentEffectContainerTest {
         test.switchToNewTurn();
         player.placeWorker(1,p1,instance.getBoard());
         player.setCard(new ApolloCard());
-        assertFalse(test.checkConstructionPoint(p2,player.selectWorker(0),instance.getBoard()));
+        assertTrue(test.checkConstructionPoint(p2,player.selectWorker(0),instance.getBoard()));
+
     }
 
 }

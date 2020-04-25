@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PrometheusMoveTest {
+class HeraMoveTest {
     private Match instance;
     private Player player;
     private Move tester;
@@ -20,14 +20,13 @@ class PrometheusMoveTest {
         player= new Player("player",instance);
         Point x= new Point(0,0);
         player.placeWorker(1,x,instance.getBoard());
-        tester= new PrometheusMove();
+        tester= new HeraMove();
     }
 
     @Test
-    void walk_test1() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+    void walk() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,1);
-        Point p3= new Point(2,2);
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
@@ -35,34 +34,13 @@ class PrometheusMoveTest {
     }
 
     @Test
-    void walk_test2() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+    void build() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,1);
-        tester.build(p1,instance.getBoard(),player.selectWorker(0));
-        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
-        assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
-        tester.build(p2,instance.getBoard(),player.selectWorker(0));
-        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));
-    }
-
-    @Test
-    void build_test1() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
-        Point p1= new Point(1,1);
-        Point p2= new Point(2,1);
+        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(endedMoveException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
-        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));
-    }
-
-    @Test
-    void build_test2() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
-        Point p1= new Point(1,1);
-        Point p2= new Point(2,1);
-        tester.build(p1,instance.getBoard(),player.selectWorker(0));
-        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
-        tester.build(p2,instance.getBoard(),player.selectWorker(0));
-        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));
     }
 
     @Test
@@ -77,7 +55,7 @@ class PrometheusMoveTest {
     void possibleBuildings() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,1);
-        assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));
+        assertThrows(OutOfOrderMoveException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));
         tester.build(p2,instance.getBoard(),player.selectWorker(0));

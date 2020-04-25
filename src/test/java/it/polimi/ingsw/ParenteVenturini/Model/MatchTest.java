@@ -1,8 +1,8 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Cards.ApolloCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.AthenaCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.ChronusCard;
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.DemeterCard;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -36,8 +36,50 @@ class MatchTest {
     }
 
     @Test
-    void gameOver() {
+    void gameOver() throws NoMorePlayersException, AlreadyPresentPlayerException, IllegalBlockUpdateException {
+        instance.addPlayer("player1");
+        instance.selectPlayer("player1").setCard(new DemeterCard());
+        instance.setTurn();
+        Point p1= new Point(0,0);
+        Point p2= new Point(1,0);
+        Point p3= new Point(0,1);
+        Point p4= new Point(1,1);
+        Point p5= new Point(0,4);
+        Point p6= new Point(1,4);
+        Point p7= new Point(1,3);
+        Point p8= new Point(0,3);
+        instance.selectPlayer("player1").placeWorker(1,p1,instance.getBoard());
+        instance.selectPlayer("player1").placeWorker(1,p5,instance.getBoard());
+        instance.selectPlayer("player1").setMove(instance.selectPlayer("player1").callMove());
+        instance.getBoard().setBlockLevel(p2,4);
+        instance.getBoard().setBlockLevel(p3,4);
+        instance.getBoard().setBlockLevel(p4,4);
+        assertFalse(instance.gameOver());
+        instance.getBoard().setBlockLevel(p6,4);
+        instance.getBoard().setBlockLevel(p7,4);
+        instance.getBoard().setBlockLevel(p8,4);
+        assertTrue(instance.gameOver());
+    }
 
+    @Test
+    void directGameOver() throws NoMorePlayersException, AlreadyPresentPlayerException, IllegalBlockUpdateException, AlreadyBuiltException, AlreadyWalkedException, NotPossibleEndMoveException, IllegalBuildingException, endedMoveException, OpponentEffectException, IllegalMovementException {
+        instance.addPlayer("player1");
+        instance.selectPlayer("player1").setCard(new DemeterCard());
+        instance.setTurn();
+        Point p1= new Point(0,0);
+        Point p2= new Point(1,0);
+        Point p3= new Point(0,1);
+        Point p4= new Point(1,1);
+        instance.selectPlayer("player1").placeWorker(1,p2,instance.getBoard());
+        instance.selectPlayer("player1").setMove(instance.selectPlayer("player1").callMove());
+        instance.getTurn().setActualWorker(instance.selectPlayer("player1").selectWorker(0));
+        instance.selectPlayer("player1").walk(p1);
+        assertTrue(instance.selectPlayer("player1").getMove().forcedBuilding());
+        assertFalse(instance.directGameOver());
+        instance.getBoard().setBlockLevel(p2,4);
+        instance.getBoard().setBlockLevel(p3,4);
+        instance.getBoard().setBlockLevel(p4,4);
+        assertTrue(instance.directGameOver());
     }
 
     @Test
@@ -101,7 +143,7 @@ class MatchTest {
         instance.addPlayer("player2");
         assertThrows(InvalidNamePlayerException.class,()->instance.selectStarter("player"));
         instance.selectStarter("player1");
-        assertTrue(instance.getStarter() != null);
+        assertNotNull(instance.getStarter());
         assertThrows(AlreadyChosenStarterException.class,()->instance.selectStarter("player2"));
     }
 
@@ -117,7 +159,7 @@ class MatchTest {
 
     @Test
     void getBoard() {
-        assertTrue(instance.getBoard() != null);
+        assertNotNull(instance.getBoard());
     }
 
     @Test
@@ -125,7 +167,7 @@ class MatchTest {
         assertNull( instance.getChallenger() );
         instance.addPlayer("player1");
         instance.setChallenger();
-        assertTrue(instance.getChallenger() != null);
+        assertNotNull(instance.getChallenger());
     }
 
     @Test
@@ -164,6 +206,7 @@ class MatchTest {
         instance.getBoard().setBlockLevel(p3,4);
         instance.getBoard().setBlockLevel(p4,4);
         instance.getBoard().setBlockLevel(p5,4);
-        assertTrue(instance.outOfTurnWin().getNickname().equals("player1"));
+        assertEquals("player1", instance.outOfTurnWin().getNickname());
     }
+
 }

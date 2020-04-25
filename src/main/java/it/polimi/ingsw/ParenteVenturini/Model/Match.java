@@ -2,6 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Card;
 import it.polimi.ingsw.ParenteVenturini.Model.Cards.Deck;
+import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
@@ -46,31 +47,50 @@ public class Match {
         else throw new NoMorePlayersException();
     }
 
-    public boolean gameOver() throws AlreadyWalkedException, OutOfOrderMoveException, AlreadyBuiltException {
-        Move move = this.getTurn().getCurrentPlayer().callMove();
+    public boolean directGameOver(){
+        Move move = this.getTurn().getCurrentPlayer().getMove();
         Worker currentWorker = turn.getCurrentWorker();
+        if(move.forcedBuilding()) {
+            return gameOverBuilding(move, board, currentWorker);
+        }
+        return false;
+    }
+
+    public boolean gameOver()  {
+        Move move = this.getTurn().getCurrentPlayer().getMove();
+        List<Worker> workers = this.getTurn().getCurrentPlayer().getWorkers();
         boolean result = false;
-        if(move.forcedMovement(board, turn.getCurrentWorker())){
-            result = gameOverMovement(move, board, currentWorker);
+        if(move.forcedMovement()){
+            result = gameOverMovement(move, board, workers.get(0)) && gameOverMovement(move, board, workers.get(1));
         }
-        else if(move.forcedBuilding(board, turn.getCurrentWorker())){
-            result = gameOverBuilding(move, board, currentWorker);
+        else if(move.forcedBuilding()){
+            result = gameOverBuilding(move, board, workers.get(0)) && gameOverBuilding(move, board, workers.get(1));
         }
-        else if( !move.forcedMovement(board, turn.getCurrentWorker()) && !move.forcedBuilding(board, turn.getCurrentWorker()))
-            return (gameOverMovement(move, board, currentWorker) || gameOverBuilding(move, board, currentWorker));
+        else if( !move.forcedMovement() && !move.forcedBuilding())
+            return (gameOverMovement(move, board, workers.get(0)) && gameOverMovement(move, board, workers.get(0)) ) && (gameOverBuilding(move, board, workers.get(0)) && gameOverBuilding(move, board, workers.get(1)));
         return result;
     }
 
-    private boolean gameOverMovement(Move move, Board board, Worker currentWorker) throws AlreadyWalkedException {
-        List<Point> points = move.possibleMovements(board, currentWorker);
+    private boolean gameOverMovement(Move move, Board board, Worker currentWorker)  {
+        List<Point> points = null;
+        try {
+            points = move.possibleMovements(board, currentWorker);
+        } catch (AlreadyWalkedException e) {
+            e.printStackTrace();
+        }
         points = opponentEffectContainer.removeMovementPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
-        return points == null;
+        return points.isEmpty();
     }
 
-    private boolean gameOverBuilding(Move move, Board board, Worker currentWorker) throws OutOfOrderMoveException, AlreadyBuiltException {
-        List<Point> points = move.possibleBuildings(board, currentWorker);
+    private boolean gameOverBuilding(Move move, Board board, Worker currentWorker)  {
+        List<Point> points = null;
+        try {
+            points = move.possibleBuildings(board, currentWorker);
+        } catch (OutOfOrderMoveException | AlreadyBuiltException | AlreadyWalkedException e) {
+            e.printStackTrace();
+        }
         points = opponentEffectContainer.removeConstructionPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
-        return points == null;
+        return points.isEmpty();
     }
 
     public Board getBoard() {
@@ -164,7 +184,7 @@ public class Match {
     public void orderPlayers() throws NoStarterException, NoPlayerException {
         if( !players.isEmpty() ) {
             if (this.starter != null) {
-                List<Player> p = new ArrayList<Player>();
+                List<Player> p = new ArrayList<>();
                 p.add(this.starter);
                 for (Player i : players) {
                     if (!i.equals(starter)) {
@@ -191,5 +211,18 @@ public class Match {
                 return p;
         }
         return null;
+    }
+
+    public void deletePlayer(Player player){
+        try {
+            this.chosenCards.remove(player.getCard());
+            OpponentEffect effect=player.getOpponentEffectPlayer();
+            if(effect != null){
+                opponentEffectContainer.removeEffect(effect);
+            }
+            this.getPlayers().remove(player);
+        } catch (NoPlayerException e) {
+            e.printStackTrace();
+        }
     }
 }

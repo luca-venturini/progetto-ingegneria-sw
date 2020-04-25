@@ -15,6 +15,11 @@ public class OpponentEffectContainer {
         //System.out.println("Ho aggiunto un effetto");
     }
 
+    public void removeEffect(OpponentEffect effect){
+        thisTurn.remove(effect);
+        nextTurn.remove(effect);
+    }
+
     public void switchToNewTurn(){
         thisTurn = nextTurn;
         //System.out.println("grandezza thisTurn: "+thisTurn.size());

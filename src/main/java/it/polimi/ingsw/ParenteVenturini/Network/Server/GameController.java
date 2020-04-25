@@ -152,13 +152,10 @@ public class GameController {
                 notifyAllClients(new SimplyNotification("Ogni giocatore dovrà posizionare i propri workers"));
                 placeWorkerSetupHandler = new PlaceWorkerSetupHandler(match.getPlayers(), match.getBoard());
                 notifyAllClients(new PlaceWorkersNotification());
-            } catch (AlreadyChosenStarterException e) {
+            } catch (AlreadyChosenStarterException | NoPlayerException e) {
                 e.printStackTrace();
             } catch (InvalidNamePlayerException e) {
                 notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( false, "Il nickname scelto non è disponibile"));
-            }
-            catch (NoPlayerException e) {
-                e.printStackTrace();
             }
         }else{
             System.out.println("Error setStartingPlayer method in gameController");
@@ -223,9 +220,27 @@ public class GameController {
     }
 
     public void notifyYourTurn(){
-        notifyAllClients(new SimplyNotification("E' il turno di "+match.getTurn().getCurrentPlayer().getNickname()));
-        notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification() );
-        System.out.println("Turno: "+match.getTurn().getNumTurn()+" Giocatore: "+match.getTurn().getCurrentPlayer().getNickname());
+        if(match.gameOver()) {
+            notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
+            manageGameOver();
+        }
+        else {
+            notifyAllClients(new SimplyNotification("E' il turno di " + match.getTurn().getCurrentPlayer().getNickname()));
+            notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification());
+            System.out.println("Turno: " + match.getTurn().getNumTurn() + " Giocatore: " + match.getTurn().getCurrentPlayer().getNickname());
+        }
+    }
+
+    public void manageGameOver(){
+        if (match.getTypeOfMatch() == 2) {
+            match.getTurn().setNextPlayer();
+            notifyAllClients(new WinNotification(match.getTurn().getCurrentPlayer().getNickname()));
+        } else {
+            notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+"ha perso")));
+            match.deletePlayer(match.getTurn().getCurrentPlayer());
+            match.getTurn().setNextPlayer();
+            notifyYourTurn();
+        }
     }
 
     public void selectWorker(ClientController clientController, String nickname, int index){
@@ -239,65 +254,75 @@ public class GameController {
     public void doMove(ClientController clientController, String typeOfMove,String nickname){
         moveHandler.init();
         List<Point> points;
-        switch (typeOfMove){
-            case "Movement":
-                try {
-                   points=moveHandler.getMovementsActions(nickname);
-                    notifySingleClient(clientController,new ActionResponse(points));
-                } catch (NotYourTurnException e) {
-                    notifySingleClient(clientController,new ActionNotification("Non è il tuo turno"));
-                } catch (NoPossibleActionException e) {
-                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile. Seleziona un altro worker"));
-                } catch (AlreadyWalkedException e) {
-                    notifySingleClient(clientController,new ActionNotification("Hai già mosso"));
-                }
-                break;
+        if(match.directGameOver()){
+            notifySingleClient(clientController, new GameOverNotification());
+            manageGameOver();
+        }
+        else {
+            switch (typeOfMove) {
+                case "Movement":
+                    try {
+                        points = moveHandler.getMovementsActions(nickname);
+                        notifySingleClient(clientController, new ActionResponse(points));
+                    } catch (NotYourTurnException e) {
+                        notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
+                    } catch (NoPossibleActionException e) {
+                        notifySingleClient(clientController, new ActionNotification("Nessuna azione possibile. Seleziona un altro worker"));
+                    } catch (AlreadyWalkedException e) {
+                        notifySingleClient(clientController, new ActionNotification("Hai già mosso"));
+                    }
+                    break;
 
-            case "Construction":
-                try {
-                    points=moveHandler.getConstructionActions(nickname);
-                    notifySingleClient(clientController,new ActionResponse(points));
-                } catch (NotYourTurnException e) {
-                    notifySingleClient(clientController,new ActionNotification("Non è il tuo turno"));
-                } catch (NoPossibleActionException e) {
-                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile"));
-                } catch (OutOfOrderMoveException e) {
-                    notifySingleClient(clientController,new ActionNotification("Devi prima muovere"));
-                } catch (AlreadyBuiltException e) {
-                    notifySingleClient(clientController,new ActionNotification("Hai già costruito"));
-                }
-                break;
+                case "Construction":
+                    try {
+                        points = moveHandler.getConstructionActions(nickname);
+                        notifySingleClient(clientController, new ActionResponse(points));
+                    } catch (NotYourTurnException e) {
+                        notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
+                    } catch (NoPossibleActionException e) {
+                        notifySingleClient(clientController, new ActionNotification("Nessuna azione possibile"));
+                    } catch (OutOfOrderMoveException e) {
+                        notifySingleClient(clientController, new ActionNotification("Devi prima muovere"));
+                    } catch (AlreadyBuiltException e) {
+                        notifySingleClient(clientController, new ActionNotification("Hai già costruito"));
+                    } catch (AlreadyWalkedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
 
-            case "SpecialConstruction":
-                try {
-                    points=moveHandler.getSpecialConstructionActions(nickname);
-                    notifySingleClient(clientController,new ActionResponse(points));
-                } catch (NotYourTurnException e) {
-                    notifySingleClient(clientController,new ActionNotification("Non è il tuo turno"));
-                } catch (NoPossibleActionException e) {
-                    notifySingleClient(clientController,new ActionNotification("Nessuna azione possibile"));
-                } catch (OutOfOrderMoveException e) {
-                    notifySingleClient(clientController,new ActionNotification("Devi prima muovere"));
-                } catch (AlreadyBuiltException e) {
-                    notifySingleClient(clientController,new ActionNotification("Hai già costruito"));
-                }
-                break;
+                case "SpecialConstruction":
+                    try {
+                        points = moveHandler.getSpecialConstructionActions(nickname);
+                        notifySingleClient(clientController, new ActionResponse(points));
+                    } catch (NotYourTurnException e) {
+                        notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
+                    } catch (NoPossibleActionException e) {
+                        notifySingleClient(clientController, new ActionNotification("Nessuna azione possibile"));
+                    } catch (OutOfOrderMoveException e) {
+                        notifySingleClient(clientController, new ActionNotification("Devi prima muovere"));
+                    } catch (AlreadyBuiltException e) {
+                        notifySingleClient(clientController, new ActionNotification("Hai già costruito"));
+                    } catch (AlreadyWalkedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
 
-            case "EndMove":
-                try {
-                    moveHandler.doEndMove(nickname);
-                    notifySingleClient(clientController,new EndMoveResponse("Turno terminato",true));
-                    notifyYourTurn();
-                } catch (NotYourTurnException e) {
-                    notifySingleClient(clientController,new EndMoveResponse("Non è il tuo turno",false));
-                } catch (NotPossibleEndMoveException e) {
-                    notifySingleClient(clientController,new EndMoveResponse("Non è possibile terminare il turno",false));
-                }
-                break;
+                case "EndMove":
+                    try {
+                        moveHandler.doEndMove(nickname);
+                        notifySingleClient(clientController, new EndMoveResponse("Turno terminato", true));
+                        notifyYourTurn();
+                    } catch (NotYourTurnException e) {
+                        notifySingleClient(clientController, new EndMoveResponse("Non è il tuo turno", false));
+                    } catch (NotPossibleEndMoveException e) {
+                        notifySingleClient(clientController, new EndMoveResponse("Non è possibile terminare il turno", false));
+                    }
+                    break;
 
-            default:
-                System.out.println("Errore inaspettato");
-                break;
+                default:
+                    System.out.println("Errore inaspettato");
+                    break;
+            }
         }
     }
 

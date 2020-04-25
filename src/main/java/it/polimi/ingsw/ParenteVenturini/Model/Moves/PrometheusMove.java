@@ -58,15 +58,20 @@ public class PrometheusMove extends Move {
     }
 
     @Override
-    public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
+    public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {
         Action action = new BasicConstruction();
         if(!hasEnded && !hasBuilt) {
-            if(hasWalked) {
+            if(hasWalked || !specialEffectAlreadyActivated && canUseSpecialEffect(board, worker)){
                 return action.getPossibleActions(board, worker);
             }
             else throw new OutOfOrderMoveException();
         }
         else throw new AlreadyBuiltException();
+    }
+
+    @Override
+    public boolean forcedMovement() {
+        return !hasWalked && specialEffectAlreadyActivated;
     }
 
     private boolean canUseSpecialEffect(Board board, Worker worker) throws AlreadyWalkedException {

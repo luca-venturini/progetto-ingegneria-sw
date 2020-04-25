@@ -25,13 +25,13 @@ public abstract class Move {
 
     public abstract List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException;
 
-    public abstract List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException;
+    public abstract List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException;
 
-    public boolean forcedMovement(Board board, Worker worker){
+    public boolean forcedMovement(){
         return !hasWalked;
     }
 
-    public boolean forcedBuilding(Board board, Worker worker){
+    public boolean forcedBuilding(){
         return hasWalked && !hasBuilt;
     }
 
