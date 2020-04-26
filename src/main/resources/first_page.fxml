@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" styleClass="first_page_VBox" prefHeight="400.0" prefWidth="640.0" style="-fx-background-image: url('copertina_santorini.jpg');" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.FXMLButtonController">
+    <children>
+        <Label id="title_label" alignment="CENTER" contentDisplay="CENTER" prefHeight="127.0" prefWidth="529.0" textAlignment="CENTER" textFill="#b27025">
+            <font>
+                <Font name="Gill Sans Ultra Bold" size="71.0" />
+            </font>
+            <effect>
+                <ColorAdjust />
+            </effect>
+            <graphic>
+                <Text fill="#a85f32" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="2.0" text="SANTORINI">
+                    <font>
+                        <Font name="Gill Sans Ultra Bold" size="70.0" />
+                    </font>
+                </Text>
+            </graphic>
+        </Label>
+        <Button fx:id="start_button" contentDisplay="TOP" graphicTextGap="8.0" mnemonicParsing="false" onAction="#changeColor" prefHeight="51.0" prefWidth="177.0" text="Inizia a giocare">
+            <font>
+                <Font name="Gill Sans Ultra Bold Condensed" size="18.0" />
+            </font>
+        </Button>
+    </children>
+</VBox>
