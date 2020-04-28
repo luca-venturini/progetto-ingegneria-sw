@@ -37,13 +37,9 @@ public class Turn {
     }
 
     public void setActualWorker(Worker w){
-        if(currentWorker == null)
-            currentWorker = w;
+        currentWorker = w;
     }
 
-    public void cleanCurrentWorker(){
-        currentWorker = null;
-    }
 
     public Player getCurrentPlayer() {
         return currentPlayer;

@@ -139,7 +139,7 @@ public class ClientSideController implements ClientMessageHandler {
         }
 
          */
-        client.displayBoard(msg.getBlocks(),msg.getWorkerpositions(),msg.getColours());
+        client.displayBoard(msg.getBlocks(),msg.getWorkerpositions(),msg.getColours(),msg.getIndex());
     }
 
     @Override

@@ -118,29 +118,32 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void displayBoard(Block[][] blocks, List<Point>workers, List<String>colours) {
-        printString("     0       1       2       3       4   ");
+    public void displayBoard(Block[][] blocks, List<Point>workers, List<String>colours, List<String>index) {
+        printString("        0            1            2           3            4   ");
         for(int i=0;i<5;i++) {
-            printString("  ------------------------------------");
-            print(i+" |");
+            printString("  ------------------------------------------------------------------");
+            print(i+" | ");
             for (int j = 0; j < 5; j++) {
-                for(Point p: workers) {
-                    if (p.equals(i,j)) {
-                        int k = Integer.parseInt(colours.get(workers.indexOf(p)));
-                        colourPrint.print(k, "&");
-                    }
-                    else {
-                        print(" ");
-                    }
-                }
                 if(blocks[i][j].isDome()){
                     print("O");
                 }
-                print(" "+blocks[i][j].getLevel()+"|");
+                else {
+                    print(" ");
+                }
+                for(Point p: workers) {
+                    if (p.equals(i,j)) {
+                        int k = Integer.parseInt(colours.get(workers.indexOf(p)));
+                        colourPrint.print(k, "&"+index.get(workers.indexOf(p)));
+                    }
+                    else {
+                        print("  ");
+                    }
+                }
+                print(" "+blocks[i][j].getLevel()+"| ");
             }
             print("\n");
         }
-        printString("  ------------------------------------");
+        printString("  ------------------------------------------------------------------");
     }
 
     @Override

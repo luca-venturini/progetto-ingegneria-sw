@@ -206,6 +206,7 @@ public class GameController {
         Block[][] blocks= new Block[5][5];
         List<Point> positionworker = new ArrayList<>();
         List<String> colours= new ArrayList<>();
+        List<String> index= new ArrayList<>();
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
                 blocks[i][j]=match.getBoard().getBlock(i,j);
@@ -215,8 +216,14 @@ public class GameController {
         for(Worker w: workers) {
             positionworker.add(w.getPosition());
             colours.add(String.valueOf(w.getColour()));
+            if(w.getPosition().equals(w.getPlayer().selectWorker(0).getPosition())){
+                index.add("1");
+            }
+            else {
+                index.add("2");
+            }
         }
-        notifyAllClients(new BoardUpdateNotification(blocks,positionworker,colours) );
+        notifyAllClients(new BoardUpdateNotification(blocks,positionworker,colours,index) );
     }
 
     public void notifyYourTurn(){

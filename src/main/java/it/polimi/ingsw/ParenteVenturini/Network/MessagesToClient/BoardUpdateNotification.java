@@ -11,11 +11,13 @@ public class BoardUpdateNotification implements MessageToClient {
     private Block[][] blocks;
     private List<Point> workerpositions;
     private List<String> colours;
+    private List<String> index;
 
-    public BoardUpdateNotification(Block[][]blocks,List<Point>workerpositions,List<String>colours){
+    public BoardUpdateNotification(Block[][]blocks,List<Point>workerpositions,List<String>colours, List<String> index){
         this.blocks=blocks;
         this.workerpositions=workerpositions;
         this.colours=colours;
+        this.index=index;
         /*
         for(int i = 0; i<4; i++){
             for(int j = 0; j<4; j++){
@@ -36,6 +38,10 @@ public class BoardUpdateNotification implements MessageToClient {
 
     public List<String> getColours() {
         return colours;
+    }
+
+    public List<String> getIndex() {
+        return index;
     }
 
     @Override
