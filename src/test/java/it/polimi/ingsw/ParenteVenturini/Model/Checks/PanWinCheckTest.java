@@ -25,21 +25,16 @@ class PanWinCheckTest {
             instance.addPlayer("player");
             instance.getPlayers().get(0).placeWorker(1,x,instance.getBoard());
             player = instance.getPlayers().get(0);
-        } catch (NoMorePlayersException e) {
-            e.printStackTrace();
-        } catch (AlreadyPresentPlayerException e) {
-            e.printStackTrace();
-        } catch (NoPlayerException e) {
+        } catch (NoMorePlayersException | AlreadyPresentPlayerException | NoPlayerException e) {
             e.printStackTrace();
         }
-
+        player.setCard(new PanCard());
         instance.setTurn();
         instance.getTurn().setActualWorker(player.selectWorker(0));
     }
 
     @Test
     void hasWon() throws IllegalBlockUpdateException {
-        player.setCard(new PanCard());
         try {
             assertFalse(player.hasWon(instance.getBoard(), instance.getTurn().getCurrentWorker(), instance.getPlayers()));
             Point p= new Point(0,1);

@@ -44,12 +44,41 @@ class AthenaEffectTest {
         instance.getBoard().setBlockLevel(p4, 3);
         instance.getBoard().setBlockLevel(p5, 4);
         instance.getBoard().setBlockLevel(p7, 1);
-        assertTrue(!testeffect.removeMovementPoints(movements, p1, instance.getBoard()).isEmpty());
+        assertFalse(testeffect.removeMovementPoints(movements, p1, instance.getBoard()).isEmpty());
         assertTrue(testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p3));
-        assertTrue(!testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p2));
-        assertTrue(!testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p4));
-        assertTrue(!testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p5));
-        assertTrue(!testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p7));
+        assertFalse(testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p2));
+        assertFalse(testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p4));
+        assertFalse(testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p5));
+        assertFalse(testeffect.removeMovementPoints(movements, p1, instance.getBoard()).contains(p7));
 
+    }
+
+    @Test
+    void isMovementValid() throws IllegalBlockUpdateException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,2);
+        instance.getBoard().setBlockLevel(p1,2);
+        instance.getBoard().setBlockLevel(p2,1);
+        assertTrue(testeffect.isMovementValid(p2,p1,instance.getBoard()));
+        instance.getBoard().setBlockLevel(p2,3);
+        assertFalse(testeffect.isMovementValid(p2,p1,instance.getBoard()));
+    }
+
+    @Test
+    void isConstructionValid() {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,2);
+        assertTrue(testeffect.isConstructionValid(p2,p1,instance.getBoard()));
+    }
+
+    @Test
+    void isMovementEffectEnabled() throws IllegalBlockUpdateException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,2);
+        instance.getBoard().setBlockLevel(p1,2);
+        instance.getBoard().setBlockLevel(p2,1);
+        assertFalse(testeffect.isMovementEffectEnabled(p2,p1,instance.getBoard()));
+        instance.getBoard().setBlockLevel(p2,3);
+        assertTrue(testeffect.isMovementEffectEnabled(p2,p1,instance.getBoard()));
     }
 }
