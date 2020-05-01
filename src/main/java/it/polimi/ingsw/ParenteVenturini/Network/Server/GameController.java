@@ -119,19 +119,27 @@ public class GameController {
     }
 
     public void setPlayerCard(Player player, String card){
-        try {
-            cardSetupHandler.setCard(player, deck.selectByName(card));
-            notifySingleClient(player, new SetPlayerCardResponse( true, "Carta aggiunta"));
-            if(cardSetupHandler.getNextPlayer() != null)
-                notifyAllClients(new SimplyNotification(player.getNickname()+" ha scelto la sua carta, tocca a "+cardSetupHandler.getNextPlayer()));
-            else {
-                notifyAllClients(new SimplyNotification("Inizio nuova fase, attendi..."));
-                notifySingleClient(match.getChallenger(), new ChooseStartingPlayerNotification());
+        if (card == null){
+            notifySingleClient(player, new SetPlayerCardResponse( false, "Scegli una carta"));
+        }
+        else {
+            try {
+                cardSetupHandler.setCard(player, deck.selectByName(card));
+
+                if (cardSetupHandler.getNextPlayer() != null) {
+                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta"));
+                    notifyAllClients(new SimplyNotification(player.getNickname() + " ha scelto la sua carta, tocca a " + cardSetupHandler.getNextPlayer()));
+                }
+                else {
+                    //notifyAllClients(new SimplyNotification("Inizio nuova fase, attendi..."));
+                    notifyAllClients(new WaitNotification());
+                    notifySingleClient(match.getChallenger(), new ChooseStartingPlayerNotification());
+                }
+            } catch (NotYourTurnException e) {
+                notifySingleClient(player, new SetPlayerCardResponse(false, "Non è il tuo turno"));
+            } catch (IllegalCardException e) {
+                notifySingleClient(player, new SetPlayerCardResponse(false, "La carta scelta non è disponibile"));
             }
-        } catch (NotYourTurnException e) {
-            notifySingleClient(player, new SetPlayerCardResponse( false, "Non è il tuo turno"));
-        } catch (IllegalCardException e) {
-            notifySingleClient(player, new SetPlayerCardResponse( false, "La carta scelta non è disponibile"));
         }
     }
 
@@ -150,6 +158,7 @@ public class GameController {
                 match.selectStarter(startingPlayerNickname);
                 notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( true, "Giocatore iniziale settato"));
                 notifyAllClients(new SimplyNotification("Ogni giocatore dovrà posizionare i propri workers"));
+                System.out.println("Giocatore scelto come iniziale: "+match.getStarter().getNickname());
                 placeWorkerSetupHandler = new PlaceWorkerSetupHandler(match.getPlayers(), match.getBoard());
                 notifyAllClients(new PlaceWorkersNotification());
             } catch (AlreadyChosenStarterException | NoPlayerException e) {

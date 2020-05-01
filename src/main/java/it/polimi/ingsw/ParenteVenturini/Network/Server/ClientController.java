@@ -67,6 +67,9 @@ public class ClientController implements ServerMessageHandler {
         } catch (IllegalCardException e) {
             sendMessage(new SimplyNotification("Questo non dovrebbe succedere..."));
         }
+        for (String s: msg.getValues()){
+            System.out.println(s);
+        }
     }
 
     @Override

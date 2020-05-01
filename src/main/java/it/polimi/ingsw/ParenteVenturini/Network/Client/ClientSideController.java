@@ -4,6 +4,8 @@ import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
+import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,11 +18,33 @@ public class ClientSideController implements ClientMessageHandler {
     private ObjectOutputStream writeStream;
     private Scanner stdIn;
     private ViewInterface client;
+    private ViewInterface gui;
+    private String nickanme;
+
+    public void setNickanme(String nickanme) {
+        this.nickanme = nickanme;
+    }
+
+    public String getNickanme() {
+        return nickanme;
+    }
 
     public ClientSideController(Scanner stdIn, ObjectInputStream readStream, ObjectOutputStream writeStream) {
         this.writeStream = writeStream;
         this.readStream = readStream;
         this.stdIn = stdIn;
+    }
+
+    public void setGui(GUIHandler gui) {
+        this.gui = gui;
+    }
+
+    public ViewInterface getClient() {
+        return client;
+    }
+
+    public void printhello(){
+        client.login();
     }
 
     public void setView(ViewInterface client){
@@ -39,7 +63,6 @@ public class ClientSideController implements ClientMessageHandler {
         } catch (IOException e) {
             System.out.println("Errore invio messaggio - connessione chiusa");
             closeConnection();
-            //e.printStackTrace();
         }
     }
 
@@ -50,11 +73,15 @@ public class ClientSideController implements ClientMessageHandler {
         } catch (IOException e) {
             //e.printStackTrace();
         }
-
+        finally {
+            client.closeConnection();
+        }
     }
+
 
     @Override
     public void visit(ErrorLoginNotification msg) {
+        System.out.println("errore login");
         client.displayMessage(msg.getNickname()+": "+msg.getValues().get(0));
         client.login();
     }
@@ -88,14 +115,28 @@ public class ClientSideController implements ClientMessageHandler {
     public void visit(SetPlayerCardResponse msg) {
         client.displayMessage(msg.getValues().get(0));
         if(! msg.isSet())
-            client.displayChooseCardMenu();
+            client.updateChooseCardMenu();
     }
 
+    /*
     @Override
     public void visit(AvailableCardResponse msg) {
         for(String s: msg.getValues())
             client.displayMessage(s);
         client.displayChooseCardMenu();
+    }
+
+     */
+
+
+    @Override
+    public void visit(AvailableCardResponse msg) {
+        client.displayAviableCards(msg.getValues());
+        /*
+        for(String s: msg.getValues())
+            client.displayMessage(s);
+        client.displayChooseCardMenu();
+         */
     }
 
     @Override
@@ -105,16 +146,21 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(AvailablePlayersResponse msg) {
+        client.displayAviablePlayers(msg.getValues());
+        /*
         for(String s: msg.getValues())
             client.displayMessage(s);
         client.displayChooseStartingPlayerMenu();
+         */
     }
 
     @Override
     public void visit(SetStartingPlayerResponse msg) {
         client.displayMessage(msg.getValues().get(0));
-        if(! msg.isSet())
-            client.displayChooseStartingPlayerMenu();
+        if(! msg.isSet()) {
+            client.updateChooseStartingPlayerMenu();
+            System.out.println("Giocatore non settato");
+        }
     }
 
     @Override
@@ -202,6 +248,11 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(GameOverNotification msg) {
         client.displayMessage("Hai Perso ");
+    }
+
+    @Override
+    public void visit(WaitNotification msg) {
+        client.waitPage();
     }
 
     @Override

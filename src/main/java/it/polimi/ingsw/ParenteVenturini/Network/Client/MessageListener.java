@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient;
+import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,6 +34,7 @@ public class MessageListener implements Runnable {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            GUIHandler.clientSideController.closeConnection();
             //e.printStackTrace();
             System.out.println("IOException - Thread listener in esecuzione");
         }

@@ -22,7 +22,7 @@ public class CardSetupHandler {
     }
 
     public void setCard(Player player, Card card) throws NotYourTurnException, IllegalCardException {
-        if(players.get(currentPlayer).equals(player) && player.getCard() == null) {
+        if(currentPlayer < players.size() && players.get(currentPlayer).equals(player) && player.getCard() == null) {
             if(possibleCards.contains(card)) {
                 player.setCard(card);
                 currentPlayer++;

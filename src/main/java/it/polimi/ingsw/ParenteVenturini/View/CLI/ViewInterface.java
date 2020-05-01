@@ -2,6 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.View.CLI;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 
 import java.util.List;
 
@@ -18,4 +19,13 @@ public interface ViewInterface {
     void displayPlaceWorkerMenu();
     void addLightWorker(Point point);
     void displaySelectPoint();
+    void startGame(ClientSideController clientSideController);
+    void setController(ClientSideController clientSideController);
+    void closeConnection();
+    void displayAviableCards(List<String> cards);
+    void updateChooseCardMenu();
+    void waitPage();
+    void displayAviablePlayers(List<String> playersName);
+    void updateChooseStartingPlayerMenu();
+
 }

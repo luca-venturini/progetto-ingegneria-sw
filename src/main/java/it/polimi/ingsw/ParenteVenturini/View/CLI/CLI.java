@@ -216,6 +216,50 @@ public class CLI implements ViewInterface {
     }
 
     @Override
+    public void startGame(ClientSideController clientSideController) {
+
+    }
+
+    @Override
+    public void setController(ClientSideController clientSideController) {
+
+    }
+
+    @Override
+    public void closeConnection() {
+
+    }
+
+    @Override
+    public void displayAviableCards(List<String> cards) {
+        for(String s: cards)
+            displayMessage(s);
+        displayChooseCardMenu();
+    }
+
+    @Override
+    public void updateChooseCardMenu() {
+        displayChooseCardMenu();
+    }
+
+    @Override
+    public void waitPage() {
+        System.out.println("Attendi...");
+    }
+
+    @Override
+    public void displayAviablePlayers(List<String> playersName) {
+        for(String s: playersName)
+            displayMessage(s);
+        displayChooseStartingPlayerMenu();
+    }
+
+    @Override
+    public void updateChooseStartingPlayerMenu() {
+        displayChooseStartingPlayerMenu();
+    }
+
+    @Override
     public void displayMoveMenu() {
         int choice;
          do{

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="starting_player_vbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" styleClass="setup_standard_background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLSetStartingPlayerController">
+   <children>
+      <Label fx:id="starting_player_text">
+         <graphic>
+            <Text fill="#a85f32" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli il giocatore che inizia!">
+               <styleClass>
+                  <String fx:value="border_text" />
+                  <String fx:value="title_text" />
+               </styleClass>
+            </Text>
+         </graphic>
+      </Label>
+      <!--
+      <Button fx:id="starting_player_button" mnemonicParsing="false" prefHeight="42.0" prefWidth="127.0" styleClass="player_button">
+         <VBox.margin>
+            <Insets top="50.0" />
+         </VBox.margin>
+         <graphic>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+         </graphic>
+      </Button>
+      -->
+   </children>
+   <padding>
+      <Insets top="80.0" />
+   </padding>
+</VBox>
