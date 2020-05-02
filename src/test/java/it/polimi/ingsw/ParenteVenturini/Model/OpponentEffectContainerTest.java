@@ -47,14 +47,6 @@ class OpponentEffectContainerTest {
     }
 
     @Test
-    void removeMovementPoint() {
-    }
-
-    @Test
-    void removeConstructionPoint() {
-    }
-
-    @Test
     void checkMovementPoint() throws IllegalBlockUpdateException {
         Point p1= new Point(1,3);
         Point p2= new Point(1,2);

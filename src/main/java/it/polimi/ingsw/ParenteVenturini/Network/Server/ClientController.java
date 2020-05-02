@@ -116,6 +116,11 @@ public class ClientController implements ServerMessageHandler {
         gameController.doAction(this,msg.getPoint(), msg.getNickname());
     }
 
+    @Override
+    public void visit(EndGameRequest msg) {
+        gameController.disconnectPlayer(this);
+    }
+
 
     public Player getPlayer() {
         return player;
