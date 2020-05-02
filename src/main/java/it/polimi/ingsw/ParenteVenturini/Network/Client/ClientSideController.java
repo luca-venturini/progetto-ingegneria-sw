@@ -248,6 +248,7 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(GameOverNotification msg) {
         client.displayMessage("Hai Perso ");
+        client.displayEndGame();
     }
 
     @Override

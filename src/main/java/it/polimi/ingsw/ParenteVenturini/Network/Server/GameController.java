@@ -12,6 +12,7 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class GameController {
     private List<ClientController> clients = new ArrayList<>();
@@ -251,10 +252,17 @@ public class GameController {
         if (match.getTypeOfMatch() == 2) {
             match.getTurn().setNextPlayer();
             notifyAllClients(new WinNotification(match.getTurn().getCurrentPlayer().getNickname()));
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            disconnectAllPlayers();
         } else {
-            notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+"ha perso")));
-            match.deletePlayer(match.getTurn().getCurrentPlayer());
+            notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" ha perso")));
+            Player delplayer=match.getTurn().getCurrentPlayer();
             match.getTurn().setNextPlayer();
+            match.deletePlayer(delplayer);
             notifyYourTurn();
         }
     }
@@ -271,7 +279,7 @@ public class GameController {
         moveHandler.init();
         List<Point> points;
         if(match.directGameOver()){
-            notifySingleClient(clientController, new GameOverNotification());
+            notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
             manageGameOver();
         }
         else {
@@ -384,6 +392,10 @@ public class GameController {
 
     public int getNumOfPlayers(){
         return clients.size();
+    }
+
+    public void disconnectPlayer(ClientController clientController){
+        clientController.quitGame();
     }
 
     public void disconnectAllPlayers(){
