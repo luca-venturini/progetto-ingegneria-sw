@@ -259,8 +259,7 @@ public class GameController {
             }
             disconnectAllPlayers();
         } else {
-            notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+"ha perso")));
-            notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
+            notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" ha perso")));
             match.deletePlayer(match.getTurn().getCurrentPlayer());
             match.getTurn().setNextPlayer();
             notifyYourTurn();
@@ -279,6 +278,7 @@ public class GameController {
         moveHandler.init();
         List<Point> points;
         if(match.directGameOver()){
+            notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
             manageGameOver();
         }
         else {
