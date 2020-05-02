@@ -260,6 +260,17 @@ public class CLI implements ViewInterface {
     }
 
     @Override
+    public void displayEndGame() {
+        printString("Vuoi continuare a vedere la partita?");
+        printString("Scegli (y o n):");
+        String choice = stdIn.nextLine();
+        if(!choice.equals("y")){
+            MessageToServer message = new EndGameRequest();
+            clientSideController.sendMessage(message);
+        }
+    }
+
+    @Override
     public void displayMoveMenu() {
         int choice;
          do{
