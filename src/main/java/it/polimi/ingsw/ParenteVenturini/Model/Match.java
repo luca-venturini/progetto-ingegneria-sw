@@ -217,6 +217,16 @@ public class Match {
     public void deletePlayer(Player player){
         try {
             this.chosenCards.remove(player.getCard());
+            List<Worker> workers = getBoard().getWorkers();
+            List<Worker> deletedworkers = new ArrayList<>();
+            for(Worker w: workers){
+                if(w.getPlayer().equals(player)){
+                    deletedworkers.add(w);
+                }
+            }
+            for(Worker dw: deletedworkers){
+                getBoard().getWorkers().remove(dw);
+            }
             OpponentEffect effect=player.getOpponentEffectPlayer();
             if(effect != null){
                 opponentEffectContainer.removeEffect(effect);
