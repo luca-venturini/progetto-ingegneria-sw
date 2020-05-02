@@ -16,6 +16,11 @@
     -fx-border-color: white;
     -fx-border-radius: 0;
     -fx-padding: 3 6 6 6;
+    -fx-cursor: hand;
+}
+
+#start_button:pressed{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
 }
 
 .border_text{
@@ -31,6 +36,7 @@
 }
 
 .player_button {
+    -fx-cursor: hand;
     -fx-padding: 8 15 15 15;
     -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
     -fx-background-radius: 8;
@@ -111,11 +117,17 @@
     -fx-text-fill: #292929;
 }
 
+.combo-box .list-cell:hover{
+    -fx-background-color: #4287f5;
+    -fx-text-fill: #292929;
+}
+
 
 .login-button{
     -fx-background-color: #a85f32;
     -fx-text-fill: white;
     -fx-background-radius: 16px;
+    -fx-cursor: hand;
 }
 
 .login-button:hover{
@@ -193,5 +205,9 @@
 .send-card:pressed{
     -fx-background-color: rgba(221,184,151,1);
     -fx-border-radius: 0;
+    -fx-cursor: hand;
+}
+
+.button{
     -fx-cursor: hand;
 }

@@ -2,15 +2,22 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.StoreSelectedCardsRequest;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,12 +100,23 @@ public class FXMLSelectCardsController implements ViewController{
     }
 
     private void showAlert(String msg){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.OK);
-        alert.showAndWait();
-
-        if (alert.getResult() == ButtonType.YES) {
-            //do stuff
+        FXMLLoader modalLoader;
+        Stage stage = new Stage();
+        modalLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/modalMessage.fxml"));
+        Scene modalScene = null;
+        try {
+            modalScene = new Scene((Pane) modalLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        Button close = (Button) modalScene.lookup("#closeModal");
+        Label textMessage = (Label) modalScene.lookup("#modalMessage");
+        textMessage.setText(msg);
+        close.setOnAction(actionEvent -> stage.close());
+        stage.setScene(modalScene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Info");
+        stage.show();
     }
 
     @FXML

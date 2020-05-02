@@ -225,6 +225,11 @@ public class GUIHandler extends Application implements ViewInterface {
     }
 
     @Override
+    public void displayEndGame() {
+
+    }
+
+    @Override
     public void startGame(ClientSideController clientSideController) {
 
     }

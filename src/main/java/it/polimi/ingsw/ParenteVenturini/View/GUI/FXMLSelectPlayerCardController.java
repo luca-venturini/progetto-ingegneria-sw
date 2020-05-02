@@ -5,13 +5,19 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SetPlayerCardRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.StoreSelectedCardsRequest;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FXMLSelectPlayerCardController implements ViewController{
@@ -23,6 +29,7 @@ public class FXMLSelectPlayerCardController implements ViewController{
 
     @FXML
     private void initialize() {
+        chosen_cards.setVisible(false);
         MessageToServer message = new AvailableCardRequest(GUIHandler.clientSideController.getNickanme());
         GUIHandler.clientSideController.sendMessage(message);
     }
@@ -43,6 +50,7 @@ public class FXMLSelectPlayerCardController implements ViewController{
     private Label chosen_cards;
 
     public void setCards(List<String> cards){
+        chosen_cards.setVisible(false);
         currentImage = 0;
         chosenCard = "";
         chosen_cards.setText("");
@@ -86,15 +94,27 @@ public class FXMLSelectPlayerCardController implements ViewController{
     public void send_cards(){
         MessageToServer message = new SetPlayerCardRequest(GUIHandler.clientSideController.getNickanme(), chosenCard);
         GUIHandler.clientSideController.sendMessage(message);
+
     }
 
     private void showAlert(String msg){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.OK);
-        alert.showAndWait();
-
-        if (alert.getResult() == ButtonType.YES) {
-            //do stuff
+        FXMLLoader modalLoader;
+        Stage stage = new Stage();
+        modalLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/modalMessage.fxml"));
+        Scene modalScene = null;
+        try {
+            modalScene = new Scene((Pane) modalLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        Button close = (Button) modalScene.lookup("#closeModal");
+        Label textMessage = (Label) modalScene.lookup("#modalMessage");
+        textMessage.setText(msg);
+        close.setOnAction(actionEvent -> stage.close());
+        stage.setScene(modalScene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Info");
+        stage.show();
     }
 
     @FXML
@@ -106,6 +126,7 @@ public class FXMLSelectPlayerCardController implements ViewController{
 
     public void displayChosenCards(){
         chosen_cards.setText(chosenCard);
+        chosen_cards.setVisible(true);
     }
 
 
