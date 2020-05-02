@@ -260,8 +260,9 @@ public class GameController {
             disconnectAllPlayers();
         } else {
             notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" ha perso")));
-            match.deletePlayer(match.getTurn().getCurrentPlayer());
+            Player delplayer=match.getTurn().getCurrentPlayer();
             match.getTurn().setNextPlayer();
+            match.deletePlayer(delplayer);
             notifyYourTurn();
         }
     }
