@@ -33,7 +33,7 @@ public class GUIHandler extends Application implements ViewInterface {
         connection = new Connection();
         connection.connect();
 
-        clientSideController =  connection.getClientSideController();
+        clientSideController = connection.getClientSideController();
         clientSideController.setView(this);
 
         FXMLLoader loader = new FXMLLoader();

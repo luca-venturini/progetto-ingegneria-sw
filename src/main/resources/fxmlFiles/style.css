@@ -26,6 +26,8 @@
 .title_text{
     -fx-font-family: "Gill Sans Ultra Bold Condensed";
     -fx-font-size: 36.0;
+    -fx-fill: #a85f32;
+    -fx-text-fill: #a85f32;
 }
 
 .player_button {
@@ -67,4 +69,129 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover, auto;
     -fx-background-position: center;
+}
+
+.username-text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent transparent #a85f32 transparent;
+    -fx-font-size: 24;
+    -fx-font-family: Arial;
+    -fx-font-weight: bold;
+    -fx-prompt-text-fill: rgba(45, 45, 45, 0.56);
+}
+
+.login_page_number_label{
+    -fx-font-family: Arial;
+    -fx-font-weight: bold;
+}
+
+.combo-box{
+    -fx-border-color:#E6E6E6;
+    -fx-border-style:solid;
+    -fx-border-width:1;
+}
+.combo-box .arrow{
+    -fx-background-color:#2478E9;
+}
+
+
+.combo-box .arrow-button{
+    -fx-background-color:white;
+    -fx-border-style:none;
+}
+
+
+.combo-box .arrow-button{
+    -fx-background-color:white;
+}
+.combo-box .list-cell{
+    -fx-background-color:white;
+    -fx-text-fill: #292929;
+}
+
+
+.login-button{
+    -fx-background-color: #a85f32;
+    -fx-text-fill: white;
+    -fx-background-radius: 16px;
+}
+
+.login-button:hover{
+    -fx-background-color: radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+}
+
+.login-button:pressed {
+    -fx-background-color: radial-gradient(center 50% 50%, radius 100%, #fbac85, #e94516);
+}
+
+.message-label{
+
+}
+
+.setup-card-image-view{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+.setup-card-image-view:hover{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.95), 50, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+.setup-card-image-view:pressed{
+    -fx-effect: dropshadow(three-pass-box, rgba(160,160,142,0.95), 50, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+.setup-card-arrows{
+    -fx-cursor: hand;
+    -fx-font-family: Broadway;
+    -fx-font-size: 43;
+    -fx-background-color: transparent;
+    -fx-text-fill: #a85f32;
+}
+
+.setup-card-arrows-text:hover{
+    -fx-effect: dropshadow(three-pass-box, rgba(140,140,116,0.9), 20, 0, 0, 0);
+}
+
+.setup-card-arrows-text:pressed{
+    -fx-text-fill: rgb(93,43,37);
+    -fx-fill: rgb(93,43,37);
+}
+
+.setup-card-arrows-text{
+    -fx-font-family: Broadway;
+    -fx-font-size: 43;
+    -fx-background-color: transparent;
+    -fx-text-fill: #a85f32;
+    -fx-fill: #a85f32;
+    -fx-stroke: white;
+    -fx-stroke-width: 2;
+}
+
+.card-name-style{
+    -fx-text-fill: rgba(86,82,68,1);
+    -fx-font-size: 20;
+    -fx-background-color: rgba(239,222,206,0.9);
+    -fx-font-family: "Tempus Sans ITC", "Arial Black";
+    -fx-font-weight: bold;
+    -fx-padding: 5 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.9), 20, 0, 0, 0);
+    /*-fx-border-radius: 20 20 0 0;*/
+    -fx-background-radius: 0;
+}
+
+.send-card{
+      -fx-background-color: rgba(239,222,206,1);
+      -fx-border-radius: 0;
+      -fx-cursor: hand;
+  }
+
+.send-card:pressed{
+    -fx-background-color: rgba(221,184,151,1);
+    -fx-border-radius: 0;
+    -fx-cursor: hand;
 }

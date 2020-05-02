@@ -110,8 +110,8 @@ public class GameController {
             } catch (NoPlayerException e) {
                 e.printStackTrace();
             }
-            notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, inizia "+cardSetupHandler.getNextPlayer()));
             notifyAllClients(new ChooseCardNotification());
+            notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, inizia "+cardSetupHandler.getNextPlayer()));
         }
         else{
             throw new IllegalCardException();

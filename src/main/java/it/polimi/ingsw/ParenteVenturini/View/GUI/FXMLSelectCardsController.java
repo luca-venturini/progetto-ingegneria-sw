@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class FXMLSelectCardsController implements ViewController{
     private Image images[];
     private int currentImage;
     private List<String> chosenCards = new ArrayList<>();
+    private List<Label> chosenCardsLabel = new ArrayList<>();
 
     @FXML
     private ImageView card_image_view;
@@ -35,6 +37,9 @@ public class FXMLSelectCardsController implements ViewController{
 
     @FXML
     private Label chosen_cards;
+
+    @FXML
+    private VBox chosenCardsVBox;
 
     public void setCards(List<String> cards, int numberOfCards){
         this.cards = cards;
@@ -103,17 +108,25 @@ public class FXMLSelectCardsController implements ViewController{
             chosenCards.remove(card);
         }
         else{
-            chosenCards.add(card);
+            if(chosenCards.size()>=numOfCards) {
+                chosenCards.remove(0);
+            }
+            chosenCards.add(chosenCards.size(),card);
         }
         displayChosenCards();
     }
 
     public void displayChosenCards(){
-        String text = "";
-        for(String s: chosenCards){
-            text = text + s + "\n";
+        for(Label label: chosenCardsLabel){
+            chosenCardsVBox.getChildren().remove(label);
         }
-        chosen_cards.setText(text);
+        chosenCardsLabel = new ArrayList<>();
+        for(String s: chosenCards){
+            Label cardName = new Label(s.toUpperCase());
+            cardName.getStyleClass().add("card-name-style");
+            chosenCardsVBox.getChildren().add(cardName);
+            chosenCardsLabel.add(cardName);
+        }
     }
 
 

@@ -2,14 +2,18 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.AccessGameMessageRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 public class FXMLLoginButtonController implements ViewController{
+    ObservableList<String> options = FXCollections.observableArrayList("2","3");
 
     @FXML
     private Button login_button;
@@ -18,22 +22,24 @@ public class FXMLLoginButtonController implements ViewController{
     private TextField username;
 
     @FXML
-    private TextField playersNumber;
+    private Label messageLabel;
 
     @FXML
-    private Label messageLabel;
+    private ComboBox comboBoxPalyerNumber;
 
     @FXML
     public void initialize() {
         //VBox_login.getChildren().add(new Button("Click me!"));
+        comboBoxPalyerNumber.setItems(options);
+        comboBoxPalyerNumber.getSelectionModel().select("2");
     }
 
     @FXML
     public void login(Event event){
         String user = username.getText();
-        String number = playersNumber.getText();
+        String number = comboBoxPalyerNumber.getSelectionModel().getSelectedItem().toString();
 
-        if(user != "" && (number.equals("2") || number.equals("3"))){
+        if(!user.equals("") && (number.equals("2") || number.equals("3"))){
             System.out.println("login possibile");
             login_button.setDisable(true);
             MessageToServer message = new AccessGameMessageRequest(user, number);
@@ -41,8 +47,7 @@ public class FXMLLoginButtonController implements ViewController{
             GUIHandler.clientSideController.sendMessage(message);
         }
         else{
-            displayMessage("Inserisci un nickname valido, ricorda che sono possibili solo partite da 2 o 3 giocatori");
-
+            displayMessage("Nickname non disponibile");
         }
     }
 
