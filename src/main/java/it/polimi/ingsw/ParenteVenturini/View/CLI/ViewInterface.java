@@ -16,7 +16,7 @@ public interface ViewInterface {
     void displaySelectWorker();
     void displayMessage(String s);
     void displayChooseStartingPlayerMenu();
-    void displayPlaceWorkerMenu();
+    void displayPlaceWorkerMenu(String startingPlayer);
     void addLightWorker(Point point);
     void displaySelectPoint();
     void displayEndGame();
@@ -28,5 +28,6 @@ public interface ViewInterface {
     void waitPage();
     void displayAviablePlayers(List<String> playersName);
     void updateChooseStartingPlayerMenu();
+    void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer);
 
 }

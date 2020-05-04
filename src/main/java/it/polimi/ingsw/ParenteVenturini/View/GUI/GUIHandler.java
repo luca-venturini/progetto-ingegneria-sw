@@ -22,6 +22,7 @@ public class GUIHandler extends Application implements ViewInterface {
     private String nickname;
 
     private FXMLStartButtonController firstPageController;
+    private FXMLPlaceWorkerController placeWorkerController;
     private FXMLLoader loader;
 
     public void setNickname(String nickname) {
@@ -61,7 +62,6 @@ public class GUIHandler extends Application implements ViewInterface {
             ViewController vc = loader.getController();
             vc.enableButton();
         });
-
         return null;
     }
 
@@ -123,6 +123,7 @@ public class GUIHandler extends Application implements ViewInterface {
 
     @Override
     public void displayAviableCards(List<String> cards) {
+
         Platform.runLater(()-> {
             FXMLSelectPlayerCardController controller = loader.getController();
             controller.setCards(cards);
@@ -210,8 +211,30 @@ public class GUIHandler extends Application implements ViewInterface {
     }
 
     @Override
-    public void displayPlaceWorkerMenu() {
+    public void displayPlaceWorkerMenu(String startingPlayer) {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(getClass().getResource("/fxmlFiles/board.fxml"));
+            Scene scene = null;
+            AnchorPane anchorPane = null;
+            try {
+                anchorPane = (AnchorPane) loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            FXMLPlaceWorkerController myController = loader.getController();
+            myController.setCurrentPlayer(startingPlayer);
+            scene = new Scene(anchorPane);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        });
+    }
 
+    @Override
+    public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer) {
+        Platform.runLater(() -> {
+            FXMLPlaceWorkerController myController = loader.getController();
+            myController.enablePossiblePoints(points, actualPlayer);
+        });
     }
 
     @Override

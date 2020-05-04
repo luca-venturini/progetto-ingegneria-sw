@@ -6,6 +6,17 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 import java.util.List;
 
 public class PlaceWorkersNotification implements MessageToClient {
+
+    private String startingPlayer;
+
+    public PlaceWorkersNotification(String startingPlayer) {
+        this.startingPlayer = startingPlayer;
+    }
+
+    public String getStartingPlayer() {
+        return startingPlayer;
+    }
+
     @Override
     public MessageType getMessageType() {
         return null;

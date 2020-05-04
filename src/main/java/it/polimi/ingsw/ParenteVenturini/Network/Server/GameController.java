@@ -161,7 +161,7 @@ public class GameController {
                 notifyAllClients(new SimplyNotification("Ogni giocatore dovrà posizionare i propri workers"));
                 System.out.println("Giocatore scelto come iniziale: "+match.getStarter().getNickname());
                 placeWorkerSetupHandler = new PlaceWorkerSetupHandler(match.getPlayers(), match.getBoard());
-                notifyAllClients(new PlaceWorkersNotification());
+                notifyAllClients(new PlaceWorkersNotification(placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
             } catch (AlreadyChosenStarterException | NoPlayerException e) {
                 e.printStackTrace();
             } catch (InvalidNamePlayerException e) {
@@ -190,6 +190,7 @@ public class GameController {
         Point point = new Point(position.getX(), position.getY());
         try {
             placeWorkerSetupHandler.setWorkerPosition(player, position);
+            System.out.println("Settato punto: "+position);
             if(placeWorkerSetupHandler.hasFinished()){
                 notifyAllClients(new SimplyNotification("Operazioni completate, fine fase di setUp"));
                 notifyAllClients(new SimplyNotification("Inizio della fase di gioco"));
@@ -213,7 +214,10 @@ public class GameController {
 
     public void sendPossibleWorkersSetupPoint(ClientController clientController){
         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
-        notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
+        if(placeWorkerSetupHandler.getCurrentPlayer() != null)
+            notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
+        else
+            System.out.println("fine setup");
     }
 
     public void sendBoard() {

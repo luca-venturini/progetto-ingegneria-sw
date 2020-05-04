@@ -174,10 +174,11 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void displayPlaceWorkerMenu() {
+    public void displayPlaceWorkerMenu(String startingPlayer) {
         int choice;
         do {
             printString("--Menu Place Worker setUp--");
+            printString("Inizia "+startingPlayer);
             printString("1- Get possible Points");
             printString("2- Place worker");
             printString("Choice: ");
@@ -257,6 +258,12 @@ public class CLI implements ViewInterface {
     @Override
     public void updateChooseStartingPlayerMenu() {
         displayChooseStartingPlayerMenu();
+    }
+
+    @Override
+    public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer) {
+        printString(points.toString());
+        displayPlaceWorkerMenu(actualPlayer);
     }
 
     @Override

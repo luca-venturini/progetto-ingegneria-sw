@@ -211,3 +211,18 @@
 .button{
     -fx-cursor: hand;
 }
+
+.grid-button{
+    -fx-cursor: hand;
+    -fx-opacity: 0.3;
+    -fx-background-color: red;
+    -fx-border-width: 1;
+    -fx-border-color: red;
+}
+
+.grid-button:hover{
+    -fx-cursor: hand;
+    -fx-opacity: 0.5;
+    -fx-border-color: transparent;
+    -fx-background-color: red;
+}

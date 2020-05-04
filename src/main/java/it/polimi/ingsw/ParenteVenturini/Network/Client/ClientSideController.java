@@ -165,13 +165,12 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(PlaceWorkersNotification msg) {
-        client.displayPlaceWorkerMenu();
+        client.displayPlaceWorkerMenu(msg.getStartingPlayer());
     }
 
     @Override
     public void visit(AvailablePlaceWorkerPointResponse msg) {
-        client.displayMessage(msg.getPoints().toString());
-        client.displayPlaceWorkerMenu();
+        client.displayPlaceWorkerPossiblePoints(msg.getPoints(), msg.getActualPlayer());
     }
 
     @Override
@@ -267,7 +266,7 @@ public class ClientSideController implements ClientMessageHandler {
 
         client.displayMessage(msg.getMessage());
         if(!msg.isHasFinished()) {
-            client.displayPlaceWorkerMenu();
+            client.displayPlaceWorkerMenu(nickanme);
         }
 
     }
