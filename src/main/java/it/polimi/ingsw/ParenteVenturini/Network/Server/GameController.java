@@ -54,7 +54,7 @@ public class GameController {
     }
 
     public boolean isValidNickname(String nickname){
-        return match.selectPlayer(nickname) == null;
+        return !nickname.equals("") && match.selectPlayer(nickname) == null;
     }
 
     public void startSetup(){
@@ -198,10 +198,14 @@ public class GameController {
                 moveHandler= new MoveHandler(this.match);
                 notifyYourTurn();
             }
-            else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player))
-                notifySingleClient(player, new PlaceWorkerResponse( true, false, "Primo worker posizionato, procedi col secondo", position ));
-            else
-                notifySingleClient(player, new PlaceWorkerResponse( true, true, "Secondo worker posizionato, attendi...", position ));
+            else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player)) {
+                notifySingleClient(player, new PlaceWorkerResponse(true, false, "Primo worker posizionato, procedi col secondo", position));
+                notifyAllClients(new AvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
+            }
+            else {
+                notifySingleClient(player, new PlaceWorkerResponse(true, true, "Secondo worker posizionato, attendi...", position));
+                notifyAllClients(new AvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
+            }
         } catch (IllegalPlaceWorkerException e) {
             notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",position ));
         }
@@ -209,7 +213,7 @@ public class GameController {
 
     public void sendPossibleWorkersSetupPoint(ClientController clientController){
         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
-        notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points));
+        notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
     }
 
     public void sendBoard() {

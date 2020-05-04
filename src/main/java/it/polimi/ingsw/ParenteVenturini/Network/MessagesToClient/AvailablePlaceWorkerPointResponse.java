@@ -9,9 +9,15 @@ import java.util.List;
 public class AvailablePlaceWorkerPointResponse implements MessageToClient {
 
     private List<Point> points;
+    private String actualPlayer;
 
-    public AvailablePlaceWorkerPointResponse(List<Point> points) {
+    public AvailablePlaceWorkerPointResponse(List<Point> points, String actualPlayer) {
+        this.actualPlayer = actualPlayer;
         this.points = points;
+    }
+
+    public String getActualPlayer() {
+        return actualPlayer;
     }
 
     public List<Point> getPoints() {

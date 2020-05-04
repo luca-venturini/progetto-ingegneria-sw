@@ -24,6 +24,8 @@ public class GameDispatcher {
     }
 
     public synchronized GameController getGameController(String nickname, int numOfPlayers) throws InvalidNicknameException {
+        if(nickname.equals(""))
+            throw new InvalidNicknameException();
         if(actualPlayers != 0){
             if (!gameController.isValidNickname(nickname))
                 throw new InvalidNicknameException();
