@@ -28,6 +28,7 @@ public interface ViewInterface {
     void waitPage();
     void displayAviablePlayers(List<String> playersName);
     void updateChooseStartingPlayerMenu();
-    void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer);
+    void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor);
+    void updatePlaceWorkerMenu(String s);
 
 }

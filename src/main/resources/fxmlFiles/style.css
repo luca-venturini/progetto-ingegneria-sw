@@ -226,3 +226,18 @@
     -fx-border-color: transparent;
     -fx-background-color: red;
 }
+
+.red-color{
+    -fx-opacity: 1;
+    -fx-background-color: red;
+}
+
+.blue-color{
+    -fx-opacity: 1;
+    -fx-background-color: blue;
+}
+
+.green-color{
+    -fx-opacity: 1;
+    -fx-background-color: green;
+}

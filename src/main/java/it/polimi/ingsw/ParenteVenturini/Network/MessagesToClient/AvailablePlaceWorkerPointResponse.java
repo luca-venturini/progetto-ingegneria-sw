@@ -10,10 +10,22 @@ public class AvailablePlaceWorkerPointResponse implements MessageToClient {
 
     private List<Point> points;
     private String actualPlayer;
+    private List<Point> workersPoint;
+    private List<Integer> workersColor;
 
-    public AvailablePlaceWorkerPointResponse(List<Point> points, String actualPlayer) {
-        this.actualPlayer = actualPlayer;
+    public AvailablePlaceWorkerPointResponse(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor) {
         this.points = points;
+        this.actualPlayer = actualPlayer;
+        this.workersPoint = workersPoint;
+        this.workersColor = workersColor;
+    }
+
+    public List<Point> getWorkersPoint() {
+        return workersPoint;
+    }
+
+    public List<Integer> getWorkersColor() {
+        return workersColor;
     }
 
     public String getActualPlayer() {

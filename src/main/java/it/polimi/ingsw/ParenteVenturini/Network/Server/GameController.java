@@ -11,6 +11,7 @@ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -200,12 +201,13 @@ public class GameController {
                 notifyYourTurn();
             }
             else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player)) {
-                notifySingleClient(player, new PlaceWorkerResponse(true, false, "Primo worker posizionato, procedi col secondo", position));
-                notifyAllClients(new AvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
+                int color = placeWorkerSetupHandler.getCurrentPlayer().selectWorker(0).getColour();
+                notifySingleClient(player, new PlaceWorkerResponse(true, false, "Primo worker posizionato, procedi col secondo", position, color));
+                notifyAllClients(buildAvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
             }
             else {
                 notifySingleClient(player, new PlaceWorkerResponse(true, true, "Secondo worker posizionato, attendi...", position));
-                notifyAllClients(new AvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
+                notifyAllClients(buildAvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
             }
         } catch (IllegalPlaceWorkerException e) {
             notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",position ));
@@ -215,9 +217,21 @@ public class GameController {
     public void sendPossibleWorkersSetupPoint(ClientController clientController){
         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
         if(placeWorkerSetupHandler.getCurrentPlayer() != null)
-            notifySingleClient(clientController, new AvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
+            notifySingleClient(clientController, buildAvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()) );
         else
             System.out.println("fine setup");
+    }
+
+    private AvailablePlaceWorkerPointResponse buildAvailablePlaceWorkerPointResponse(List<Point> points, String nickname){
+        List<Worker> placedWorkers = match.getBoard().getWorkers();
+        List<Point> workersPoints = new ArrayList<>();
+        List<Integer> workersColors = new ArrayList<>();
+        for (Worker w: placedWorkers){
+            workersPoints.add(w.getPosition());
+            workersColors.add(w.getColour());
+        }
+        return new AvailablePlaceWorkerPointResponse(points, nickname, workersPoints, workersColors);
+
     }
 
     public void sendBoard() {

@@ -12,12 +12,26 @@ public class PlaceWorkerResponse implements MessageToClient {
     private boolean hasFinished;
     private String message;
     private Point point;
+    private int color;
 
     public PlaceWorkerResponse(boolean isSet, boolean hasFinished, String message, Point point) {
         this.isSet = isSet;
         this.hasFinished = hasFinished;
         this.message = message;
         this.point = point;
+        this.color = -1;
+    }
+
+    public PlaceWorkerResponse(boolean isSet, boolean hasFinished, String message, Point point, int color) {
+        this.isSet = isSet;
+        this.hasFinished = hasFinished;
+        this.message = message;
+        this.point = point;
+        this.color = color;
+    }
+
+    public int getColor() {
+        return color;
     }
 
     public boolean isSet() {

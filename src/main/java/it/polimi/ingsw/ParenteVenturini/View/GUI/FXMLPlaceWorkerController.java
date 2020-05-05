@@ -8,6 +8,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.util.List;
 
@@ -64,11 +67,73 @@ public class FXMLPlaceWorkerController implements ViewController{
     @FXML
     private Button block_4_4;
 
+
+    @FXML
+    private StackPane stackPane_0_0;
+    @FXML
+    private StackPane stackPane_1_0;
+    @FXML
+    private StackPane stackPane_2_0;
+    @FXML
+    private StackPane stackPane_3_0;
+    @FXML
+    private StackPane stackPane_4_0;
+    @FXML
+    private StackPane stackPane_0_1;
+    @FXML
+    private StackPane stackPane_1_1;
+    @FXML
+    private StackPane stackPane_2_1;
+    @FXML
+    private StackPane stackPane_3_1;
+    @FXML
+    private StackPane stackPane_4_1;
+    @FXML
+    private StackPane stackPane_0_2;
+    @FXML
+    private StackPane stackPane_1_2;
+    @FXML
+    private StackPane stackPane_2_2;
+    @FXML
+    private StackPane stackPane_3_2;
+    @FXML
+    private StackPane stackPane_4_2;
+    @FXML
+    private StackPane stackPane_0_3;
+    @FXML
+    private StackPane stackPane_1_3;
+    @FXML
+    private StackPane stackPane_2_3;
+    @FXML
+    private StackPane stackPane_3_3;
+    @FXML
+    private StackPane stackPane_4_3;
+    @FXML
+    private StackPane stackPane_0_4;
+    @FXML
+    private StackPane stackPane_1_4;
+    @FXML
+    private StackPane stackPane_2_4;
+    @FXML
+    private StackPane stackPane_3_4;
+    @FXML
+    private StackPane stackPane_4_4;
+
     @FXML
     private Label actual_player;
 
+    @FXML
+    private Label your_name;
+
+    @FXML
+    private Label your_color;
+
+    @FXML
+    private Label notifications;
+
 
     private Button[][] buttons = new Button[5][5];
+    private StackPane[][] stackPanes = new StackPane[5][5];
 
     @FXML
     public void initialize(){
@@ -98,6 +163,32 @@ public class FXMLPlaceWorkerController implements ViewController{
         buttons[3][4] = block_3_4;
         buttons[4][4] = block_4_4;
 
+        stackPanes[0][0] = stackPane_0_0;
+        stackPanes[1][0] = stackPane_1_0;
+        stackPanes[2][0] = stackPane_2_0;
+        stackPanes[3][0] = stackPane_3_0;
+        stackPanes[4][0] = stackPane_4_0;
+        stackPanes[0][1] = stackPane_0_1;
+        stackPanes[1][1] = stackPane_1_1;
+        stackPanes[2][1] = stackPane_2_1;
+        stackPanes[3][1] = stackPane_3_1;
+        stackPanes[4][1] = stackPane_4_1;
+        stackPanes[0][2] = stackPane_0_2;
+        stackPanes[1][2] = stackPane_1_2;
+        stackPanes[2][2] = stackPane_2_2;
+        stackPanes[3][2] = stackPane_3_2;
+        stackPanes[4][2] = stackPane_4_2;
+        stackPanes[0][3] = stackPane_0_3;
+        stackPanes[1][3] = stackPane_1_3;
+        stackPanes[2][3] = stackPane_2_3;
+        stackPanes[3][3] = stackPane_3_3;
+        stackPanes[4][3] = stackPane_4_3;
+        stackPanes[0][4] = stackPane_0_4;
+        stackPanes[1][4] = stackPane_1_4;
+        stackPanes[2][4] = stackPane_2_4;
+        stackPanes[3][4] = stackPane_3_4;
+        stackPanes[4][4] = stackPane_4_4;
+
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
                 int finalJ = j;
@@ -106,6 +197,8 @@ public class FXMLPlaceWorkerController implements ViewController{
                 buttons[i][j].setDisable(true);
             }
         }
+        your_name.setText(GUIHandler.clientSideController.getNickanme());
+        your_color.setText("");
         requirePossiblePoints();
     }
 
@@ -114,7 +207,6 @@ public class FXMLPlaceWorkerController implements ViewController{
         MessageToServer message = new PlaceWorkerRequest(point, GUIHandler.clientSideController.getNickanme());
         GUIHandler.clientSideController.sendMessage(message);
         clearButtons();
-        System.out.println("TTTTest");
     }
 
     private void clearButtons(){
@@ -136,27 +228,46 @@ public class FXMLPlaceWorkerController implements ViewController{
         GUIHandler.clientSideController.sendMessage(message);
     }
 
-    public void enablePossiblePoints(List<Point> points, String actualPlayer){
+    public void enablePossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColors){
         clearButtons();
 
         for(Point p: points){
-            System.out.println(p);
             int x = p.getX();
             int y = p.getY();
-
-            System.out.println("fase 4 "+x+" "+y);
 
             buttons[x][y].getStyleClass().add("grid-button");
             buttons[x][y].setDisable(false);
         }
+        for(int i = 0; i<workersPoint.size(); i++){
+            Point p = workersPoint.get(i);
+            Circle c = new Circle(40, generateColor(workersColors.get(i)));
+            stackPanes[p.getX()][p.getY()].getChildren().clear();
+            stackPanes[p.getX()][p.getY()].getChildren().add(c);//getStyleClass().add(generateColor(workersColors.get(i)));
+            buttons[p.getX()][p.getY()].setDisable(true);
+        }
         setCurrentPlayer(actualPlayer);
+    }
 
-
+    private Color generateColor(int color){
+        switch (color){
+            case 1:
+                return Color.RED;
+            case 2:
+                return Color.BLUE;
+            case 3:
+                return Color.GREEN;
+        }
+        return null;
     }
 
     @Override
     public void displayMessage(String s) {
-
+        System.out.println("Arrivata notifica");
+        System.out.println("colore: "+GUIHandler.clientSideController.getColor());
+        System.out.println("Messaggio: "+s);
+        Integer color = GUIHandler.clientSideController.getColor();
+        your_color.setText(color.toString());
+        notifications.setText(s);
     }
 
     @Override

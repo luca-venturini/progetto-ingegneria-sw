@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLPlaceWorkerController">
    <children>
@@ -45,134 +46,137 @@
                      <children>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_4_4" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_4_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_0_0" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_0_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_1_0" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_1_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_2_0" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_2_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_3_0" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_3_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_4_0" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_4_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_0_1" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_0_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_1_1" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_1_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_2_1" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_2_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_3_1" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_3_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_4_1" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_4_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_0_2" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_0_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_1_2" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_1_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_2_2" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_2_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_3_2" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_3_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_4_2" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_4_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_0_3" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_0_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_1_3" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_1_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_2_3" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_2_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_3_3" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_3_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_4_3" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_4_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
-                              <Button fx:id="block_0_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                              <StackPane fx:id="stackPane_0_4" prefHeight="112.0" prefWidth="112.0" />
+                              <Button fx:id="block_0_4" mnemonicParsing="false" opacity="0.02" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_1_4" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_1_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_2_4" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_2_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
                            <children>
-                              <ImageView fitHeight="112.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" />
+                              <StackPane fx:id="stackPane_3_4" prefHeight="112.0" prefWidth="112.0" />
                               <Button fx:id="block_3_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                            </children></AnchorPane>
                      </children>
                   </GridPane>
-                  <Label layoutX="68.0" layoutY="14.0" prefHeight="17.0" prefWidth="100.0" text="Turno di:" />
-                  <Label fx:id="actual_player" layoutX="68.0" layoutY="44.0" prefHeight="17.0" prefWidth="79.0" text="name" />
-                  <Button onAction="#requirePossiblePoints" fx:id="show_points" layoutX="68.0" layoutY="102.0" mnemonicParsing="false" text="Mostra punti disponibili" />
+                  <Label layoutX="68.0" layoutY="479.0" prefHeight="17.0" prefWidth="100.0" text="Turno di:" />
+                  <Label fx:id="actual_player" layoutX="68.0" layoutY="507.0" prefHeight="17.0" prefWidth="79.0" text="name" />
+                  <Button fx:id="show_points" layoutX="36.0" layoutY="555.0" mnemonicParsing="false" onAction="#requirePossiblePoints" text="Mostra punti disponibili" />
+                  <Label fx:id="your_name" layoutX="68.0" layoutY="48.0" text="playerName" />
+                  <Label fx:id="your_color" layoutX="68.0" layoutY="94.0" text="color" />
+                  <Label fx:id="notifications" layoutX="68.0" layoutY="148.0" text="notifications" />
                </children>
             </AnchorPane>
          </items>

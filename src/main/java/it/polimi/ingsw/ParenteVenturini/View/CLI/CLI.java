@@ -261,9 +261,14 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer) {
+    public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor) {
         printString(points.toString());
         displayPlaceWorkerMenu(actualPlayer);
+    }
+
+    @Override
+    public void updatePlaceWorkerMenu(String s) {
+        displayPlaceWorkerMenu(s);
     }
 
     @Override

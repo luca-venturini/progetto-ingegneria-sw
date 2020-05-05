@@ -20,6 +20,7 @@ public class ClientSideController implements ClientMessageHandler {
     private ViewInterface client;
     private ViewInterface gui;
     private String nickanme;
+    private int color;
 
     public void setNickanme(String nickanme) {
         this.nickanme = nickanme;
@@ -33,6 +34,10 @@ public class ClientSideController implements ClientMessageHandler {
         this.writeStream = writeStream;
         this.readStream = readStream;
         this.stdIn = stdIn;
+    }
+
+    public int getColor() {
+        return color;
     }
 
     public void setGui(GUIHandler gui) {
@@ -170,7 +175,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(AvailablePlaceWorkerPointResponse msg) {
-        client.displayPlaceWorkerPossiblePoints(msg.getPoints(), msg.getActualPlayer());
+        client.displayPlaceWorkerPossiblePoints(msg.getPoints(), msg.getActualPlayer(), msg.getWorkersPoint(), msg.getWorkersColor());
     }
 
     @Override
@@ -263,10 +268,13 @@ public class ClientSideController implements ClientMessageHandler {
             client.addLightWorker(msg.getSettedPoint());
             System.out.println("fatto");
         }
+        if(msg.getColor() > 0){
+            this.color = msg.getColor();
+        }
 
         client.displayMessage(msg.getMessage());
         if(!msg.isHasFinished()) {
-            client.displayPlaceWorkerMenu(nickanme);
+            client.updatePlaceWorkerMenu(nickanme);
         }
 
     }

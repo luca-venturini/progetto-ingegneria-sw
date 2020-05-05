@@ -22,7 +22,6 @@ public class GUIHandler extends Application implements ViewInterface {
     private String nickname;
 
     private FXMLStartButtonController firstPageController;
-    private FXMLPlaceWorkerController placeWorkerController;
     private FXMLLoader loader;
 
     public void setNickname(String nickname) {
@@ -230,10 +229,18 @@ public class GUIHandler extends Application implements ViewInterface {
     }
 
     @Override
-    public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer) {
+    public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor) {
         Platform.runLater(() -> {
             FXMLPlaceWorkerController myController = loader.getController();
-            myController.enablePossiblePoints(points, actualPlayer);
+            myController.enablePossiblePoints(points, actualPlayer, workersPoint, workersColor);
+        });
+    }
+
+    @Override
+    public void updatePlaceWorkerMenu(String s) {
+        Platform.runLater(() -> {
+            FXMLPlaceWorkerController myController = loader.getController();
+            myController.requirePossiblePoints();
         });
     }
 
