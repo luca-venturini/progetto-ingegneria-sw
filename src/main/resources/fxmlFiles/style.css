@@ -1,3 +1,7 @@
+@font-face {
+    src: url('LillyBelle.ttf');
+}
+
 .first_page_VBox {
      -fx-background-image: url('/copertina_santorini.jpg');
      -fx-background-size: cover;
@@ -240,4 +244,19 @@
 .green-color{
     -fx-opacity: 1;
     -fx-background-color: green;
+}
+
+.light-blue-background{
+    -fx-background-color: rgb(46,200,255);
+}
+
+.label-text{
+    -fx-font-size: 30;
+    -fx-font-family: "LillyBelle";
+    -fx-text-fill: #a85f32;
+}
+
+.label-text-notification{
+    -fx-font-size: 15;
+    -fx-font-family: "LillyBelle";
 }

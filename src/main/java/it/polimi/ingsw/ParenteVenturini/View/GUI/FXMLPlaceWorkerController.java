@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.List;
@@ -131,6 +132,9 @@ public class FXMLPlaceWorkerController implements ViewController{
     @FXML
     private Label notifications;
 
+    @FXML
+    private Circle your_color_circle;
+
 
     private Button[][] buttons = new Button[5][5];
     private StackPane[][] stackPanes = new StackPane[5][5];
@@ -197,8 +201,9 @@ public class FXMLPlaceWorkerController implements ViewController{
                 buttons[i][j].setDisable(true);
             }
         }
-        your_name.setText(GUIHandler.clientSideController.getNickanme());
+        your_name.setText(GUIHandler.clientSideController.getNickanme().toUpperCase());
         your_color.setText("");
+        your_color_circle.setFill(Color.web("#a7a7a7"));
         requirePossiblePoints();
     }
 
@@ -219,7 +224,7 @@ public class FXMLPlaceWorkerController implements ViewController{
     }
 
     public void setCurrentPlayer(String currentPlayer) {
-        actual_player.setText(currentPlayer);
+        actual_player.setText(currentPlayer.toUpperCase());
 
     }
 
@@ -266,7 +271,12 @@ public class FXMLPlaceWorkerController implements ViewController{
         System.out.println("colore: "+GUIHandler.clientSideController.getColor());
         System.out.println("Messaggio: "+s);
         Integer color = GUIHandler.clientSideController.getColor();
-        your_color.setText(color.toString());
+        if(color>0){
+            your_color.setText(color.toString());
+            your_color_circle.setVisible(true);
+            your_color_circle.setFill(generateColor(color));
+        }
+
         notifications.setText(s);
     }
 

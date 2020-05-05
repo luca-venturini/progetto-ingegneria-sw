@@ -2,184 +2,200 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLPlaceWorkerController">
+<StackPane styleClass="light-blue-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLPlaceWorkerController">
    <children>
-      <SplitPane dividerPositions="0.04887218045112782" orientation="VERTICAL" prefHeight="800.0" prefWidth="1280.0">
-         <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="757.0" prefWidth="1315.0" stylesheets="@style.css">
+         <children>
+            <ImageView fitHeight="766.0" fitWidth="1346.0" layoutX="-31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@SantoriniBoard.png" />
+               </image>
+            </ImageView>
+            <GridPane layoutX="364.0" layoutY="102.0" prefHeight="563.0" prefWidth="559.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <HBox layoutX="-17.0" layoutY="-36.0" />
-               </children>
-            </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <ImageView fitHeight="766.0" fitWidth="1346.0" layoutX="-31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@SantoriniBoard.png" />
-                     </image>
-                  </ImageView>
-                  <GridPane layoutX="364.0" layoutY="102.0" prefHeight="563.0" prefWidth="559.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
                      <children>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                           <children>
-                              <StackPane fx:id="stackPane_4_4" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_4_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                           <children>
-                              <StackPane fx:id="stackPane_0_0" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_0_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                              <StackPane fx:id="stackPane_1_0" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_1_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-                           <children>
-                              <StackPane fx:id="stackPane_2_0" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_2_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
-                           <children>
-                              <StackPane fx:id="stackPane_3_0" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_3_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
-                           <children>
-                              <StackPane fx:id="stackPane_4_0" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_4_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                           <children>
-                              <StackPane fx:id="stackPane_0_1" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_0_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <StackPane fx:id="stackPane_1_1" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_1_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <StackPane fx:id="stackPane_2_1" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_2_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <children>
-                              <StackPane fx:id="stackPane_3_1" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_3_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <children>
-                              <StackPane fx:id="stackPane_4_1" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_4_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
-                           <children>
-                              <StackPane fx:id="stackPane_0_2" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_0_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                           <children>
-                              <StackPane fx:id="stackPane_1_2" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_1_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                           <children>
-                              <StackPane fx:id="stackPane_2_2" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_2_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                           <children>
-                              <StackPane fx:id="stackPane_3_2" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_3_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                           <children>
-                              <StackPane fx:id="stackPane_4_2" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_4_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
-                           <children>
-                              <StackPane fx:id="stackPane_0_3" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_0_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                           <children>
-                              <StackPane fx:id="stackPane_1_3" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_1_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                           <children>
-                              <StackPane fx:id="stackPane_2_3" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_2_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                           <children>
-                              <StackPane fx:id="stackPane_3_3" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_3_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                           <children>
-                              <StackPane fx:id="stackPane_4_3" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_4_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
-                           <children>
-                              <StackPane fx:id="stackPane_0_4" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_0_4" mnemonicParsing="false" opacity="0.02" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                           <children>
-                              <StackPane fx:id="stackPane_1_4" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_1_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                           <children>
-                              <StackPane fx:id="stackPane_2_4" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_2_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                           <children>
-                              <StackPane fx:id="stackPane_3_4" prefHeight="112.0" prefWidth="112.0" />
-                              <Button fx:id="block_3_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
-                           </children></AnchorPane>
+                        <StackPane fx:id="stackPane_4_4" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_4_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
                      </children>
-                  </GridPane>
-                  <Label layoutX="68.0" layoutY="479.0" prefHeight="17.0" prefWidth="100.0" text="Turno di:" />
-                  <Label fx:id="actual_player" layoutX="68.0" layoutY="507.0" prefHeight="17.0" prefWidth="79.0" text="name" />
-                  <Button fx:id="show_points" layoutX="36.0" layoutY="555.0" mnemonicParsing="false" onAction="#requirePossiblePoints" text="Mostra punti disponibili" />
-                  <Label fx:id="your_name" layoutX="68.0" layoutY="48.0" text="playerName" />
-                  <Label fx:id="your_color" layoutX="68.0" layoutY="94.0" text="color" />
-                  <Label fx:id="notifications" layoutX="68.0" layoutY="148.0" text="notifications" />
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <StackPane fx:id="stackPane_0_0" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_0_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                     <children>
+                        <StackPane fx:id="stackPane_1_0" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_1_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                     <children>
+                        <StackPane fx:id="stackPane_2_0" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_2_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+                     <children>
+                        <StackPane fx:id="stackPane_3_0" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_3_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+                     <children>
+                        <StackPane fx:id="stackPane_4_0" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_4_0" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <StackPane fx:id="stackPane_0_1" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_0_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <StackPane fx:id="stackPane_1_1" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_1_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <StackPane fx:id="stackPane_2_1" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_2_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <StackPane fx:id="stackPane_3_1" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_3_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <StackPane fx:id="stackPane_4_1" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_4_1" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                     <children>
+                        <StackPane fx:id="stackPane_0_2" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_0_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <StackPane fx:id="stackPane_1_2" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_1_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <children>
+                        <StackPane fx:id="stackPane_2_2" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_2_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <children>
+                        <StackPane fx:id="stackPane_3_2" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_3_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                     <children>
+                        <StackPane fx:id="stackPane_4_2" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_4_2" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                     <children>
+                        <StackPane fx:id="stackPane_0_3" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_0_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <children>
+                        <StackPane fx:id="stackPane_1_3" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_1_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <children>
+                        <StackPane fx:id="stackPane_2_3" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_2_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <children>
+                        <StackPane fx:id="stackPane_3_3" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_3_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                     <children>
+                        <StackPane fx:id="stackPane_4_3" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_4_3" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
+                     <children>
+                        <StackPane fx:id="stackPane_0_4" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_0_4" mnemonicParsing="false" opacity="0.02" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <children>
+                        <StackPane fx:id="stackPane_1_4" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_1_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <children>
+                        <StackPane fx:id="stackPane_2_4" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_2_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                     <children>
+                        <StackPane fx:id="stackPane_3_4" prefHeight="112.0" prefWidth="112.0" />
+                        <Button fx:id="block_3_4" mnemonicParsing="false" opacity="0.0" prefHeight="112.0" prefWidth="112.0" />
+                     </children>
+                  </AnchorPane>
                </children>
-            </AnchorPane>
-         </items>
-      </SplitPane>
+            </GridPane>
+            <Label layoutX="14.0" layoutY="379.0" prefHeight="56.0" prefWidth="233.0" styleClass="label-text" text="TURNO DI:" />
+            <Label fx:id="actual_player" layoutX="43.0" layoutY="421.0" prefHeight="56.0" prefWidth="233.0" styleClass="label-text" />
+            <Button fx:id="show_points" disable="true" layoutX="435.0" layoutY="718.0" mnemonicParsing="false" onAction="#requirePossiblePoints" opacity="0.0" text="Mostra punti disponibili" />
+            <Label fx:id="your_name" layoutX="70.0" layoutY="21.0" prefHeight="56.0" prefWidth="251.0" styleClass="label-text" textFill="#a14f0b" />
+            <Label fx:id="your_color" layoutX="43.0" layoutY="49.0" opacity="0.0" text="color" />
+            <Label fx:id="notifications" alignment="TOP_LEFT" layoutX="14.0" layoutY="519.0" prefHeight="212.0" prefWidth="233.0" styleClass="label-text-notification" wrapText="true" />
+            <Circle fx:id="your_color_circle" fill="#a7a7a7" layoutX="43.0" layoutY="49.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</StackPane>

@@ -214,15 +214,15 @@ public class GUIHandler extends Application implements ViewInterface {
         Platform.runLater(() -> {
             loader = new FXMLLoader(getClass().getResource("/fxmlFiles/board.fxml"));
             Scene scene = null;
-            AnchorPane anchorPane = null;
+            StackPane stackPane = null;
             try {
-                anchorPane = (AnchorPane) loader.load();
+                stackPane = (StackPane) loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             FXMLPlaceWorkerController myController = loader.getController();
             myController.setCurrentPlayer(startingPlayer);
-            scene = new Scene(anchorPane);
+            scene = new Scene(stackPane);
             primaryStage.setScene(scene);
             primaryStage.show();
         });
