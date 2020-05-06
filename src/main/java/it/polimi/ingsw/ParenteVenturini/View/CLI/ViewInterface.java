@@ -32,4 +32,5 @@ public interface ViewInterface {
     void updatePlaceWorkerMenu(String s);
     void loadLogin();
     void displayTurn(String num);
+    void displayEndMove();
 }

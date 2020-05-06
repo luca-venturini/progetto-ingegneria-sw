@@ -287,6 +287,11 @@ public class CLI implements ViewInterface {
     }
 
     @Override
+    public void displayEndMove() {
+
+    }
+
+    @Override
     public void displayEndGame() {
         printString("Vuoi continuare a vedere la partita?");
         printString("Scegli (y o n):");

@@ -20,7 +20,7 @@ public class GUIHandler extends Application implements ViewInterface {
     public static ClientSideController clientSideController;
     Connection connection;
     private String nickname;
-    private int colour;
+    private boolean inizializedboard=false;
     private FXMLStartButtonController firstPageController;
     private FXMLLoader loader;
 
@@ -168,19 +168,26 @@ public class GUIHandler extends Application implements ViewInterface {
     @Override
     public void displayBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index) {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(getClass().getResource("/fxmlFiles/gameBoard.fxml"));
-            Scene scene = null;
-            AnchorPane anchorPane = null;
-            try {
-                anchorPane = (AnchorPane) loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(inizializedboard==false) {
+                inizializedboard = true;
+                loader = new FXMLLoader(getClass().getResource("/fxmlFiles/gameBoard.fxml"));
+                Scene scene = null;
+                AnchorPane anchorPane = null;
+                try {
+                    anchorPane = (AnchorPane) loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                FXMLGameController myController = loader.getController();
+                myController.fillBoard(blocks, workers, colours, index);
+                scene = new Scene(anchorPane);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
-            FXMLGameController myController = loader.getController();
-            myController.fillBoard(blocks,workers,colours,index);
-            scene = new Scene(anchorPane);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            else {
+                FXMLGameController myController = loader.getController();
+                myController.fillBoard(blocks, workers, colours, index);
+            }
         });
     }
 
@@ -193,7 +200,7 @@ public class GUIHandler extends Application implements ViewInterface {
     public void displayMoveMenu() {
         Platform.runLater(()-> {
             FXMLGameController controller = loader.getController();
-            controller.displayMessage("Scegli la tua mossa");
+            controller.displayInfo("Scegli la tua mossa");
             controller.enableMovebuttons();
         });
     }
@@ -202,7 +209,7 @@ public class GUIHandler extends Application implements ViewInterface {
     public void displaySelectWorker() {
         Platform.runLater(()-> {
             FXMLGameController controller = loader.getController();
-            controller.displayMessage("Seleziona un worker");
+            controller.displayInfo("Seleziona un worker");
             controller.activePlayerCircle();
             controller.enableWorkerSelection();
         });
@@ -273,6 +280,14 @@ public class GUIHandler extends Application implements ViewInterface {
         Platform.runLater(()-> {
             FXMLGameController controller = loader.getController();
             controller.setNumTurn(num);
+        });
+    }
+
+    @Override
+    public void displayEndMove() {
+        Platform.runLater(()-> {
+            FXMLGameController controller = loader.getController();
+            controller.disableMovebuttons();
         });
     }
 

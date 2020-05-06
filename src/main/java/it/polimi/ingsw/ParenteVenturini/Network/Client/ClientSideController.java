@@ -209,6 +209,7 @@ public class ClientSideController implements ClientMessageHandler {
             client.displayMoveMenu();
         else {
             client.displayMessage("Il tuo turno è finito. Attendi...");
+            client.displayEndMove();
         }
     }
 

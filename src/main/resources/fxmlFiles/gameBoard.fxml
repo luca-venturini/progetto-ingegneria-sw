@@ -225,6 +225,7 @@
                                        </font></Button>
                                  </children>
                               </VBox>
+                              <Label fx:id="info" layoutX="36.0" layoutY="60.0" prefHeight="77.0" prefWidth="232.0" text="Label" />
                            </children>
                         </AnchorPane>
                     </items>

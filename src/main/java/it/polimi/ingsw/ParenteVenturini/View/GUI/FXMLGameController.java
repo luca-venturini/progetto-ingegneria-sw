@@ -18,7 +18,6 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class FXMLGameController implements ViewController{
 
@@ -33,6 +32,9 @@ public class FXMLGameController implements ViewController{
 
     @FXML
     private Label turn;
+
+    @FXML
+    private Label info;
 
     @FXML
     private StackPane StackPane_0_0;
@@ -262,6 +264,7 @@ public class FXMLGameController implements ViewController{
                 buttons[i][j].setDisable(true);
             }
         }
+        info.setVisible(false);
         move_button.setDisable(true);
         build_button.setDisable(true);
         specialbuild_button.setDisable(true);
@@ -276,6 +279,7 @@ public class FXMLGameController implements ViewController{
     public void fillBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index){
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
+                stackPanes[i][j].getChildren().clear();
                 if(blocks[i][j].getLevel() > 0) {
                     String path = generateBlockIcon(blocks[i][j].getLevel());
                     Image block = new Image(path);
@@ -297,7 +301,8 @@ public class FXMLGameController implements ViewController{
                 for(Point p: workers) {
                     if (p.equals(i,j)) {
                         String workerpath = generateWorkerIcon( Integer.parseInt(colours.get(workers.indexOf(p))) );
-                        if( colours.get(workers.indexOf(p)).equals(""+GUIHandler.clientSideController.getNickname()) ){
+                        if( colours.get(workers.indexOf(p)).equals(""+GUIHandler.clientSideController.getColor()) ){
+                            buttons[i][j].setOnAction(e -> sendWorker(index.get(workers.indexOf(p))));
                             workerButtons.add(buttons[i][j]);
                         }
                         Image worker= new Image(workerpath);
@@ -344,6 +349,8 @@ public class FXMLGameController implements ViewController{
                 return "/gameobjects/block_2.png";
             case 3:
                 return "/gameobjects/block_3.png";
+            case 4:
+                return "/gameobjects/block_3.png";
         }
         return null;
     }
@@ -368,6 +375,7 @@ public class FXMLGameController implements ViewController{
     }
 
     public void disableMovebuttons(){
+        player_circle.setFill(Color.web("#a7a7a7"));
         move_button.setDisable(false);
         build_button.setDisable(false);
         specialbuild_button.setDisable(false);
@@ -377,8 +385,6 @@ public class FXMLGameController implements ViewController{
     private void sendMove(String type){
         MessageToServer message = new ActionRequest(GUIHandler.clientSideController.getNickname(),type);
         GUIHandler.clientSideController.sendMessage(message);
-        if(type.equals("EndMove") )
-            player_circle.setFill(Color.web("#a7a7a7"));
     }
 
     private void clearButtons(){
@@ -391,13 +397,12 @@ public class FXMLGameController implements ViewController{
     }
 
     public void enableActionPoints(List<Point> points){
-        clearButtons();
-
         for(Point p: points){
             int x = p.getX();
             int y = p.getY();
 
             buttons[x][y].getStyleClass().add("action-button");
+            buttons[x][y].setOnAction(e -> sendActionPoints(x,y));
             buttons[x][y].setDisable(false);
         }
     }
@@ -405,7 +410,7 @@ public class FXMLGameController implements ViewController{
     public void enableWorkerSelection(){
         for( Button b: workerButtons){
             b.setDisable(false);
-            b.setOnAction(e -> sendWorker(b.getText()));
+            b.setOnAction(e -> sendWorker(""+1));
         }
     }
 
@@ -421,15 +426,15 @@ public class FXMLGameController implements ViewController{
         }
     }
 
+    public void displayInfo(String s){
+        info.setVisible(true);
+        info.setText(s);
+    }
+
     @Override
     public void displayMessage(String s) {
         System.out.println("Arrivata notifica");
         System.out.println("Messaggio: "+s);
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         messages.clear();
         messages.setText(s);
     }
