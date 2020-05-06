@@ -64,6 +64,7 @@ public class GUIHandler extends Application implements ViewInterface {
         return null;
     }
 
+    @Override
     public void loadLogin() {
 
         Platform.runLater(() -> {

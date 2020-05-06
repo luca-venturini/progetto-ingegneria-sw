@@ -2,13 +2,10 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.StoreSelectedCardsRequest;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -88,7 +85,7 @@ public class FXMLSelectCardsController implements ViewController{
     @FXML
     public void send_cards(){
         if(chosenCards.size() == numOfCards){
-            MessageToServer message = new StoreSelectedCardsRequest(GUIHandler.clientSideController.getNickanme(), chosenCards);
+            MessageToServer message = new StoreSelectedCardsRequest(GUIHandler.clientSideController.getNickname(), chosenCards);
             GUIHandler.clientSideController.sendMessage(message);
             send_button.setDisable(true);
         }

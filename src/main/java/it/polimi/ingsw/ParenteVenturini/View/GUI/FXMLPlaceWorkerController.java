@@ -4,13 +4,11 @@ import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.AvailablePlaceWorkerPointRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.PlaceWorkerRequest;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.List;
@@ -201,7 +199,7 @@ public class FXMLPlaceWorkerController implements ViewController{
                 buttons[i][j].setDisable(true);
             }
         }
-        your_name.setText(GUIHandler.clientSideController.getNickanme().toUpperCase());
+        your_name.setText(GUIHandler.clientSideController.getNickname().toUpperCase());
         your_color.setText("");
         your_color_circle.setFill(Color.web("#a7a7a7"));
         requirePossiblePoints();
@@ -209,7 +207,7 @@ public class FXMLPlaceWorkerController implements ViewController{
 
     public void sendPosition(int x, int y){
         Point point = new Point(x,y);
-        MessageToServer message = new PlaceWorkerRequest(point, GUIHandler.clientSideController.getNickanme());
+        MessageToServer message = new PlaceWorkerRequest(point, GUIHandler.clientSideController.getNickname());
         GUIHandler.clientSideController.sendMessage(message);
         clearButtons();
     }

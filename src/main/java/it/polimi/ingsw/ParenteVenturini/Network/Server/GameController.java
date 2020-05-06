@@ -11,7 +11,6 @@ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.NotYourTurnException;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +32,7 @@ public class GameController {
         System.out.println("Creata partita da "+numOfPlayers+" giocatori");
     }
 
-    public Player addPlayer(ClientController client, String nickname){
+    public synchronized Player addPlayer(ClientController client, String nickname){
 
         int i = 1;
         String originalNickname = nickname;
@@ -43,7 +42,7 @@ public class GameController {
         }
         try {
             match.addPlayer(nickname);
-            System.out.println("add player");
+            System.out.println("U add player");
             for (Player p: match.getPlayers())
                 System.out.println("---: "+p.getNickname());
         } catch (NoMorePlayersException | AlreadyPresentPlayerException | NoPlayerException e) {
@@ -54,11 +53,11 @@ public class GameController {
         return match.selectPlayer(nickname);
     }
 
-    public boolean isValidNickname(String nickname){
+    public synchronized boolean isValidNickname(String nickname){
         return !nickname.equals("") && match.selectPlayer(nickname) == null;
     }
 
-    public void startSetup(){
+    public synchronized void startSetup(){
         if(match.getTypeOfMatch() == clients.size()) {
             notifyAllClients(new SimplyNotification( "E' iniziata la fase di setUp, tra poco tocca a te..."));
             try {
@@ -73,17 +72,17 @@ public class GameController {
             notifyAllClients(new SimplyNotification( "Attendi altri giocatori"));
     }
 
-    public void notifyAllClients(MessageToClient msg){
+    public synchronized void notifyAllClients(MessageToClient msg){
         for (ClientController client: clients){
             client.sendMessage(msg);
         }
     }
 
-    public void notifySingleClient(ClientController client, MessageToClient msg){
+    public synchronized void notifySingleClient(ClientController client, MessageToClient msg){
         client.sendMessage(msg);
     }
 
-    public void notifySingleClient(Player player, MessageToClient msg){
+    public synchronized void notifySingleClient(Player player, MessageToClient msg){
         for (ClientController c: clients){
             if(c.getPlayer().getNickname().equals(player.getNickname())) {
                 c.sendMessage(msg);
@@ -92,7 +91,7 @@ public class GameController {
         }
     }
 
-    public void addCardsToMatch(String nickname, List<String> values) throws IllegalCardException {
+    public synchronized void addCardsToMatch(String nickname, List<String> values) throws IllegalCardException {
         List<Card> chosenCards = new ArrayList<>();
 
         if(nickname.equals(match.getChallenger().getNickname())){
@@ -120,7 +119,7 @@ public class GameController {
         }
     }
 
-    public void setPlayerCard(Player player, String card){
+    public synchronized void setPlayerCard(Player player, String card){
         if (card == null){
             notifySingleClient(player, new SetPlayerCardResponse( false, "Scegli una carta"));
         }
@@ -145,7 +144,7 @@ public class GameController {
         }
     }
 
-    public void sendPossibleCards(ClientController clientController){
+    public synchronized void sendPossibleCards(ClientController clientController){
         List<String> cardsName = new ArrayList<>();
         for(Card c: cardSetupHandler.getPossibleCards()){
             cardsName.add(c.getName());
@@ -154,7 +153,7 @@ public class GameController {
     }
 
 
-    public void setStartingPlayer(String nickname, String startingPlayerNickname){
+    public synchronized void setStartingPlayer(String nickname, String startingPlayerNickname){
         if(nickname.equals(match.getChallenger().getNickname())) {
             try {
                 match.selectStarter(startingPlayerNickname);
@@ -173,7 +172,7 @@ public class GameController {
         }
     }
 
-    public void sendPossiblePlayers(ClientController clientController){
+    public synchronized void sendPossiblePlayers(ClientController clientController){
         List<String> playersNickname = new ArrayList<>();
         try {
             List<Player> players = match.getPlayers();
@@ -187,7 +186,7 @@ public class GameController {
     }
 
 
-    public void placeWorkers(Player player, Point position){
+    public synchronized void placeWorkers(Player player, Point position){
         Point point = new Point(position.getX(), position.getY());
         try {
             placeWorkerSetupHandler.setWorkerPosition(player, position);
@@ -214,7 +213,7 @@ public class GameController {
         }
     }
 
-    public void sendPossibleWorkersSetupPoint(ClientController clientController){
+    public synchronized void sendPossibleWorkersSetupPoint(ClientController clientController){
         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
         if(placeWorkerSetupHandler.getCurrentPlayer() != null)
             notifySingleClient(clientController, buildAvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()) );
@@ -234,7 +233,7 @@ public class GameController {
 
     }
 
-    public void sendBoard() {
+    public synchronized void sendBoard() {
         Block[][] blocks= new Block[5][5];
         List<Point> positionworker = new ArrayList<>();
         List<String> colours= new ArrayList<>();
@@ -258,7 +257,7 @@ public class GameController {
         notifyAllClients(new BoardUpdateNotification(blocks,positionworker,colours,index) );
     }
 
-    public void notifyYourTurn(){
+    public synchronized void notifyYourTurn(){
         if(match.gameOver()) {
             notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
             try {
@@ -274,7 +273,7 @@ public class GameController {
             System.out.println("Turno: " + match.getTurn().getNumTurn() + " Giocatore: " + match.getTurn().getCurrentPlayer().getNickname());
         }
     }
-
+    
     public void manageGameOver() throws NoPlayerException {
         if (match.getPlayers().size() == 2) {
             match.getTurn().setNextPlayer();
@@ -294,7 +293,7 @@ public class GameController {
         }
     }
 
-    public void selectWorker(ClientController clientController, String nickname, int index){
+    public synchronized void selectWorker(ClientController clientController, String nickname, int index){
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)){
             match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
             notifySingleClient(clientController,new SelectWorkerResponse("Worker selezionato",true));
@@ -302,7 +301,7 @@ public class GameController {
         else notifySingleClient(clientController,new SelectWorkerResponse("Non è il tuo turno",false));
     }
 
-    public void doMove(ClientController clientController, String typeOfMove,String nickname){
+    public synchronized void doMove(ClientController clientController, String typeOfMove,String nickname){
         moveHandler.init();
         List<Point> points;
         if(match.directGameOver()){
@@ -381,7 +380,7 @@ public class GameController {
         }
     }
 
-    public  void doAction(ClientController clientController,Point x, String nickname) {
+    public synchronized void doAction(ClientController clientController,Point x, String nickname) {
         try {
             try {
                 moveHandler.doAction(nickname,x);
@@ -421,20 +420,33 @@ public class GameController {
         }
     }
 
-    public int getNumOfPlayers(){
+    public synchronized int getNumOfPlayers(){
         return clients.size();
     }
 
-    public void disconnectPlayer(ClientController clientController){
+    public synchronized void disconnectPlayer(ClientController clientController){
         clientController.quitGame();
+        notifySingleClient(clientController, new InterruptedGameNotification());
     }
 
-    public void disconnectAllPlayers(){
+    public synchronized void disconnectAllPlayers(){
         for(ClientController c: clients){
             c.quitGame();
+            notifySingleClient(c, new InterruptedGameNotification());
         }
         GameDispatcher gd = GameDispatcher.getInstance();
         gd.removeGame(this);
+    }
+
+    public synchronized boolean isPlaying(Player player){
+        try {
+            if(match.getPlayers().contains(player))
+                return true;
+        } catch (NoPlayerException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
 
 }

@@ -3,13 +3,10 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.AvailableCardRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SetPlayerCardRequest;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.StoreSelectedCardsRequest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,7 +27,7 @@ public class FXMLSelectPlayerCardController implements ViewController{
     @FXML
     private void initialize() {
         chosen_cards.setVisible(false);
-        MessageToServer message = new AvailableCardRequest(GUIHandler.clientSideController.getNickanme());
+        MessageToServer message = new AvailableCardRequest(GUIHandler.clientSideController.getNickname());
         GUIHandler.clientSideController.sendMessage(message);
     }
 
@@ -92,7 +89,7 @@ public class FXMLSelectPlayerCardController implements ViewController{
 
     @FXML
     public void send_cards(){
-        MessageToServer message = new SetPlayerCardRequest(GUIHandler.clientSideController.getNickanme(), chosenCard);
+        MessageToServer message = new SetPlayerCardRequest(GUIHandler.clientSideController.getNickname(), chosenCard);
         GUIHandler.clientSideController.sendMessage(message);
 
     }
@@ -133,7 +130,7 @@ public class FXMLSelectPlayerCardController implements ViewController{
     @Override
     public void displayMessage(String s) {
         showAlert(s);
-        MessageToServer message = new AvailableCardRequest(GUIHandler.clientSideController.getNickanme());
+        MessageToServer message = new AvailableCardRequest(GUIHandler.clientSideController.getNickname());
         GUIHandler.clientSideController.sendMessage(message);
     }
 

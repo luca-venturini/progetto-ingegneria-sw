@@ -19,15 +19,15 @@ public class ClientSideController implements ClientMessageHandler {
     private Scanner stdIn;
     private ViewInterface client;
     private ViewInterface gui;
-    private String nickanme;
+    private String nickname;
     private int color;
 
-    public void setNickanme(String nickanme) {
-        this.nickanme = nickanme;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getNickanme() {
-        return nickanme;
+    public String getNickname() {
+        return nickname;
     }
 
     public ClientSideController(Scanner stdIn, ObjectInputStream readStream, ObjectOutputStream writeStream) {
@@ -225,7 +225,7 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(ActionResponse msg) {
         client.displayMessage(msg.getPoints().toString());
-        client.displaySelectPoint(msg.getPoints());
+        client.displaySelectPoint();
     }
 
     @Override
@@ -261,8 +261,9 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
-    public void visit(TurnNotification msg) {
-        client.displayTurn(msg.getnum());
+    public void visit(InterruptedGameNotification msg) {
+        client.loadLogin();
+        client.displayMessage("Partita precedente terminata");
     }
 
     @Override
@@ -278,8 +279,8 @@ public class ClientSideController implements ClientMessageHandler {
         }
 
         client.displayMessage(msg.getMessage());
-        if(!msg.isHasFinished()) {
-            client.updatePlaceWorkerMenu(nickanme);
+        if(!msg.isHasFinished() && !msg.isSet()) {
+            client.updatePlaceWorkerMenu(nickname);
         }
 
     }
