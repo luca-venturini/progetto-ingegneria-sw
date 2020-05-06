@@ -269,7 +269,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(TurnNotification msg) {
-
+        client.displayTurn(msg.getnum());
     }
 
     @Override

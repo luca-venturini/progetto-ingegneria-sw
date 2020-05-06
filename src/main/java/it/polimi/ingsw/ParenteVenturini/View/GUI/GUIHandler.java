@@ -20,7 +20,7 @@ public class GUIHandler extends Application implements ViewInterface {
     public static ClientSideController clientSideController;
     Connection connection;
     private String nickname;
-
+    private int colour;
     private FXMLStartButtonController firstPageController;
     private FXMLLoader loader;
 
@@ -204,6 +204,7 @@ public class GUIHandler extends Application implements ViewInterface {
             FXMLGameController controller = loader.getController();
             controller.displayMessage("Seleziona un worker");
             controller.activePlayerCircle();
+            controller.enableWorkerSelection();
         });
     }
 

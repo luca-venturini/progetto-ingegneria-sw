@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -18,7 +19,10 @@
                            <children>
                               <HBox prefHeight="57.0" prefWidth="1278.0">
                                  <children>
-                                    <Circle fx:id="player_circle" fill="#a7a7a7" radius="23.0" stroke="#807d7d" strokeType="INSIDE" styleClass="circle" />
+                                    <Circle fx:id="player_circle" fill="#a7a7a7" radius="23.0" stroke="#807d7d" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="3.0" top="5.0" />
+                                       </HBox.margin></Circle>
                                     <Region prefHeight="57.0" prefWidth="24.0" />
                                     <Label fx:id="nickname" prefHeight="57.0" prefWidth="138.0" text="Label" />
                                     <TextField fx:id="messages" editable="false" prefHeight="57.0" prefWidth="784.0" />

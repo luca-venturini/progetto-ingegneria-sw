@@ -5,6 +5,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.ActionPointRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.ActionRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
+import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SelectWorkerRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,7 +16,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FXMLGameController implements ViewController{
 
@@ -198,6 +201,7 @@ public class FXMLGameController implements ViewController{
 
     private Button[][] buttons = new Button[5][5];
     private StackPane[][] stackPanes = new StackPane[5][5];
+    private List<Button> workerButtons = new ArrayList<>();
 
     @FXML
     public void initialize(){
@@ -272,23 +276,36 @@ public class FXMLGameController implements ViewController{
     public void fillBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index){
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
-                if(blocks[i][j].getLevel() > 0){
-                    Image block= new Image("@../gameobjects/specialbuild.png");
+                if(blocks[i][j].getLevel() > 0) {
+                    String path = generateBlockIcon(blocks[i][j].getLevel());
+                    Image block = new Image(path);
                     ImageView imageView = new ImageView();
                     imageView.setFitHeight(105);
                     imageView.setFitWidth(105);
                     imageView.setImage(block);
                     stackPanes[i][j].getChildren().add(imageView);
-                    for(Point p: workers) {
-                        if (p.equals(i,j)) {
-                            String s=generateWorkerIcon( Integer.parseInt(colours.get(workers.indexOf(p))) );
-                            Image worker= new Image(s);
-                            ImageView workerView = new ImageView();
-                            workerView.setFitHeight(50);
-                            workerView.setFitWidth(50);
-                            workerView.setImage(worker);
-                            stackPanes[i][j].getChildren().add(workerView);
+                }
+                if(blocks[i][j].isDome()){
+                    String domepath = "/gameobjects/dome.png";
+                    Image block = new Image(domepath);
+                    ImageView imageView = new ImageView();
+                    imageView.setFitHeight(105);
+                    imageView.setFitWidth(105);
+                    imageView.setImage(block);
+                    stackPanes[i][j].getChildren().add(imageView);
+                }
+                for(Point p: workers) {
+                    if (p.equals(i,j)) {
+                        String workerpath = generateWorkerIcon( Integer.parseInt(colours.get(workers.indexOf(p))) );
+                        if( colours.get(workers.indexOf(p)).equals(""+GUIHandler.clientSideController.getNickname()) ){
+                            workerButtons.add(buttons[i][j]);
                         }
+                        Image worker= new Image(workerpath);
+                        ImageView workerView = new ImageView();
+                        workerView.setFitHeight(50);
+                        workerView.setFitWidth(50);
+                        workerView.setImage(worker);
+                        stackPanes[i][j].getChildren().add(workerView);
                     }
                 }
             }
@@ -310,13 +327,30 @@ public class FXMLGameController implements ViewController{
     private String generateWorkerIcon(int color){
         switch (color){
             case 1:
-                return "@../gameobjects/redBuilder.png";
+                return "/gameobjects/redBuilder.png";
             case 2:
-                return "@../gameobjects/blueBuilder.png";
+                return "/gameobjects/blueBuilder.png";
             case 3:
-                return "@../gameobjects/greenBuilder.png";
+                return "/gameobjects/greenBuilder.png";
         }
         return null;
+    }
+
+    private String generateBlockIcon(int level){
+        switch (level){
+            case 1:
+                return "/gameobjects/block_1.png";
+            case 2:
+                return "/gameobjects/block_2.png";
+            case 3:
+                return "/gameobjects/block_3.png";
+        }
+        return null;
+    }
+
+    private void sendWorker(String index){
+        MessageToServer message = new SelectWorkerRequest(GUIHandler.clientSideController.getNickname(),index);
+        GUIHandler.clientSideController.sendMessage(message);
     }
 
     private void sendActionPoints(int x, int y){
@@ -327,7 +361,17 @@ public class FXMLGameController implements ViewController{
     }
 
     public void enableMovebuttons(){
+        move_button.setDisable(false);
+        build_button.setDisable(false);
+        specialbuild_button.setDisable(false);
+        endMove_button.setDisable(false);
+    }
 
+    public void disableMovebuttons(){
+        move_button.setDisable(false);
+        build_button.setDisable(false);
+        specialbuild_button.setDisable(false);
+        endMove_button.setDisable(false);
     }
 
     private void sendMove(String type){
@@ -358,6 +402,13 @@ public class FXMLGameController implements ViewController{
         }
     }
 
+    public void enableWorkerSelection(){
+        for( Button b: workerButtons){
+            b.setDisable(false);
+            b.setOnAction(e -> sendWorker(b.getText()));
+        }
+    }
+
     public void setNumTurn(String num){
         turn.setText("Turno "+num);
     }
@@ -374,6 +425,11 @@ public class FXMLGameController implements ViewController{
     public void displayMessage(String s) {
         System.out.println("Arrivata notifica");
         System.out.println("Messaggio: "+s);
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         messages.clear();
         messages.setText(s);
     }
