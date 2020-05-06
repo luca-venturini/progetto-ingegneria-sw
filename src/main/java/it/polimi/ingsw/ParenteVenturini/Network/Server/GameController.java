@@ -272,8 +272,8 @@ public class GameController {
             System.out.println("Turno: " + match.getTurn().getNumTurn() + " Giocatore: " + match.getTurn().getCurrentPlayer().getNickname());
         }
     }
-
-    public synchronized void manageGameOver() throws NoPlayerException {
+    
+    public void manageGameOver() throws NoPlayerException {
         if (match.getPlayers().size() == 2) {
             match.getTurn().setNextPlayer();
             notifyAllClients(new WinNotification(match.getTurn().getCurrentPlayer().getNickname()));
