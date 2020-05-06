@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ParenteVenturini.View.CLI;
+package it.polimi.ingsw.ParenteVenturini.View;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
@@ -33,4 +33,5 @@ public interface ViewInterface {
     void loadLogin();
     void displayTurn(String num);
     void displayEndMove();
+    void displayWin();
 }

@@ -111,7 +111,7 @@ public class FXMLSelectCardsController implements ViewController{
         textMessage.setText(msg);
         close.setOnAction(actionEvent -> stage.close());
         stage.setScene(modalScene);
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.WINDOW_MODAL);
         stage.setTitle("Info");
         stage.show();
     }

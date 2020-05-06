@@ -6,6 +6,7 @@ import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ColourPrint;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.LightWorker;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
+import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -288,6 +289,11 @@ public class CLI implements ViewInterface {
 
     @Override
     public void displayEndMove() {
+
+    }
+
+    @Override
+    public void displayWin() {
 
     }
 

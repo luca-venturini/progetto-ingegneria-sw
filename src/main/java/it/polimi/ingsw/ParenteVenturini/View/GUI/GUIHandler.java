@@ -3,12 +3,15 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
-import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
+import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -288,6 +291,32 @@ public class GUIHandler extends Application implements ViewInterface {
         Platform.runLater(()-> {
             FXMLGameController controller = loader.getController();
             controller.disableMovebuttons();
+            controller.disableInfo();
+        });
+    }
+
+    @Override
+    public void displayWin() {
+        Platform.runLater(()-> {
+            FXMLLoader modalLoader;
+            Stage stage = new Stage();
+            modalLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/modalWinMessage.fxml"));
+            Scene modalScene = null;
+            try {
+                modalScene = new Scene((Pane) modalLoader.load());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Button close = (Button) modalScene.lookup("#closeModal");
+            Label textMessage = (Label) modalScene.lookup("#modalMessage");
+            textMessage.setText("Hai vinto la partita !");
+            close.setOnAction(actionEvent -> stage.close());
+            stage.setScene(modalScene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Win Notification");
+            stage.setX(primaryStage.getX() + 200);
+            stage.setY(primaryStage.getY() + 100);
+            stage.show();
         });
     }
 

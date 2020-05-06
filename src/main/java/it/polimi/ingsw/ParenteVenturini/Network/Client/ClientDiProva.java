@@ -1,9 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.View.CLI.CLI;
-import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
-import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
-import javafx.application.Application;
+import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,7 +9,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ClientDiProva {
     private int port=1337;

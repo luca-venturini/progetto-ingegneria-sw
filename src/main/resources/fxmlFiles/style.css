@@ -303,3 +303,18 @@
     -fx-border-color: transparent;
     -fx-background-color: dodgerblue;
 }
+
+.game-text{
+    -fx-font-family: "Gill Sans Ultra Bold";
+    -fx-text-align: center;
+    -fx-font-size: 20px;
+}
+
+.move-text-field {
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent transparent #ffbe6d transparent;
+    -fx-font-size: 20;
+    -fx-font-family: "Gill Sans Ultra Bold";
+    -fx-text-fill: rgb(139, 49, 0);
+}

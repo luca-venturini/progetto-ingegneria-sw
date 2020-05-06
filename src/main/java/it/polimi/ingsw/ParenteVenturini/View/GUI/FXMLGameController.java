@@ -2,10 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.ActionPointRequest;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.ActionRequest;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SelectWorkerRequest;
+import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -204,6 +201,7 @@ public class FXMLGameController implements ViewController{
     private Button[][] buttons = new Button[5][5];
     private StackPane[][] stackPanes = new StackPane[5][5];
     private List<Button> workerButtons = new ArrayList<>();
+    private List<String> workerindex = new ArrayList<>();
 
     @FXML
     public void initialize(){
@@ -273,13 +271,17 @@ public class FXMLGameController implements ViewController{
         build_button.setOnAction(e -> sendMove("Construction") );
         specialbuild_button.setOnAction(e -> sendMove("SpecialConstruction") );
         endMove_button.setOnAction(e -> sendMove("EndMove") );
+        quit_button.setOnAction(e -> sendQuit());
         nickname.setText(GUIHandler.clientSideController.getNickname().toUpperCase());
     }
 
     public void fillBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index){
+        workerButtons= new ArrayList<>();
+        workerindex= new ArrayList<>();
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
                 stackPanes[i][j].getChildren().clear();
+
                 if(blocks[i][j].getLevel() > 0) {
                     String path = generateBlockIcon(blocks[i][j].getLevel());
                     Image block = new Image(path);
@@ -293,8 +295,8 @@ public class FXMLGameController implements ViewController{
                     String domepath = "/gameobjects/dome.png";
                     Image block = new Image(domepath);
                     ImageView imageView = new ImageView();
-                    imageView.setFitHeight(105);
-                    imageView.setFitWidth(105);
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
                     imageView.setImage(block);
                     stackPanes[i][j].getChildren().add(imageView);
                 }
@@ -302,8 +304,8 @@ public class FXMLGameController implements ViewController{
                     if (p.equals(i,j)) {
                         String workerpath = generateWorkerIcon( Integer.parseInt(colours.get(workers.indexOf(p))) );
                         if( colours.get(workers.indexOf(p)).equals(""+GUIHandler.clientSideController.getColor()) ){
-                            buttons[i][j].setOnAction(e -> sendWorker(index.get(workers.indexOf(p))));
                             workerButtons.add(buttons[i][j]);
+                            workerindex.add(index.get(workers.indexOf(p)));
                         }
                         Image worker= new Image(workerpath);
                         ImageView workerView = new ImageView();
@@ -348,7 +350,6 @@ public class FXMLGameController implements ViewController{
             case 2:
                 return "/gameobjects/block_2.png";
             case 3:
-                return "/gameobjects/block_3.png";
             case 4:
                 return "/gameobjects/block_3.png";
         }
@@ -367,6 +368,11 @@ public class FXMLGameController implements ViewController{
         clearButtons();
     }
 
+    private void sendQuit(){
+        MessageToServer message = new QuitRequest(GUIHandler.clientSideController.getNickname());
+        GUIHandler.clientSideController.sendMessage(message);
+    }
+
     public void enableMovebuttons(){
         move_button.setDisable(false);
         build_button.setDisable(false);
@@ -376,10 +382,10 @@ public class FXMLGameController implements ViewController{
 
     public void disableMovebuttons(){
         player_circle.setFill(Color.web("#a7a7a7"));
-        move_button.setDisable(false);
-        build_button.setDisable(false);
-        specialbuild_button.setDisable(false);
-        endMove_button.setDisable(false);
+        move_button.setDisable(true);
+        build_button.setDisable(true);
+        specialbuild_button.setDisable(true);
+        endMove_button.setDisable(true);
     }
 
     private void sendMove(String type){
@@ -410,7 +416,7 @@ public class FXMLGameController implements ViewController{
     public void enableWorkerSelection(){
         for( Button b: workerButtons){
             b.setDisable(false);
-            b.setOnAction(e -> sendWorker(""+1));
+            b.setOnAction(e -> sendWorker(workerindex.get(workerButtons.indexOf(b))));
         }
     }
 
@@ -429,6 +435,10 @@ public class FXMLGameController implements ViewController{
     public void displayInfo(String s){
         info.setVisible(true);
         info.setText(s);
+    }
+
+    public void disableInfo(){
+        info.setVisible(false);
     }
 
     @Override

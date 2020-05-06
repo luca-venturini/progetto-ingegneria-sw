@@ -1,12 +1,10 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
-import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
-import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
+import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -222,6 +220,7 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(WinNotification msg) {
         client.displayMessage("Il vincitore è: "+msg.getMessage());
+
     }
 
     @Override
@@ -271,6 +270,11 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(TurnNotification msg) {
         client.displayTurn(msg.getnum());
+    }
+
+    @Override
+    public void visit(VictoryNotification msg) {
+        client.displayWin();
     }
 
     @Override

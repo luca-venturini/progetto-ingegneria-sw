@@ -24,10 +24,10 @@
                                           <Insets left="3.0" top="5.0" />
                                        </HBox.margin></Circle>
                                     <Region prefHeight="57.0" prefWidth="24.0" />
-                                    <Label fx:id="nickname" prefHeight="57.0" prefWidth="138.0" text="Label" />
-                                    <TextField fx:id="messages" editable="false" prefHeight="57.0" prefWidth="784.0" />
+                                    <Label fx:id="nickname" prefHeight="57.0" prefWidth="227.0" styleClass="game-text" text="Label" textFill="#c35312" />
+                                    <TextField fx:id="messages" alignment="CENTER" editable="false" prefHeight="57.0" prefWidth="784.0" styleClass="move-text-field" />
                                     <Region prefHeight="57.0" prefWidth="145.0" />
-                                    <Label fx:id="turn" prefHeight="57.0" prefWidth="139.0" text="Label" />
+                                    <Label fx:id="turn" prefHeight="57.0" prefWidth="146.0" styleClass="game-text" text="Label" textFill="#b54a0c" />
                                  </children>
                               </HBox>
                            </children>
@@ -192,7 +192,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Button>
-                                    <Region prefHeight="39.0" prefWidth="193.0" />
+                                    <Region prefHeight="39.0" prefWidth="193.0" styleClass="move-text-field" />
                                     <Button fx:id="build_button" mnemonicParsing="false" prefHeight="142.0" prefWidth="209.0" styleClass="game_button">
                                        <graphic>
                                           <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
@@ -225,7 +225,7 @@
                                        </font></Button>
                                  </children>
                               </VBox>
-                              <Label fx:id="info" layoutX="36.0" layoutY="60.0" prefHeight="77.0" prefWidth="232.0" text="Label" />
+                              <Label fx:id="info" layoutX="32.0" layoutY="14.0" prefHeight="77.0" prefWidth="481.0" styleClass="game-text" text="Label" textFill="#bf4c13" />
                            </children>
                         </AnchorPane>
                     </items>
