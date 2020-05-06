@@ -176,7 +176,7 @@ public class GUIHandler extends Application implements ViewInterface {
                 e.printStackTrace();
             }
             FXMLGameController myController = loader.getController();
-            myController.setCurrentPlayer(startingPlayer);
+            myController.fillBoard(blocks,workers,colours,index);
             scene = new Scene(anchorPane);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -195,7 +195,11 @@ public class GUIHandler extends Application implements ViewInterface {
 
     @Override
     public void displaySelectWorker() {
-
+        Platform.runLater(()-> {
+            FXMLGameController controller = loader.getController();
+            controller.displayMessage("Seleziona un worker");
+            controller.activePlayerCircle();
+        });
     }
 
     @Override
@@ -259,13 +263,25 @@ public class GUIHandler extends Application implements ViewInterface {
     }
 
     @Override
+    public void displayTurn(String num) {
+        Platform.runLater(()-> {
+            FXMLGameController controller = loader.getController();
+            controller.setNumTurn(num);
+        });
+    }
+
+    @Override
     public void addLightWorker(Point point) {
 
     }
 
     @Override
-    public void displaySelectPoint() {
-
+    public void displaySelectPoint(List<Point> points) {
+        Platform.runLater(()-> {
+            FXMLGameController controller = loader.getController();
+            controller.displayMessage("Seleziona punto in cui fare l'azione");
+            controller.enableActionPoints(points);
+        });
     }
 
     @Override

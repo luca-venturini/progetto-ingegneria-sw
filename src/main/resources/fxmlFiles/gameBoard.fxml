@@ -3,8 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLGameController">
    <children>
       <SplitPane dividerPositions="0.9636591478696742" orientation="VERTICAL" prefHeight="800.0" prefWidth="1280.0">
         <items>
@@ -16,10 +18,12 @@
                            <children>
                               <HBox prefHeight="57.0" prefWidth="1278.0">
                                  <children>
-                                    <Label prefHeight="62.0" prefWidth="206.0" text="Label" />
-                                    <TextArea editable="false" prefHeight="57.0" prefWidth="696.0" />
-                                    <Region prefHeight="57.0" prefWidth="210.0" />
-                                    <Label prefHeight="66.0" prefWidth="170.0" text="Label" />
+                                    <Circle fx:id="player_circle" fill="#a7a7a7" radius="23.0" stroke="#807d7d" strokeType="INSIDE" styleClass="circle" />
+                                    <Region prefHeight="57.0" prefWidth="24.0" />
+                                    <Label fx:id="nickname" prefHeight="57.0" prefWidth="138.0" text="Label" />
+                                    <TextField fx:id="messages" editable="false" prefHeight="57.0" prefWidth="784.0" />
+                                    <Region prefHeight="57.0" prefWidth="145.0" />
+                                    <Label fx:id="turn" prefHeight="57.0" prefWidth="139.0" text="Label" />
                                  </children>
                               </HBox>
                            </children>
@@ -174,32 +178,47 @@
                                        </children></AnchorPane>
                                  </children>
                               </GridPane>
-                              <VBox layoutX="1032.0" layoutY="223.0" prefHeight="428.0" prefWidth="193.0">
+                               <VBox layoutX="1012.0" layoutY="178.0" prefHeight="498.0" prefWidth="193.0">
                                  <children>
-                                    <Button fx:id="move_button" mnemonicParsing="false" prefHeight="136.0" prefWidth="210.0">
+                                    <Button fx:id="move_button" mnemonicParsing="false" prefHeight="162.0" prefWidth="193.0" styleClass="game_button">
                                        <graphic>
-                                          <ImageView fitHeight="135.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
-                                             <Image url="/gameobjects/move.png" />
+                                          <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
+                                             <image>
+                                                <Image url="@../gameobjects/move.png" />
+                                             </image>
                                           </ImageView>
                                        </graphic></Button>
-                                    <Button fx:id="build_button" mnemonicParsing="false" prefHeight="142.0" prefWidth="209.0">
+                                    <Region prefHeight="39.0" prefWidth="193.0" />
+                                    <Button fx:id="build_button" mnemonicParsing="false" prefHeight="142.0" prefWidth="209.0" styleClass="game_button">
                                        <graphic>
-                                          <ImageView fitHeight="135.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" >
-                                             <Image url="/gameobjects/build.png" />
+                                          <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
+                                             <image>
+                                                <Image url="@../gameobjects/build.png" />
+                                             </image>
                                           </ImageView>
                                        </graphic></Button>
-                                    <Button fx:id="specialbuild_button" mnemonicParsing="false" prefHeight="157.0" prefWidth="204.0">
+                                    <Region prefHeight="30.0" prefWidth="193.0" />
+                                    <Button fx:id="specialbuild_button" mnemonicParsing="false" prefHeight="190.0" prefWidth="193.0" styleClass="game_button">
                                        <graphic>
-                                          <ImageView fitHeight="150.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true" >
-                                          <Image url="/gameobjects/specialbuild.png" />
-                                       </ImageView>
+                                          <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
+                                             <image>
+                                                <Image url="@../gameobjects/specialbuild.png" />
+                                             </image>
+                                          </ImageView>
                                        </graphic></Button>
                                  </children>
                               </VBox>
                               <VBox layoutX="55.0" layoutY="396.0" prefHeight="235.0" prefWidth="180.0">
                                  <children>
-                                    <Button fx:id="endMove_button" mnemonicParsing="false" prefHeight="130.0" prefWidth="203.0" styleClass="game_button" text="Termina Mossa" />
-                                    <Button fx:id="quit_button" mnemonicParsing="false" prefHeight="131.0" prefWidth="199.0" styleClass="game_button" text="Chiudi" />
+                                    <Button fx:id="endMove_button" mnemonicParsing="false" prefHeight="130.0" prefWidth="203.0" styleClass="game_button" text="Termina Mossa" textFill="#fffafa">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></Button>
+                                    <Region prefHeight="23.0" prefWidth="180.0" />
+                                    <Button fx:id="quit_button" mnemonicParsing="false" prefHeight="131.0" prefWidth="199.0" styleClass="game_button" text="Chiudi" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></Button>
                                  </children>
                               </VBox>
                            </children>

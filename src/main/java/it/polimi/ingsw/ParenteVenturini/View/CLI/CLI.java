@@ -205,7 +205,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void displaySelectPoint() {
+    public void displaySelectPoint(List<Point> points) {
         printString("Seleziona punto:");
         printString("x :");
         String xPos = stdIn.nextLine();
@@ -269,6 +269,11 @@ public class CLI implements ViewInterface {
     @Override
     public void updatePlaceWorkerMenu(String s) {
         displayPlaceWorkerMenu(s);
+    }
+
+    @Override
+    public void displayTurn(String num) {
+
     }
 
     @Override

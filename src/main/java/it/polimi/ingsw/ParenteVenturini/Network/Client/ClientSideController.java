@@ -225,7 +225,7 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(ActionResponse msg) {
         client.displayMessage(msg.getPoints().toString());
-        client.displaySelectPoint();
+        client.displaySelectPoint(msg.getPoints());
     }
 
     @Override
@@ -258,6 +258,11 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(WaitNotification msg) {
         client.waitPage();
+    }
+
+    @Override
+    public void visit(TurnNotification msg) {
+        client.displayTurn(msg.getnum());
     }
 
     @Override

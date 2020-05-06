@@ -18,7 +18,7 @@ public interface ViewInterface {
     void displayChooseStartingPlayerMenu();
     void displayPlaceWorkerMenu(String startingPlayer);
     void addLightWorker(Point point);
-    void displaySelectPoint();
+    void displaySelectPoint(List<Point> points);
     void displayEndGame();
     void startGame(ClientSideController clientSideController);
     void setController(ClientSideController clientSideController);
@@ -30,5 +30,5 @@ public interface ViewInterface {
     void updateChooseStartingPlayerMenu();
     void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor);
     void updatePlaceWorkerMenu(String s);
-
+    void displayTurn(String num);
 }

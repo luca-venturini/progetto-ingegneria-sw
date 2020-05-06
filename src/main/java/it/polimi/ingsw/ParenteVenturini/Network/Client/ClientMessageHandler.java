@@ -27,4 +27,5 @@ public interface ClientMessageHandler {
     void visit(ActionNotification msg);
     void visit(GameOverNotification msg);
     void visit(WaitNotification msg);
+    void visit(TurnNotification msg);
 }

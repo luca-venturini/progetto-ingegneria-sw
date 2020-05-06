@@ -269,6 +269,7 @@ public class GameController {
         }
         else {
             notifyAllClients(new SimplyNotification("E' il turno di " + match.getTurn().getCurrentPlayer().getNickname()));
+            notifyAllClients(new TurnNotification(""+match.getTurn().getNumTurn()));
             notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification());
             System.out.println("Turno: " + match.getTurn().getNumTurn() + " Giocatore: " + match.getTurn().getCurrentPlayer().getNickname());
         }

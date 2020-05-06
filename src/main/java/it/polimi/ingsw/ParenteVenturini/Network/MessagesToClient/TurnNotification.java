@@ -5,7 +5,16 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 
 import java.util.List;
 
-public class YourTurnNotification implements MessageToClient{
+public class TurnNotification implements MessageToClient{
+    private String num;
+
+    public TurnNotification(String num) {
+        this.num = num;
+    }
+
+    public String getnum() {
+        return num;
+    }
 
     @Override
     public MessageType getMessageType() {
