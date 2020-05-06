@@ -77,7 +77,7 @@ public class Match {
         try {
             points = move.possibleMovements(board, currentWorker);
         } catch (AlreadyWalkedException e) {
-            e.printStackTrace();
+            return true; //e.printStackTrace();
         }
         points = opponentEffectContainer.removeMovementPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
         return points.isEmpty();
@@ -88,7 +88,7 @@ public class Match {
         try {
             points = move.possibleBuildings(board, currentWorker);
         } catch (OutOfOrderMoveException | AlreadyBuiltException | AlreadyWalkedException e) {
-            e.printStackTrace();
+            return true; //e.printStackTrace();
         }
         points = opponentEffectContainer.removeConstructionPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
         return points.isEmpty();
