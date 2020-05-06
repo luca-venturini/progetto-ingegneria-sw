@@ -267,6 +267,11 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
+    public void visit(TurnNotification msg) {
+
+    }
+
+    @Override
     public void visit(PlaceWorkerResponse msg) {
         System.out.println(msg.getSettedPoint().toString());
         if(msg.isSet()) {

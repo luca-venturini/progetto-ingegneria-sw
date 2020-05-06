@@ -266,7 +266,7 @@ public class FXMLGameController implements ViewController{
         build_button.setOnAction(e -> sendMove("Construction") );
         specialbuild_button.setOnAction(e -> sendMove("SpecialConstruction") );
         endMove_button.setOnAction(e -> sendMove("EndMove") );
-        nickname.setText(GUIHandler.clientSideController.getNickanme().toUpperCase());
+        nickname.setText(GUIHandler.clientSideController.getNickname().toUpperCase());
     }
 
     public void fillBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index){
@@ -321,13 +321,13 @@ public class FXMLGameController implements ViewController{
 
     private void sendActionPoints(int x, int y){
         Point point = new Point(x,y);
-        MessageToServer message = new ActionPointRequest(point, GUIHandler.clientSideController.getNickanme());
+        MessageToServer message = new ActionPointRequest(point, GUIHandler.clientSideController.getNickname());
         GUIHandler.clientSideController.sendMessage(message);
         clearButtons();
     }
 
     private void sendMove(String type){
-        MessageToServer message = new ActionRequest(GUIHandler.clientSideController.getNickanme(),type);
+        MessageToServer message = new ActionRequest(GUIHandler.clientSideController.getNickname(),type);
         GUIHandler.clientSideController.sendMessage(message);
         if(type.equals("EndMove") )
             player_circle.setFill(Color.web("#a7a7a7"));
