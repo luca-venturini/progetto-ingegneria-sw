@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 
 public class FXMLLoginButtonController implements ViewController{
     ObservableList<String> options = FXCollections.observableArrayList("2","3");
@@ -43,7 +42,7 @@ public class FXMLLoginButtonController implements ViewController{
             System.out.println("login possibile");
             login_button.setDisable(true);
             MessageToServer message = new AccessGameMessageRequest(user, number);
-            GUIHandler.clientSideController.setNickanme(user);
+            GUIHandler.clientSideController.setNickname(user);
             GUIHandler.clientSideController.sendMessage(message);
         }
         else{

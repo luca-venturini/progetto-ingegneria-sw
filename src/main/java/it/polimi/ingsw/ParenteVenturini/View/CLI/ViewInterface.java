@@ -30,5 +30,6 @@ public interface ViewInterface {
     void updateChooseStartingPlayerMenu();
     void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor);
     void updatePlaceWorkerMenu(String s);
+    void loadLogin();
 
 }

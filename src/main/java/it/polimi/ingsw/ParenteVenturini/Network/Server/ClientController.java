@@ -44,13 +44,14 @@ public class ClientController implements ServerMessageHandler {
     }
 
     public void endGame(){
-        if(gameController != null){
+        if(gameController != null && gameController.isPlaying(player)){
             gameController.disconnectAllPlayers();
         }
     }
 
     public void quitGame(){
-        clientThread.closeConnection();
+        gameController = null;
+        player = null;
     }
 
 
@@ -62,6 +63,7 @@ public class ClientController implements ServerMessageHandler {
 
     @Override
     public void visit(StoreSelectedCardsRequest msg) {
+        if(gameController == null) return;
         try {
             gameController.addCardsToMatch(msg.getNickname(), msg.getValues());
         } catch (IllegalCardException e) {
@@ -74,53 +76,63 @@ public class ClientController implements ServerMessageHandler {
 
     @Override
     public void visit(AvailableCardRequest msg) {
+        if(gameController == null) return;
         gameController.sendPossibleCards(this);
     }
 
     @Override
     public void visit(SetPlayerCardRequest msg) {
+        if(gameController == null) return;
         String card = msg.getValues().get(0);
         gameController.setPlayerCard(player, card);
     }
 
     @Override
     public void visit(AvailablePlayerRequest msg) {
+        if(gameController == null) return;
         gameController.sendPossiblePlayers(this);
     }
 
     @Override
     public void visit(SetStartingPlayerRequest msg) {
+        if(gameController == null) return;
         gameController.setStartingPlayer(this.player.getNickname(), msg.getValues().get(0));
     }
 
     @Override
     public void visit(PlaceWorkerRequest msg) {
+        if(gameController == null) return;
         if(msg.getNickname().equals(player.getNickname()))
             gameController.placeWorkers(player, msg.getPoint());
     }
 
     @Override
     public void visit(AvailablePlaceWorkerPointRequest msg) {
+        if(gameController == null) return;
         gameController.sendPossibleWorkersSetupPoint(this);
     }
 
     @Override
     public void visit(ActionRequest msg) {
+        if(gameController == null) return;
         gameController.doMove(this,msg.getTypeOfAction(),msg.getNickname());
     }
 
     @Override
     public void visit(SelectWorkerRequest msg) {
+        if(gameController == null) return;
         gameController.selectWorker(this,msg.getNickname(),msg.getIndex());
     }
 
     @Override
     public void visit(ActionPointRequest msg) {
+        if(gameController == null) return;
         gameController.doAction(this,msg.getPoint(), msg.getNickname());
     }
 
     @Override
     public void visit(EndGameRequest msg) {
+        if(gameController == null) return;
         gameController.disconnectPlayer(this);
     }
 

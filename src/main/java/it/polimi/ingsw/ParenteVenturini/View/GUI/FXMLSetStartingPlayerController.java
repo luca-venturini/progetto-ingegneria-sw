@@ -1,13 +1,11 @@
 package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.AvailableCardRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.AvailablePlayerRequest;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.SetStartingPlayerRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ public class FXMLSetStartingPlayerController implements ViewController{
 
     @FXML
     private void initialize() {
-        MessageToServer message = new AvailablePlayerRequest(GUIHandler.clientSideController.getNickanme());
+        MessageToServer message = new AvailablePlayerRequest(GUIHandler.clientSideController.getNickname());
         GUIHandler.clientSideController.sendMessage(message);
     }
 
@@ -49,7 +47,7 @@ public class FXMLSetStartingPlayerController implements ViewController{
     }
 
     private void sendName(String selectedPlayerName){
-        MessageToServer message = new SetStartingPlayerRequest(GUIHandler.clientSideController.getNickanme(), selectedPlayerName);
+        MessageToServer message = new SetStartingPlayerRequest(GUIHandler.clientSideController.getNickname(), selectedPlayerName);
         GUIHandler.clientSideController.sendMessage(message);
     }
 

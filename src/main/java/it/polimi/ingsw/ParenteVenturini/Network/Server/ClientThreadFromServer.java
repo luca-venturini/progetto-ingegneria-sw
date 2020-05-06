@@ -54,6 +54,9 @@ public class ClientThreadFromServer {
             System.out.println("Classe non trovata");
             e.printStackTrace();
         }
+        finally {
+            closeConnection();
+        }
     }
 
     public void closeConnection(){

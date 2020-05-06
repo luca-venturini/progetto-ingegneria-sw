@@ -5,7 +5,6 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,15 +18,15 @@ public class ClientSideController implements ClientMessageHandler {
     private Scanner stdIn;
     private ViewInterface client;
     private ViewInterface gui;
-    private String nickanme;
+    private String nickname;
     private int color;
 
-    public void setNickanme(String nickanme) {
-        this.nickanme = nickanme;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getNickanme() {
-        return nickanme;
+    public String getNickname() {
+        return nickname;
     }
 
     public ClientSideController(Scanner stdIn, ObjectInputStream readStream, ObjectOutputStream writeStream) {
@@ -46,10 +45,6 @@ public class ClientSideController implements ClientMessageHandler {
 
     public ViewInterface getClient() {
         return client;
-    }
-
-    public void printhello(){
-        client.login();
     }
 
     public void setView(ViewInterface client){
@@ -261,6 +256,12 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
+    public void visit(InterruptedGameNotification msg) {
+        client.loadLogin();
+        client.displayMessage("Partita precedente terminata");
+    }
+
+    @Override
     public void visit(PlaceWorkerResponse msg) {
         System.out.println(msg.getSettedPoint().toString());
         if(msg.isSet()) {
@@ -273,8 +274,8 @@ public class ClientSideController implements ClientMessageHandler {
         }
 
         client.displayMessage(msg.getMessage());
-        if(!msg.isHasFinished()) {
-            client.updatePlaceWorkerMenu(nickanme);
+        if(!msg.isHasFinished() && !msg.isSet()) {
+            client.updatePlaceWorkerMenu(nickname);
         }
 
     }

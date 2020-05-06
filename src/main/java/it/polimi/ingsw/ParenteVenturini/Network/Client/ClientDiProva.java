@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
+import it.polimi.ingsw.ParenteVenturini.View.CLI.CLI;
 import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
 import javafx.application.Application;
@@ -18,7 +19,7 @@ public class ClientDiProva {
     private ObjectInputStream readStream;
     private ObjectOutputStream writeStream;
     private ClientSideController clientSideController;
-    private GUIHandler viewInterface;
+    private ViewInterface viewInterface;
     private Thread messageListener;
     private Socket socket;
     private ExecutorService pool;
@@ -32,14 +33,14 @@ public class ClientDiProva {
 
         clientSideController = new ClientSideController(stdIn, readStream, writeStream);
         System.out.println("fase 4");
-        viewInterface = new GUIHandler();
+        viewInterface = new CLI(clientSideController);
 
-        clientSideController.setGui(viewInterface);
+        clientSideController.setView(viewInterface);
 
         messageListener = new Thread(new MessageListener(clientSideController, readStream));
         messageListener.start();
 
-        //viewInterface.startGame(clientSideController);
+        viewInterface.startGame(clientSideController);
 
     }
 
@@ -62,7 +63,6 @@ public class ClientDiProva {
         try {
             System.out.println("test");
             c.startClient();
-            c.quitClient();
         } catch (Throwable e) {
             e.printStackTrace();
             System.out.println("Disconnected");

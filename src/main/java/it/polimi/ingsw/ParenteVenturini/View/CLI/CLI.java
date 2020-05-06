@@ -175,28 +175,30 @@ public class CLI implements ViewInterface {
 
     @Override
     public void displayPlaceWorkerMenu(String startingPlayer) {
-        int choice;
-        do {
-            printString("--Menu Place Worker setUp--");
-            printString("Inizia "+startingPlayer);
-            printString("1- Get possible Points");
-            printString("2- Place worker");
-            printString("Choice: ");
-            String number = stdIn.nextLine();
-            choice = Integer.parseInt(number);
-            if (choice == 1) {
-                MessageToServer message = new AvailablePlaceWorkerPointRequest();
-                clientSideController.sendMessage(message);
-            } else if (choice == 2) {
-                printString("x :");
-                String xPos = stdIn.nextLine();
-                printString("y :");
-                String yPos = stdIn.nextLine();
-                Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
-                MessageToServer message = new PlaceWorkerRequest(point, nickname);
-                clientSideController.sendMessage(message);
-            }
-        }while(choice<1 || choice>2);
+        printString("--Menu Place Worker setUp--");
+        printString("Inizia "+startingPlayer);
+        if(nickname.equals(startingPlayer)) {
+            int choice;
+            do {
+                printString("1- Get possible Points");
+                printString("2- Place worker");
+                printString("Choice: ");
+                String number = stdIn.nextLine();
+                choice = Integer.parseInt(number);
+                if (choice == 1) {
+                    MessageToServer message = new AvailablePlaceWorkerPointRequest();
+                    clientSideController.sendMessage(message);
+                } else if (choice == 2) {
+                    printString("x :");
+                    String xPos = stdIn.nextLine();
+                    printString("y :");
+                    String yPos = stdIn.nextLine();
+                    Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
+                    MessageToServer message = new PlaceWorkerRequest(point, nickname);
+                    clientSideController.sendMessage(message);
+                }
+            } while (choice < 1 || choice > 2);
+        }
     }
 
     @Override
@@ -218,7 +220,8 @@ public class CLI implements ViewInterface {
 
     @Override
     public void startGame(ClientSideController clientSideController) {
-
+        nickname = login();
+        clientSideController.setNickname(nickname);
     }
 
     @Override
@@ -263,12 +266,19 @@ public class CLI implements ViewInterface {
     @Override
     public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor) {
         printString(points.toString());
-        displayPlaceWorkerMenu(actualPlayer);
+        if(nickname.equals(actualPlayer))
+            displayPlaceWorkerMenu(actualPlayer);
     }
 
     @Override
     public void updatePlaceWorkerMenu(String s) {
         displayPlaceWorkerMenu(s);
+    }
+
+    @Override
+    public void loadLogin() {
+        System.out.println("INIZIA UNA NUOVA PARTITA!");
+        startGame(clientSideController);
     }
 
     @Override

@@ -21,7 +21,6 @@ public class MessageListener implements Runnable {
             MessageToClient msg;
 
             do {
-                //readStream.reset();
                 msg = (MessageToClient) readStream.readObject();
                 if (msg != null)
                     clientSideController.handleMessage(msg);
@@ -29,14 +28,18 @@ public class MessageListener implements Runnable {
             System.out.println("Esco dal do");
         }
         catch (IOException e){
+
+            e.printStackTrace();
+            /*
             try {
                 readStream.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            GUIHandler.clientSideController.closeConnection();
+            clientSideController.closeConnection();
             //e.printStackTrace();
             System.out.println("IOException - Thread listener in esecuzione");
+            */
         }
         catch (ClassNotFoundException e){
             System.out.println("ClassNotFoundException - Thread listener in esecuzione");
