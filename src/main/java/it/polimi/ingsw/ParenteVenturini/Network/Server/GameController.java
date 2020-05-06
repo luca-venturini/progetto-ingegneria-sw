@@ -230,7 +230,11 @@ public class GameController {
     public void notifyYourTurn(){
         if(match.gameOver()) {
             notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
-            manageGameOver();
+            try {
+                manageGameOver();
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
         }
         else {
             notifyAllClients(new SimplyNotification("E' il turno di " + match.getTurn().getCurrentPlayer().getNickname()));
@@ -239,8 +243,8 @@ public class GameController {
         }
     }
 
-    public void manageGameOver(){
-        if (match.getTypeOfMatch() == 2) {
+    public void manageGameOver() throws NoPlayerException {
+        if (match.getPlayers().size() == 2) {
             match.getTurn().setNextPlayer();
             notifyAllClients(new WinNotification(match.getTurn().getCurrentPlayer().getNickname()));
             try {
@@ -271,7 +275,11 @@ public class GameController {
         List<Point> points;
         if(match.directGameOver()){
             notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
-            manageGameOver();
+            try {
+                manageGameOver();
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
         }
         else {
             switch (typeOfMove) {
