@@ -18,7 +18,7 @@ public interface ViewInterface {
     void displayChooseStartingPlayerMenu();
     void displayPlaceWorkerMenu(String startingPlayer);
     void addLightWorker(Point point);
-    void displaySelectPoint();
+    void displaySelectPoint(List<Point> points);
     void displayEndGame();
     void startGame(ClientSideController clientSideController);
     void setController(ClientSideController clientSideController);

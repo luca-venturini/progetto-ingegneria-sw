@@ -191,7 +191,11 @@ public class GUIHandler extends Application implements ViewInterface {
 
     @Override
     public void displayMoveMenu() {
-
+        Platform.runLater(()-> {
+            FXMLGameController controller = loader.getController();
+            controller.displayMessage("Scegli la tua mossa");
+            controller.enableMovebuttons();
+        });
     }
 
     @Override
@@ -275,6 +279,7 @@ public class GUIHandler extends Application implements ViewInterface {
     public void addLightWorker(Point point) {
 
     }
+
 
     @Override
     public void displaySelectPoint(List<Point> points) {

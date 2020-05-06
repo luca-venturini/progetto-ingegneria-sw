@@ -207,7 +207,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void displaySelectPoint() {
+    public void displaySelectPoint(List<Point> points) {
         printString("Seleziona punto:");
         printString("x :");
         String xPos = stdIn.nextLine();
@@ -279,6 +279,11 @@ public class CLI implements ViewInterface {
     public void loadLogin() {
         System.out.println("INIZIA UNA NUOVA PARTITA!");
         startGame(clientSideController);
+    }
+
+    @Override
+    public void displayTurn(String num) {
+
     }
 
     @Override

@@ -326,6 +326,10 @@ public class FXMLGameController implements ViewController{
         clearButtons();
     }
 
+    public void enableMovebuttons(){
+
+    }
+
     private void sendMove(String type){
         MessageToServer message = new ActionRequest(GUIHandler.clientSideController.getNickname(),type);
         GUIHandler.clientSideController.sendMessage(message);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
+import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
@@ -225,7 +226,7 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(ActionResponse msg) {
         client.displayMessage(msg.getPoints().toString());
-        client.displaySelectPoint();
+        client.displaySelectPoint(msg.getPoints());
     }
 
     @Override
