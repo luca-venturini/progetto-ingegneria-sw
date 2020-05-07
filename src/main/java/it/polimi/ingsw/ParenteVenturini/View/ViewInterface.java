@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ParenteVenturini.View.CLI;
+package it.polimi.ingsw.ParenteVenturini.View;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
@@ -18,7 +18,7 @@ public interface ViewInterface {
     void displayChooseStartingPlayerMenu();
     void displayPlaceWorkerMenu(String startingPlayer);
     void addLightWorker(Point point);
-    void displaySelectPoint();
+    void displaySelectPoint(List<Point> points);
     void displayEndGame();
     void startGame(ClientSideController clientSideController);
     void setController(ClientSideController clientSideController);
@@ -31,5 +31,7 @@ public interface ViewInterface {
     void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor);
     void updatePlaceWorkerMenu(String s);
     void loadLogin();
-
+    void displayTurn(String num);
+    void displayEndMove();
+    void displayWin();
 }

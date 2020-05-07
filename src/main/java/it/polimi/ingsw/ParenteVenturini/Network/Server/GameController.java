@@ -270,6 +270,7 @@ public class GameController {
         }
         else {
             notifyAllClients(new SimplyNotification("E' il turno di " + match.getTurn().getCurrentPlayer().getNickname()));
+            notifyAllClients(new TurnNotification(""+match.getTurn().getNumTurn()));
             notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification());
             System.out.println("Turno: " + match.getTurn().getNumTurn() + " Giocatore: " + match.getTurn().getCurrentPlayer().getNickname());
         }
@@ -279,8 +280,9 @@ public class GameController {
         if (match.getPlayers().size() == 2) {
             match.getTurn().setNextPlayer();
             notifyAllClients(new WinNotification(match.getTurn().getCurrentPlayer().getNickname()));
+            notifySingleClient(match.getTurn().getCurrentPlayer(), new VictoryNotification() );
             try {
-                TimeUnit.SECONDS.sleep(5);
+                TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -291,6 +293,17 @@ public class GameController {
             match.getTurn().setNextPlayer();
             match.deletePlayer(delplayer);
             notifyYourTurn();
+        }
+    }
+
+    public void manageQuit(String nickname){
+        if( !nickname.equals(match.getTurn().getCurrentPlayer().getNickname()) ) {
+            match.getTurn().setNextPlayer();
+        }
+        try {
+            manageGameOver();
+        } catch (NoPlayerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -389,9 +402,11 @@ public class GameController {
                 //evaluate if the current player or another player won
                 if(moveHandler.isMovement() && match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification(nickname));
+                    notifySingleClient(clientController, new VictoryNotification() );
                 }
                 else if(match.outOfTurnWin() != null){
                     notifyAllClients(new WinNotification(match.outOfTurnWin().getNickname()));
+                    notifySingleClient(clientController, new VictoryNotification() );
                 }
                 else{
                     notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));

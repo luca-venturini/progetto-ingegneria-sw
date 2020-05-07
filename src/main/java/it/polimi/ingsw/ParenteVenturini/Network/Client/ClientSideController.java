@@ -3,7 +3,7 @@ package it.polimi.ingsw.ParenteVenturini.Network.Client;
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
-import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
+import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
 
 import java.io.IOException;
@@ -45,6 +45,10 @@ public class ClientSideController implements ClientMessageHandler {
 
     public ViewInterface getClient() {
         return client;
+    }
+
+    public void printhello(){
+        client.login();
     }
 
     public void setView(ViewInterface client){
@@ -203,6 +207,7 @@ public class ClientSideController implements ClientMessageHandler {
             client.displayMoveMenu();
         else {
             client.displayMessage("Il tuo turno è finito. Attendi...");
+            client.displayEndMove();
         }
     }
 
@@ -215,12 +220,13 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(WinNotification msg) {
         client.displayMessage("Il vincitore è: "+msg.getMessage());
+
     }
 
     @Override
     public void visit(ActionResponse msg) {
         client.displayMessage(msg.getPoints().toString());
-        client.displaySelectPoint();
+        client.displaySelectPoint(msg.getPoints());
     }
 
     @Override
@@ -259,6 +265,16 @@ public class ClientSideController implements ClientMessageHandler {
     public void visit(InterruptedGameNotification msg) {
         client.loadLogin();
         client.displayMessage("Partita precedente terminata");
+    }
+
+    @Override
+    public void visit(TurnNotification msg) {
+        client.displayTurn(msg.getnum());
+    }
+
+    @Override
+    public void visit(VictoryNotification msg) {
+        client.displayWin();
     }
 
     @Override

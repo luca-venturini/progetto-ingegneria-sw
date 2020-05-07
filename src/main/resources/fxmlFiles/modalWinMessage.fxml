@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="500.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="modalMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="132.0" layoutY="44.0" prefHeight="54.0" prefWidth="362.0" textAlignment="CENTER" textFill="#5b5a5a" wrapText="true">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="closeModal" layoutX="394.0" layoutY="105.0" mnemonicParsing="false" styleClass="send-card" text="OK">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="107.0" fitWidth="112.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../gameobjects/win.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

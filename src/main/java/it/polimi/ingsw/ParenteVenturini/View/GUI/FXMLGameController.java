@@ -1,11 +1,37 @@
 package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
+import it.polimi.ingsw.ParenteVenturini.Model.Block;
+import it.polimi.ingsw.ParenteVenturini.Model.Point;
+import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FXMLGameController implements ViewController{
+
+    @FXML
+    private Label nickname;
+
+    @FXML
+    private Circle player_circle;
+
+    @FXML
+    private TextField messages;
+
+    @FXML
+    private Label turn;
+
+    @FXML
+    private Label info;
 
     @FXML
     private StackPane StackPane_0_0;
@@ -174,6 +200,8 @@ public class FXMLGameController implements ViewController{
 
     private Button[][] buttons = new Button[5][5];
     private StackPane[][] stackPanes = new StackPane[5][5];
+    private List<Button> workerButtons = new ArrayList<>();
+    private List<String> workerindex = new ArrayList<>();
 
     @FXML
     public void initialize(){
@@ -231,14 +259,194 @@ public class FXMLGameController implements ViewController{
 
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
-
+                buttons[i][j].setDisable(true);
             }
         }
+        info.setVisible(false);
+        move_button.setDisable(true);
+        build_button.setDisable(true);
+        specialbuild_button.setDisable(true);
+        endMove_button.setDisable(true);
+        move_button.setOnAction(e -> sendMove("Movement") );
+        build_button.setOnAction(e -> sendMove("Construction") );
+        specialbuild_button.setOnAction(e -> sendMove("SpecialConstruction") );
+        endMove_button.setOnAction(e -> sendMove("EndMove") );
+        quit_button.setOnAction(e -> sendQuit());
+        nickname.setText(GUIHandler.clientSideController.getNickname().toUpperCase());
+    }
 
+    public void fillBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index){
+        workerButtons= new ArrayList<>();
+        workerindex= new ArrayList<>();
+        for(int i = 0; i<5; i++){
+            for(int j = 0; j<5; j++){
+                stackPanes[i][j].getChildren().clear();
+
+                if(blocks[i][j].getLevel() > 0) {
+                    String path = generateBlockIcon(blocks[i][j].getLevel());
+                    Image block = new Image(path);
+                    ImageView imageView = new ImageView();
+                    imageView.setFitHeight(105);
+                    imageView.setFitWidth(105);
+                    imageView.setImage(block);
+                    stackPanes[i][j].getChildren().add(imageView);
+                }
+                if(blocks[i][j].isDome()){
+                    String domepath = "/gameobjects/dome.png";
+                    Image block = new Image(domepath);
+                    ImageView imageView = new ImageView();
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
+                    imageView.setImage(block);
+                    stackPanes[i][j].getChildren().add(imageView);
+                }
+                for(Point p: workers) {
+                    if (p.equals(i,j)) {
+                        String workerpath = generateWorkerIcon( Integer.parseInt(colours.get(workers.indexOf(p))) );
+                        if( colours.get(workers.indexOf(p)).equals(""+GUIHandler.clientSideController.getColor()) ){
+                            workerButtons.add(buttons[i][j]);
+                            workerindex.add(index.get(workers.indexOf(p)));
+                        }
+                        Image worker= new Image(workerpath);
+                        ImageView workerView = new ImageView();
+                        workerView.setFitHeight(50);
+                        workerView.setFitWidth(50);
+                        workerView.setImage(worker);
+                        stackPanes[i][j].getChildren().add(workerView);
+                    }
+                }
+            }
+        }
+    }
+
+    private Color generateColor(int color){
+        switch (color){
+            case 1:
+                return Color.RED;
+            case 2:
+                return Color.BLUE;
+            case 3:
+                return Color.GREEN;
+        }
+        return null;
+    }
+
+    private String generateWorkerIcon(int color){
+        switch (color){
+            case 1:
+                return "/gameobjects/redBuilder.png";
+            case 2:
+                return "/gameobjects/blueBuilder.png";
+            case 3:
+                return "/gameobjects/greenBuilder.png";
+        }
+        return null;
+    }
+
+    private String generateBlockIcon(int level){
+        switch (level){
+            case 1:
+                return "/gameobjects/block_1.png";
+            case 2:
+                return "/gameobjects/block_2.png";
+            case 3:
+            case 4:
+                return "/gameobjects/block_3.png";
+        }
+        return null;
+    }
+
+    private void sendWorker(String index){
+        MessageToServer message = new SelectWorkerRequest(GUIHandler.clientSideController.getNickname(),index);
+        GUIHandler.clientSideController.sendMessage(message);
+    }
+
+    private void sendActionPoints(int x, int y){
+        Point point = new Point(x,y);
+        MessageToServer message = new ActionPointRequest(point, GUIHandler.clientSideController.getNickname());
+        GUIHandler.clientSideController.sendMessage(message);
+        clearButtons();
+    }
+
+    private void sendQuit(){
+        MessageToServer message = new QuitRequest(GUIHandler.clientSideController.getNickname());
+        GUIHandler.clientSideController.sendMessage(message);
+    }
+
+    public void enableMovebuttons(){
+        move_button.setDisable(false);
+        build_button.setDisable(false);
+        specialbuild_button.setDisable(false);
+        endMove_button.setDisable(false);
+    }
+
+    public void disableMovebuttons(){
+        player_circle.setFill(Color.web("#a7a7a7"));
+        move_button.setDisable(true);
+        build_button.setDisable(true);
+        specialbuild_button.setDisable(true);
+        endMove_button.setDisable(true);
+    }
+
+    private void sendMove(String type){
+        MessageToServer message = new ActionRequest(GUIHandler.clientSideController.getNickname(),type);
+        GUIHandler.clientSideController.sendMessage(message);
+    }
+
+    private void clearButtons(){
+        for(int i = 0; i< 5; i++){
+            for(int j = 0; j<5; j++){
+                buttons[i][j].getStyleClass().remove("action-button");
+                buttons[i][j].setDisable(true);
+            }
+        }
+    }
+
+    public void enableActionPoints(List<Point> points){
+        for(Point p: points){
+            int x = p.getX();
+            int y = p.getY();
+
+            buttons[x][y].getStyleClass().add("action-button");
+            buttons[x][y].setOnAction(e -> sendActionPoints(x,y));
+            buttons[x][y].setDisable(false);
+        }
+    }
+
+    public void enableWorkerSelection(){
+        for( Button b: workerButtons){
+            b.setDisable(false);
+            b.setOnAction(e -> sendWorker(workerindex.get(workerButtons.indexOf(b))));
+        }
+    }
+
+    public void setNumTurn(String num){
+        turn.setText("Turno "+num);
+    }
+
+    public void activePlayerCircle(){
+        int color = GUIHandler.clientSideController.getColor();
+        if(color>0){
+            player_circle.setVisible(true);
+            player_circle.setFill(generateColor(color));
+        }
+    }
+
+    public void displayInfo(String s){
+        info.setVisible(true);
+        info.setText(s);
+    }
+
+    public void disableInfo(){
+        info.setVisible(false);
     }
 
     @Override
     public void displayMessage(String s) {
+        System.out.println("Arrivata notifica");
+        System.out.println("Messaggio: "+s);
+        messages.clear();
+        messages.setText(s);
     }
 
     @Override

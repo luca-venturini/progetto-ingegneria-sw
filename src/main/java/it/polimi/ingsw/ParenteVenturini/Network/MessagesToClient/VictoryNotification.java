@@ -5,8 +5,7 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 
 import java.util.List;
 
-public class YourTurnNotification implements MessageToClient{
-
+public class VictoryNotification  implements MessageToClient{
     @Override
     public MessageType getMessageType() {
         return null;

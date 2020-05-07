@@ -1,12 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
-import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.AccessGameMessageRequest;
-import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer;
-import it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;
-import javafx.event.ActionEvent;
+import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 

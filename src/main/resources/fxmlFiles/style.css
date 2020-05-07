@@ -289,17 +289,32 @@
     -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
 }
 
-.grid-button{
+.action-button{
     -fx-cursor: hand;
     -fx-opacity: 0.3;
-    -fx-background-color: red;
+    -fx-background-color: dodgerblue;
     -fx-border-width: 1;
-    -fx-border-color: red;
+    -fx-border-color: dodgerblue;
 }
 
-.grid-button:hover{
+.action-button:hover{
     -fx-cursor: hand;
     -fx-opacity: 0.5;
     -fx-border-color: transparent;
-    -fx-background-color: red;
+    -fx-background-color: dodgerblue;
+}
+
+.game-text{
+    -fx-font-family: "Gill Sans Ultra Bold";
+    -fx-text-align: center;
+    -fx-font-size: 20px;
+}
+
+.move-text-field {
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent transparent #ffbe6d transparent;
+    -fx-font-size: 20;
+    -fx-font-family: "Gill Sans Ultra Bold";
+    -fx-text-fill: rgb(139, 49, 0);
 }
