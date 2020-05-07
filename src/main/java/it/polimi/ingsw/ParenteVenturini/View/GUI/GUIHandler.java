@@ -194,6 +194,7 @@ public class GUIHandler extends Application implements ViewInterface {
         });
     }
 
+
     @Override
     public void displayMenu() {
 

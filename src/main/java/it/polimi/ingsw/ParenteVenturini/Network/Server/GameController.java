@@ -111,8 +111,9 @@ public class GameController {
             } catch (NoPlayerException e) {
                 e.printStackTrace();
             }
-            notifyAllClients(new ChooseCardNotification());
+
             notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, inizia "+cardSetupHandler.getNextPlayer()));
+            notifyAllClients(new ChooseCardNotification());
         }
         else{
             throw new IllegalCardException();
@@ -128,8 +129,9 @@ public class GameController {
                 cardSetupHandler.setCard(player, deck.selectByName(card));
 
                 if (cardSetupHandler.getNextPlayer() != null) {
-                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta"));
+
                     notifyAllClients(new SimplyNotification(player.getNickname() + " ha scelto la sua carta, tocca a " + cardSetupHandler.getNextPlayer()));
+                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta"));
                 }
                 else {
                     //notifyAllClients(new SimplyNotification("Inizio nuova fase, attendi..."));
@@ -273,7 +275,7 @@ public class GameController {
             System.out.println("Turno: " + match.getTurn().getNumTurn() + " Giocatore: " + match.getTurn().getCurrentPlayer().getNickname());
         }
     }
-    
+
     public void manageGameOver() throws NoPlayerException {
         if (match.getPlayers().size() == 2) {
             match.getTurn().setNextPlayer();
