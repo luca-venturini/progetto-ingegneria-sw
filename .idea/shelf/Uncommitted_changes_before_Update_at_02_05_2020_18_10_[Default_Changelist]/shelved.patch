@@ -1,0 +1,96 @@
+Index: src/main/java/it/polimi/ingsw/ParenteVenturini/View/GUI/GUIHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.ParenteVenturini.View.GUI;\r\n\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Block;\r\nimport it.polimi.ingsw.ParenteVenturini.Model.Point;\r\nimport it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;\r\nimport it.polimi.ingsw.ParenteVenturini.View.CLI.ViewInterface;\r\nimport javafx.application.Application;\r\nimport javafx.application.Platform;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Scene;\r\nimport javafx.scene.layout.*;\r\nimport javafx.stage.Stage;\r\n\r\nimport java.io.IOException;\r\nimport java.util.List;\r\n\r\npublic class GUIHandler extends Application implements ViewInterface {\r\n\r\n    private Stage primaryStage;\r\n    public static ClientSideController clientSideController;\r\n    Connection connection;\r\n    private String nickname;\r\n\r\n    private FXMLStartButtonController firstPageController;\r\n    private FXMLLoader loader;\r\n\r\n    public void setNickname(String nickname) {\r\n        this.nickname = nickname;\r\n    }\r\n\r\n    @Override\r\n    public void start(Stage stage) throws Exception {\r\n        connection = new Connection();\r\n        connection.connect();\r\n\r\n        clientSideController =  connection.getClientSideController();\r\n        clientSideController.setView(this);\r\n\r\n        FXMLLoader loader = new FXMLLoader();\r\n        firstPageController = new FXMLStartButtonController();\r\n        loader.setController(firstPageController);\r\n\r\n        loader = new FXMLLoader(getClass().getResource(\"/fxmlFiles/first_page.fxml\"));\r\n        Scene scene = new Scene((VBox) loader.load());\r\n        stage.setScene(scene);\r\n        stage.setTitle(\"Santorini\");\r\n\r\n        this.primaryStage = stage;\r\n        primaryStage.show();\r\n    }\r\n\r\n\r\n    public static void main(String[] args) {\r\n        launch();\r\n    }\r\n\r\n    @Override\r\n    public String login() {\r\n\r\n        Platform.runLater(() -> {\r\n            ViewController vc = loader.getController();\r\n            vc.enableButton();\r\n        });\r\n\r\n        return null;\r\n    }\r\n\r\n    public void loadLogin() {\r\n\r\n        Platform.runLater(() -> {\r\n            loader = new FXMLLoader(getClass().getResource(\"/fxmlFiles/loginPage.fxml\"));\r\n            Scene scene = null;\r\n            VBox vBox = null;\r\n            try {\r\n                vBox = (VBox) loader.load();\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n            scene = new Scene(vBox);\r\n            primaryStage.setScene(scene);\r\n            primaryStage.show();\r\n        });\r\n\r\n    }\r\n\r\n    @Override\r\n    public void chooseCards(List<String> cardsName, int numberOfCardsRequired) {\r\n        Platform.runLater(() -> {\r\n            loader = new FXMLLoader(getClass().getResource(\"/fxmlFiles/selectCards.fxml\"));\r\n            Scene scene = null;\r\n            FlowPane flowPane = null;\r\n            try {\r\n                flowPane = (FlowPane) loader.load();\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n            FXMLSelectCardsController controller = loader.getController();\r\n            controller.setCards(cardsName, numberOfCardsRequired);\r\n            scene = new Scene(flowPane);\r\n            primaryStage.setScene(scene);\r\n            primaryStage.show();\r\n        });\r\n\r\n    }\r\n\r\n    @Override\r\n    public void displayChooseCardMenu() {\r\n        Platform.runLater(() -> {\r\n            loader = new FXMLLoader(getClass().getResource(\"/fxmlFiles/selectPlayerCard.fxml\"));\r\n            Scene scene = null;\r\n            FlowPane flowPane = null;\r\n            try {\r\n                flowPane = (FlowPane) loader.load();\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n            scene = new Scene(flowPane);\r\n            primaryStage.setScene(scene);\r\n            primaryStage.show();\r\n        });\r\n    }\r\n\r\n\r\n    @Override\r\n    public void displayAviableCards(List<String> cards) {\r\n        Platform.runLater(()-> {\r\n            FXMLSelectPlayerCardController controller = loader.getController();\r\n            controller.setCards(cards);\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void updateChooseCardMenu() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void waitPage() {\r\n        Platform.runLater(() -> {\r\n            loader = new FXMLLoader(getClass().getResource(\"/fxmlFiles/waitPage.fxml\"));\r\n            Scene scene = null;\r\n            BorderPane pane = null;\r\n            try {\r\n                pane = (BorderPane) loader.load();\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n            scene = new Scene(pane);\r\n            primaryStage.setScene(scene);\r\n            primaryStage.show();\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void displayAviablePlayers(List<String> playersName) {\r\n        Platform.runLater(()-> {\r\n            FXMLSetStartingPlayerController controller = loader.getController();\r\n            controller.setPlayers(playersName);\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void updateChooseStartingPlayerMenu() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void displayBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void displayMenu() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void displayMoveMenu() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void displaySelectWorker() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void displayMessage(String s) {\r\n        Platform.runLater(()-> {\r\n            ViewController controller = loader.getController();\r\n            controller.displayMessage(s);\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void displayChooseStartingPlayerMenu() {\r\n        Platform.runLater(() -> {\r\n            loader = new FXMLLoader(getClass().getResource(\"/fxmlFiles/set_starting_player.fxml\"));\r\n            Scene scene = null;\r\n            VBox vBox = null;\r\n            try {\r\n                vBox = (VBox) loader.load();\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            }\r\n            scene = new Scene(vBox);\r\n            primaryStage.setScene(scene);\r\n            primaryStage.show();\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void displayPlaceWorkerMenu() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void addLightWorker(Point point) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void displaySelectPoint() {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void startGame(ClientSideController clientSideController) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void setController(ClientSideController clientSideController) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void closeConnection() {\r\n        connection.quitConnection();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/it/polimi/ingsw/ParenteVenturini/View/GUI/GUIHandler.java	(revision bb4b3176d75ea6cfd553aa9bc5642c8767219182)
++++ src/main/java/it/polimi/ingsw/ParenteVenturini/View/GUI/GUIHandler.java	(date 1588424317817)
+@@ -224,6 +224,11 @@
+ 
+     }
+ 
++    @Override
++    public void displayEndGame() {
++
++    }
++
+     @Override
+     public void startGame(ClientSideController clientSideController) {
+ 
+Index: src/main/resources/fxmlFiles/board.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/fxmlFiles/board.fxml	(date 1588434949463)
++++ src/main/resources/fxmlFiles/board.fxml	(date 1588434949463)
+@@ -0,0 +1,67 @@
++<?xml version="1.0" encoding="UTF-8"?>
++
++<?import javafx.scene.control.SplitPane?>
++<?import javafx.scene.image.Image?>
++<?import javafx.scene.image.ImageView?>
++<?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.layout.ColumnConstraints?>
++<?import javafx.scene.layout.GridPane?>
++<?import javafx.scene.layout.HBox?>
++<?import javafx.scene.layout.RowConstraints?>
++<?import javafx.scene.layout.StackPane?>
++
++
++<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
++   <children>
++      <SplitPane dividerPositions="0.04887218045112782" orientation="VERTICAL" prefHeight="800.0" prefWidth="1280.0">
++        <items>
++          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
++               <children>
++                  <HBox layoutX="-17.0" layoutY="-36.0" />
++               </children>
++            </AnchorPane>
++          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
++               <children>
++                  <GridPane layoutX="364.0" layoutY="102.0" prefHeight="563.0" prefWidth="559.0">
++                    <columnConstraints>
++                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
++                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
++                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
++                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
++                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
++                    </columnConstraints>
++                    <rowConstraints>
++                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++                    </rowConstraints>
++                     <children>
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
++                           <children>
++                              <StackPane prefHeight="113.0" prefWidth="112.0" />
++                           </children>
++                        </AnchorPane>
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
++                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
++                     </children>
++                  </GridPane>
++                  <ImageView fitHeight="766.0" fitWidth="1346.0" layoutX="-31.0" pickOnBounds="true" preserveRatio="true">
++                     <image>
++                        <Image url="@SantoriniBoard.png" />
++                     </image>
++                  </ImageView>
++               </children>
++            </AnchorPane>
++        </items>
++      </SplitPane>
++   </children>
++</AnchorPane>
