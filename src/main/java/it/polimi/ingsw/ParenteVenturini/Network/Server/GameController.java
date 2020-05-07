@@ -295,7 +295,7 @@ public class GameController {
     }
 
     public void manageQuit(String nickname){
-        if( !nickname.equals(match.getTurn().getCurrentPlayer()) ) {
+        if( !nickname.equals(match.getTurn().getCurrentPlayer().getNickname()) ) {
             match.getTurn().setNextPlayer();
         }
         try {
