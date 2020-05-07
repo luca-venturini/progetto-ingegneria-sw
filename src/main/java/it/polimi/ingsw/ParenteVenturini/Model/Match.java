@@ -68,7 +68,7 @@ public class Match {
             result = gameOverBuilding(move, board, workers.get(0)) && gameOverBuilding(move, board, workers.get(1));
         }
         else if( !move.forcedMovement() && !move.forcedBuilding())
-            return (gameOverMovement(move, board, workers.get(0)) && gameOverMovement(move, board, workers.get(0)) ) && (gameOverBuilding(move, board, workers.get(0)) && gameOverBuilding(move, board, workers.get(1)));
+            return  (gameOverMovement(move, board, workers.get(0)) && gameOverMovement(move, board, workers.get(0)) ) && (gameOverBuilding(move, board, workers.get(0)) && gameOverBuilding(move, board, workers.get(1)));
         return result;
     }
 
@@ -77,7 +77,7 @@ public class Match {
         try {
             points = move.possibleMovements(board, currentWorker);
         } catch (AlreadyWalkedException e) {
-            e.printStackTrace();
+            return true;
         }
         points = opponentEffectContainer.removeMovementPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
         return points.isEmpty();
@@ -88,7 +88,7 @@ public class Match {
         try {
             points = move.possibleBuildings(board, currentWorker);
         } catch (OutOfOrderMoveException | AlreadyBuiltException | AlreadyWalkedException e) {
-            e.printStackTrace();
+            return true;
         }
         points = opponentEffectContainer.removeConstructionPoint(points, currentWorker.getPosition(), currentWorker.getEffect(), board);
         return points.isEmpty();

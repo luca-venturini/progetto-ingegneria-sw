@@ -165,8 +165,10 @@ public class GUIHandler extends Application implements ViewInterface {
 
     }
 
+
     @Override
     public void displayBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index) {
+        /*
         Platform.runLater(() -> {
             loader = new FXMLLoader(getClass().getResource("/fxmlFiles/gameBoard.fxml"));
             Scene scene = null;
@@ -181,8 +183,9 @@ public class GUIHandler extends Application implements ViewInterface {
             scene = new Scene(anchorPane);
             primaryStage.setScene(scene);
             primaryStage.show();
-        });
+        });*/
     }
+
 
     @Override
     public void displayMenu() {
