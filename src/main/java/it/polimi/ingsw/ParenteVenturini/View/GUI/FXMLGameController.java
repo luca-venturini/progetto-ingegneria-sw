@@ -357,6 +357,7 @@ public class FXMLGameController implements ViewController{
     }
 
     private void sendWorker(String index){
+        disableWorkerSelection();
         MessageToServer message = new SelectWorkerRequest(GUIHandler.clientSideController.getNickname(),index);
         GUIHandler.clientSideController.sendMessage(message);
     }
@@ -417,6 +418,12 @@ public class FXMLGameController implements ViewController{
         for( Button b: workerButtons){
             b.setDisable(false);
             b.setOnAction(e -> sendWorker(workerindex.get(workerButtons.indexOf(b))));
+        }
+    }
+
+    public void disableWorkerSelection(){
+        for( Button b: workerButtons){
+            b.setDisable(true);
         }
     }
 
