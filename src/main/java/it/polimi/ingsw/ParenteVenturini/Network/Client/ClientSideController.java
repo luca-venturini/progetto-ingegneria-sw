@@ -20,6 +20,7 @@ public class ClientSideController implements ClientMessageHandler {
     private ViewInterface gui;
     private String nickname;
     private int color;
+    private String yourCard;
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -117,6 +118,8 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(SetPlayerCardResponse msg) {
+        if(msg.isSet())
+            yourCard = msg.getCard();
         client.displayMessage(msg.getValues().get(0));
         if(! msg.isSet())
             client.updateChooseCardMenu();

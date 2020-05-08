@@ -7,6 +7,8 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.PlaceWorkerRequ
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -243,9 +245,18 @@ public class FXMLPlaceWorkerController implements ViewController{
         }
         for(int i = 0; i<workersPoint.size(); i++){
             Point p = workersPoint.get(i);
-            Circle c = new Circle(40, generateColor(workersColors.get(i)));
+            //Circle c = new Circle(40, generateColor(workersColors.get(i)));
             stackPanes[p.getX()][p.getY()].getChildren().clear();
-            stackPanes[p.getX()][p.getY()].getChildren().add(c);//getStyleClass().add(generateColor(workersColors.get(i)));
+            //stackPanes[p.getX()][p.getY()].getChildren().add(c);//getStyleClass().add(generateColor(workersColors.get(i)));
+
+            String workerpath = generateWorkerIcon( workersColors.get(i) );
+            Image worker= new Image(workerpath);
+            ImageView workerView = new ImageView();
+            workerView.setFitHeight(50);
+            workerView.setFitWidth(50);
+            workerView.setImage(worker);
+            stackPanes[p.getX()][p.getY()].getChildren().add(workerView);
+
             buttons[p.getX()][p.getY()].setDisable(true);
         }
         setCurrentPlayer(actualPlayer);
@@ -259,6 +270,18 @@ public class FXMLPlaceWorkerController implements ViewController{
                 return Color.BLUE;
             case 3:
                 return Color.GREEN;
+        }
+        return null;
+    }
+
+    private String generateWorkerIcon(int color){
+        switch (color){
+            case 1:
+                return "/gameobjects/redBuilder.png";
+            case 2:
+                return "/gameobjects/blueBuilder.png";
+            case 3:
+                return "/gameobjects/greenBuilder.png";
         }
         return null;
     }

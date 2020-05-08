@@ -11,12 +11,23 @@ public class SetPlayerCardResponse implements MessageToClient {
 
     private boolean isSet;
     private String message;
+    private String card;
 
     public SetPlayerCardResponse(boolean isSet, String message) {
         this.isSet = isSet;
         this.message = message;
+        this.card = "";
     }
 
+    public SetPlayerCardResponse(boolean isSet, String message, String card) {
+        this.isSet = isSet;
+        this.message = message;
+        this.card = card;
+    }
+
+    public String getCard() {
+        return card;
+    }
 
     @Override
     public MessageType getMessageType() {

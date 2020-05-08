@@ -59,7 +59,7 @@ public class GUIHandler extends Application implements ViewInterface {
 
     @Override
     public String login() {
-
+        inizializedboard=false;
         Platform.runLater(() -> {
             ViewController vc = loader.getController();
             vc.enableButton();
@@ -69,7 +69,7 @@ public class GUIHandler extends Application implements ViewInterface {
 
     @Override
     public void loadLogin() {
-
+        inizializedboard=false;
         Platform.runLater(() -> {
             loader = new FXMLLoader(getClass().getResource("/fxmlFiles/loginPage.fxml"));
             Scene scene = null;
@@ -175,15 +175,15 @@ public class GUIHandler extends Application implements ViewInterface {
                 inizializedboard = true;
                 loader = new FXMLLoader(getClass().getResource("/fxmlFiles/gameBoard.fxml"));
                 Scene scene = null;
-                AnchorPane anchorPane = null;
+                FlowPane flowPane = null;
                 try {
-                    anchorPane = (AnchorPane) loader.load();
+                    flowPane = (FlowPane) loader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 FXMLGameController myController = loader.getController();
                 myController.fillBoard(blocks, workers, colours, index);
-                scene = new Scene(anchorPane);
+                scene = new Scene(flowPane);
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }

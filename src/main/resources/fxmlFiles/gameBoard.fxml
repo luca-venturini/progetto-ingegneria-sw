@@ -1,239 +1,270 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLGameController">
+
+<FlowPane alignment="CENTER" columnHalignment="CENTER" styleClass="light-blue-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLGameController">
    <children>
-      <SplitPane dividerPositions="0.9636591478696742" orientation="VERTICAL" prefHeight="800.0" prefWidth="1280.0">
+      <HBox prefHeight="57.0" prefWidth="1278.0">
+         <children>
+            <Circle fx:id="player_circle" fill="#a7a7a7" radius="23.0" stroke="#807d7d" strokeType="INSIDE">
+               <HBox.margin>
+                  <Insets left="3.0" top="5.0" />
+               </HBox.margin>
+            </Circle>
+            <Region prefHeight="57.0" prefWidth="24.0" />
+            <Label fx:id="nickname" prefHeight="57.0" prefWidth="227.0" styleClass="game-text" text="Label" textFill="#c35312" />
+            <TextField fx:id="messages" alignment="CENTER" editable="false" prefHeight="57.0" prefWidth="784.0" styleClass="move-text-field" />
+            <Region prefHeight="57.0" prefWidth="145.0" />
+            <Label fx:id="turn" prefHeight="57.0" prefWidth="146.0" styleClass="game-text" text="Label" textFill="#b54a0c" />
+         </children>
+      </HBox>
+      <SplitPane orientation="VERTICAL" prefHeight="718.0" prefWidth="1280.0" styleClass="no-border">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="no-border" stylesheets="@style.css">
                <children>
-                  <SplitPane dividerPositions="0.07853403141361257" orientation="VERTICAL" prefHeight="766.0" prefWidth="1280.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                  <ImageView fitHeight="730.0" fitWidth="1294.0" layoutX="-14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@SantoriniBoard.png" />
+                     </image>
+                  </ImageView>
+                  <GridPane layoutX="374.0" layoutY="98.0" prefHeight="533.0" prefWidth="529.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <HBox prefHeight="57.0" prefWidth="1278.0">
-                                 <children>
-                                    <Circle fx:id="player_circle" fill="#a7a7a7" radius="23.0" stroke="#807d7d" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets left="3.0" top="5.0" />
-                                       </HBox.margin></Circle>
-                                    <Region prefHeight="57.0" prefWidth="24.0" />
-                                    <Label fx:id="nickname" prefHeight="57.0" prefWidth="227.0" styleClass="game-text" text="Label" textFill="#c35312" />
-                                    <TextField fx:id="messages" alignment="CENTER" editable="false" prefHeight="57.0" prefWidth="784.0" styleClass="move-text-field" />
-                                    <Region prefHeight="57.0" prefWidth="145.0" />
-                                    <Label fx:id="turn" prefHeight="57.0" prefWidth="146.0" styleClass="game-text" text="Label" textFill="#b54a0c" />
-                                 </children>
-                              </HBox>
+                              <StackPane fx:id="StackPane_0_0" prefHeight="117.0" prefWidth="106.0" />
+                              <Button fx:id="block_0_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="720.0" fitWidth="1290.0" pickOnBounds="true" preserveRatio="true">
+                              <StackPane fx:id="StackPane_1_0" layoutX="1.0" layoutY="-1.0" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_1_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                           <children>
+                              <StackPane fx:id="StackPane_2_0" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_2_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+                           <children>
+                              <StackPane fx:id="StackPane_3_0" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_3_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+                           <children>
+                              <StackPane fx:id="StackPane_4_0" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_4_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <StackPane fx:id="StackPane_0_1" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_0_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <StackPane fx:id="StackPane_1_1" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_1_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <StackPane fx:id="StackPane_2_1" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_2_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <StackPane fx:id="StackPane_3_1" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_3_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <StackPane fx:id="StackPane_4_1" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_4_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <StackPane fx:id="StackPane_0_2" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_0_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <children>
+                              <StackPane fx:id="StackPane_1_2" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_1_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <children>
+                              <StackPane fx:id="StackPane_2_2" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_2_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <children>
+                              <StackPane fx:id="StackPane_3_2" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_3_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                           <children>
+                              <StackPane fx:id="StackPane_4_2" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_4_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                           <children>
+                              <StackPane fx:id="StackPane_0_3" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_0_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <children>
+                              <StackPane fx:id="StackPane_1_3" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_1_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <children>
+                              <StackPane fx:id="StackPane_2_3" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_2_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                           <children>
+                              <StackPane fx:id="StackPane_3_3" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_3_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                           <children>
+                              <StackPane fx:id="StackPane_4_3" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_4_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
+                           <children>
+                              <StackPane fx:id="StackPane_0_4" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_0_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                           <children>
+                              <StackPane fx:id="StackPane_1_4" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_1_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                           <children>
+                              <StackPane fx:id="StackPane_2_4" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_2_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                           <children>
+                              <StackPane fx:id="StackPane_3_4" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_3_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                           <children>
+                              <StackPane fx:id="StackPane_4_4" prefHeight="118.0" prefWidth="105.0" />
+                              <Button fx:id="block_4_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </GridPane>
+                   <VBox layoutX="1012.0" layoutY="178.0" prefHeight="498.0" prefWidth="193.0">
+                     <children>
+                        <Button fx:id="move_button" mnemonicParsing="false" prefHeight="162.0" prefWidth="193.0" styleClass="game_button">
+                           <graphic>
+                              <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
                                  <image>
-                                    <Image url="@SantoriniBoard.png" />
+                                    <Image url="@../gameobjects/move.png" />
                                  </image>
                               </ImageView>
-                              <GridPane layoutX="374.0" layoutY="98.0" prefHeight="533.0" prefWidth="529.0">
-                                <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                       <children>
-                                          <StackPane fx:id="StackPane_0_0" prefHeight="117.0" prefWidth="106.0" />
-                                          <Button fx:id="block_0_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                       <children>
-                                          <StackPane fx:id="StackPane_1_0" layoutX="1.0" layoutY="-1.0" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_1_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-                                       <children>
-                                          <StackPane fx:id="StackPane_2_0" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_2_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
-                                       <children>
-                                          <StackPane fx:id="StackPane_3_0" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_3_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
-                                       <children>
-                                          <StackPane fx:id="StackPane_4_0" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_4_0" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                       <children>
-                                          <StackPane fx:id="StackPane_0_1" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_0_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                       <children>
-                                          <StackPane fx:id="StackPane_1_1" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_1_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                       <children>
-                                          <StackPane fx:id="StackPane_2_1" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_2_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                       <children>
-                                          <StackPane fx:id="StackPane_3_1" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_3_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                       <children>
-                                          <StackPane fx:id="StackPane_4_1" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_4_1" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
-                                       <children>
-                                          <StackPane fx:id="StackPane_0_2" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_0_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <children>
-                                          <StackPane fx:id="StackPane_1_2" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_1_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                       <children>
-                                          <StackPane fx:id="StackPane_2_2" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_2_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                                       <children>
-                                          <StackPane fx:id="StackPane_3_2" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_3_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                                       <children>
-                                          <StackPane fx:id="StackPane_4_2" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_4_2" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
-                                       <children>
-                                          <StackPane fx:id="StackPane_0_3" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_0_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                       <children>
-                                          <StackPane fx:id="StackPane_1_3" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_1_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                       <children>
-                                          <StackPane fx:id="StackPane_2_3" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_2_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                                       <children>
-                                          <StackPane fx:id="StackPane_3_3" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_3_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                       <children>
-                                          <StackPane fx:id="StackPane_4_3" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_4_3" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
-                                       <children>
-                                          <StackPane fx:id="StackPane_0_4" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_0_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                                       <children>
-                                          <StackPane fx:id="StackPane_1_4" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_1_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                                       <children>
-                                          <StackPane fx:id="StackPane_2_4" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_2_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                                       <children>
-                                          <StackPane fx:id="StackPane_3_4" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_3_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                                       <children>
-                                          <StackPane fx:id="StackPane_4_4" prefHeight="118.0" prefWidth="105.0" />
-                                          <Button fx:id="block_4_4" mnemonicParsing="false" opacity="0.0" prefHeight="106.0" prefWidth="105.0" />
-                                       </children></AnchorPane>
-                                 </children>
-                              </GridPane>
-                               <VBox layoutX="1012.0" layoutY="178.0" prefHeight="498.0" prefWidth="193.0">
-                                 <children>
-                                    <Button fx:id="move_button" mnemonicParsing="false" prefHeight="162.0" prefWidth="193.0" styleClass="game_button">
-                                       <graphic>
-                                          <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
-                                             <image>
-                                                <Image url="@../gameobjects/move.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic></Button>
-                                    <Region prefHeight="39.0" prefWidth="193.0" styleClass="move-text-field" />
-                                    <Button fx:id="build_button" mnemonicParsing="false" prefHeight="142.0" prefWidth="209.0" styleClass="game_button">
-                                       <graphic>
-                                          <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
-                                             <image>
-                                                <Image url="@../gameobjects/build.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic></Button>
-                                    <Region prefHeight="30.0" prefWidth="193.0" />
-                                    <Button fx:id="specialbuild_button" mnemonicParsing="false" prefHeight="190.0" prefWidth="193.0" styleClass="game_button">
-                                       <graphic>
-                                          <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
-                                             <image>
-                                                <Image url="@../gameobjects/specialbuild.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic></Button>
-                                 </children>
-                              </VBox>
-                              <VBox layoutX="55.0" layoutY="396.0" prefHeight="235.0" prefWidth="180.0">
-                                 <children>
-                                    <Button fx:id="endMove_button" mnemonicParsing="false" prefHeight="130.0" prefWidth="203.0" styleClass="game_button" text="Termina Mossa" textFill="#fffafa">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font></Button>
-                                    <Region prefHeight="23.0" prefWidth="180.0" />
-                                    <Button fx:id="quit_button" mnemonicParsing="false" prefHeight="131.0" prefWidth="199.0" styleClass="game_button" text="Chiudi" textFill="WHITE">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font></Button>
-                                 </children>
-                              </VBox>
-                              <Label fx:id="info" layoutX="32.0" layoutY="14.0" prefHeight="77.0" prefWidth="481.0" styleClass="game-text" text="Label" textFill="#bf4c13" />
-                           </children>
-                        </AnchorPane>
-                    </items>
-                  </SplitPane>
+                           </graphic>
+                        </Button>
+                        <Region prefHeight="39.0" prefWidth="193.0" styleClass="move-text-field" />
+                        <Button fx:id="build_button" mnemonicParsing="false" prefHeight="142.0" prefWidth="209.0" styleClass="game_button">
+                           <graphic>
+                              <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
+                                 <image>
+                                    <Image url="@../gameobjects/build.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Region prefHeight="30.0" prefWidth="193.0" />
+                        <Button fx:id="specialbuild_button" mnemonicParsing="false" prefHeight="190.0" prefWidth="193.0" styleClass="game_button">
+                           <graphic>
+                              <ImageView fitHeight="120.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" styleClass="game_button">
+                                 <image>
+                                    <Image url="@../gameobjects/specialbuild.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox layoutX="55.0" layoutY="396.0" prefHeight="235.0" prefWidth="180.0">
+                     <children>
+                        <Button fx:id="endMove_button" mnemonicParsing="false" prefHeight="130.0" prefWidth="203.0" styleClass="game_button" text="Termina Mossa" textFill="#fffafa">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Region prefHeight="23.0" prefWidth="180.0" />
+                        <Button fx:id="quit_button" mnemonicParsing="false" prefHeight="131.0" prefWidth="199.0" styleClass="game_button" text="Chiudi" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <Label fx:id="info" layoutX="32.0" layoutY="14.0" prefHeight="77.0" prefWidth="481.0" styleClass="game-text" text="Label" textFill="#bf4c13" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
         </items>
       </SplitPane>
    </children>
-</AnchorPane>
+</FlowPane>

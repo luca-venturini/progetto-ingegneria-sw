@@ -131,10 +131,11 @@ public class GameController {
                 if (cardSetupHandler.getNextPlayer() != null) {
 
                     notifyAllClients(new SimplyNotification(player.getNickname() + " ha scelto la sua carta, tocca a " + cardSetupHandler.getNextPlayer()));
-                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta"));
+                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta", card));
                 }
                 else {
                     //notifyAllClients(new SimplyNotification("Inizio nuova fase, attendi..."));
+                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta", card));
                     notifyAllClients(new WaitNotification());
                     notifySingleClient(match.getChallenger(), new ChooseStartingPlayerNotification());
                 }
@@ -148,6 +149,10 @@ public class GameController {
 
     public synchronized void sendPossibleCards(ClientController clientController){
         List<String> cardsName = new ArrayList<>();
+        if(cardSetupHandler.getPossibleCards().isEmpty()) {
+            notifySingleClient(clientController, new SimplyNotification("Nessuna carta disponibile"));
+            return;
+        }
         for(Card c: cardSetupHandler.getPossibleCards()){
             cardsName.add(c.getName());
         }

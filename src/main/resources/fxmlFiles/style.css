@@ -318,3 +318,8 @@
     -fx-font-family: "Gill Sans Ultra Bold";
     -fx-text-fill: rgb(139, 49, 0);
 }
+
+.no-border{
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
