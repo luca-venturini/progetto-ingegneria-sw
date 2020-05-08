@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="500.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="modalMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="44.0" prefHeight="54.0" prefWidth="487.0" textAlignment="CENTER" textFill="#5b5a5a" wrapText="true">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="siModal" layoutX="138.0" layoutY="105.0" mnemonicParsing="false" styleClass="send-card" text="Si">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="noModal" layoutX="329.0" layoutY="105.0" mnemonicParsing="false" styleClass="send-card" text="No">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

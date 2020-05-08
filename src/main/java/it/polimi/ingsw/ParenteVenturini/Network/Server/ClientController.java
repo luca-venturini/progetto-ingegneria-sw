@@ -141,7 +141,6 @@ public class ClientController implements ServerMessageHandler {
         gameController.manageQuit(msg.getNickname());
     }
 
-
     public Player getPlayer() {
         return player;
     }
