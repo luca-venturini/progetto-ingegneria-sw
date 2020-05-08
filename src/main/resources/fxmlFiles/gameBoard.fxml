@@ -19,7 +19,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-
 <FlowPane alignment="CENTER" columnHalignment="CENTER" styleClass="light-blue-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLGameController">
    <children>
       <HBox prefHeight="57.0" prefWidth="1278.0">
@@ -246,7 +245,7 @@
                         </Button>
                      </children>
                   </VBox>
-                  <VBox layoutX="55.0" layoutY="396.0" prefHeight="235.0" prefWidth="180.0">
+                  <VBox layoutX="55.0" layoutY="441.0" prefHeight="235.0" prefWidth="180.0">
                      <children>
                         <Button fx:id="endMove_button" mnemonicParsing="false" prefHeight="130.0" prefWidth="203.0" styleClass="game_button" text="Termina Mossa" textFill="#fffafa">
                            <font>
@@ -262,6 +261,7 @@
                      </children>
                   </VBox>
                   <Label fx:id="info" layoutX="32.0" layoutY="14.0" prefHeight="77.0" prefWidth="481.0" styleClass="game-text" text="Label" textFill="#bf4c13" />
+                  <ImageView fx:id="card_image_view" fitHeight="280.0" fitWidth="166.0" layoutX="62.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true" styleClass="game-card" />
                </children>
             </AnchorPane>
         </items>

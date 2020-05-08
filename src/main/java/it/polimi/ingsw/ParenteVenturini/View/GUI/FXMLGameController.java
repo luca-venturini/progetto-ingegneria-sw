@@ -198,6 +198,9 @@ public class FXMLGameController implements ViewController{
     @FXML
     private Button quit_button;
 
+    @FXML
+    private ImageView card_image_view;
+
     private Button[][] buttons = new Button[5][5];
     private StackPane[][] stackPanes = new StackPane[5][5];
     private List<Button> workerButtons = new ArrayList<>();
@@ -273,6 +276,7 @@ public class FXMLGameController implements ViewController{
         endMove_button.setOnAction(e -> sendMove("EndMove") );
         quit_button.setOnAction(e -> sendQuit());
         nickname.setText(GUIHandler.clientSideController.getNickname().toUpperCase());
+        card_image_view.setImage(new Image("/cards/"+GUIHandler.clientSideController.getYourCard()+".png"));
     }
 
     public void fillBoard(Block[][] blocks, List<Point> workers, List<String> colours, List<String> index){

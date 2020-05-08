@@ -36,6 +36,10 @@ public class ClientSideController implements ClientMessageHandler {
         this.stdIn = stdIn;
     }
 
+    public String getYourCard() {
+        return yourCard;
+    }
+
     public int getColor() {
         return color;
     }
