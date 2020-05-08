@@ -302,13 +302,30 @@ public class GameController {
     }
 
     public void manageQuit(String nickname){
-        if( !nickname.equals(match.getTurn().getCurrentPlayer().getNickname()) ) {
-            match.getTurn().setNextPlayer();
+        if(match.getTypeOfMatch() == 2) {
+            if (!nickname.equals(match.getTurn().getCurrentPlayer().getNickname())) {
+                match.getTurn().setNextPlayer();
+            }
+            try {
+                manageGameOver();
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            manageGameOver();
-        } catch (NoPlayerException e) {
-            e.printStackTrace();
+        else {
+            if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)){
+                notifySingleClient(match.selectPlayer(nickname), new GameOverNotification());
+                notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" ha perso")));
+                Player delplayer=match.getTurn().getCurrentPlayer();
+                match.getTurn().setNextPlayer();
+                match.deletePlayer(delplayer);
+                notifyYourTurn();
+            }
+            else{
+                notifySingleClient(match.selectPlayer(nickname), new GameOverNotification());
+                notifyAllClients(new SimplyNotification((nickname+" ha perso")));
+                match.deletePlayer(match.selectPlayer(nickname));
+            }
         }
     }
 
@@ -408,10 +425,12 @@ public class GameController {
                 if(moveHandler.isMovement() && match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification(nickname));
                     notifySingleClient(clientController, new VictoryNotification() );
+                    disconnectAllPlayers();
                 }
                 else if(match.outOfTurnWin() != null){
                     notifyAllClients(new WinNotification(match.outOfTurnWin().getNickname()));
                     notifySingleClient(clientController, new VictoryNotification() );
+                    disconnectAllPlayers();
                 }
                 else{
                     notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));

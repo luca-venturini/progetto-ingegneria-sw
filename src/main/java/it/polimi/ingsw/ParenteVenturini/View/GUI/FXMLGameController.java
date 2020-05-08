@@ -431,6 +431,11 @@ public class FXMLGameController implements ViewController{
         turn.setText("Turno "+num);
     }
 
+    public void endGame(){
+        MessageToServer message = new EndGameRequest();
+        GUIHandler.clientSideController.sendMessage(message);
+    }
+
     public void activePlayerCircle(){
         int color = GUIHandler.clientSideController.getColor();
         if(color>0){
@@ -446,6 +451,16 @@ public class FXMLGameController implements ViewController{
 
     public void disableInfo(){
         info.setVisible(false);
+    }
+
+    public void hideButtons(){
+        disableInfo();
+        info.setVisible(false);
+        move_button.setVisible(false);
+        build_button.setVisible(false);
+        specialbuild_button.setVisible(false);
+        endMove_button.setVisible(false);
+        quit_button.setVisible(false);
     }
 
     @Override

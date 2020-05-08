@@ -6,6 +6,7 @@ import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -338,7 +339,32 @@ public class GUIHandler extends Application implements ViewInterface {
 
     @Override
     public void displayEndGame() {
-
+        Platform.runLater(()-> {
+            FXMLLoader modalLoader;
+            Stage stage = new Stage();
+            modalLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/modalExitMessage.fxml"));
+            FXMLGameController controller = loader.getController();
+            Scene modalScene = null;
+            try {
+                modalScene = new Scene((Pane) modalLoader.load());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Button siButton = (Button) modalScene.lookup("#siModal");
+            Button noButton = (Button) modalScene.lookup("#noModal");
+            Label textMessage = (Label) modalScene.lookup("#modalMessage");
+            textMessage.setText("Vuoi continuare a vedere la partita?");
+            noButton.addEventHandler(ActionEvent.ACTION, actionEvent -> stage.close());
+            noButton.addEventHandler(ActionEvent.ACTION, e -> controller.endGame() );
+            siButton.addEventHandler(ActionEvent.ACTION, actionEvent -> stage.close());
+            siButton.addEventHandler(ActionEvent.ACTION, e -> controller.hideButtons() );
+            stage.setScene(modalScene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("End Game");
+            stage.setX(primaryStage.getX() + 200);
+            stage.setY(primaryStage.getY() + 100);
+            stage.show();
+        });
     }
 
     @Override
