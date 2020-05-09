@@ -100,11 +100,10 @@ public class GUIHandler extends Application implements ViewInterface {
             }
             FXMLSelectCardsController controller = loader.getController();
             controller.setCards(cardsName, numberOfCardsRequired);
-            scene = new Scene(vBox);
+            scene = new Scene(vBox, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
             primaryStage.setScene(scene);
             primaryStage.show();
         });
-
     }
 
     @Override
@@ -118,7 +117,7 @@ public class GUIHandler extends Application implements ViewInterface {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            scene = new Scene(vBox);
+            scene = new Scene(vBox, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
             primaryStage.setScene(scene);
             primaryStage.show();
         });
@@ -150,7 +149,7 @@ public class GUIHandler extends Application implements ViewInterface {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            scene = new Scene(pane);
+            scene = new Scene(pane, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
             primaryStage.setScene(scene);
             primaryStage.show();
         });
@@ -239,7 +238,7 @@ public class GUIHandler extends Application implements ViewInterface {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            scene = new Scene(vBox);
+            scene = new Scene(vBox, primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
             primaryStage.setScene(scene);
             primaryStage.show();
         });
@@ -258,7 +257,9 @@ public class GUIHandler extends Application implements ViewInterface {
             }
             FXMLPlaceWorkerController myController = loader.getController();
             myController.setCurrentPlayer(startingPlayer);
+
             scene = new Scene(stackPane);
+
             primaryStage.setScene(scene);
             primaryStage.show();
         });

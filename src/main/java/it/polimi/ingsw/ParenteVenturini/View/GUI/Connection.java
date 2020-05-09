@@ -2,6 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.MessageListener;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,6 +27,9 @@ public class Connection {
             readStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Server non in esecuzione");
+            Platform.exit();
+            System.exit(0);
         }
 
         Scanner stdIn = new Scanner(System.in);

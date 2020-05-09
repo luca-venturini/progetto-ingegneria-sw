@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="VBox_login" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" spacing="40.0" styleClass="setup_standard_background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLLoginButtonController">
+<VBox fx:id="VBox_login" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="775.0" minWidth="1000.0" spacing="80.0" styleClass="setup_standard_background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLLoginButtonController">
    <children>
       <Label>
          <styleClass>

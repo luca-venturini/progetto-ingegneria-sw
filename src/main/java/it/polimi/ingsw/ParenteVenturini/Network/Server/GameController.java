@@ -300,6 +300,7 @@ public class GameController {
             Player delplayer=match.getTurn().getCurrentPlayer();
             match.getTurn().setNextPlayer();
             match.deletePlayer(delplayer);
+            sendBoard();
             notifyYourTurn();
         }
     }
@@ -329,6 +330,7 @@ public class GameController {
                 notifyAllClients(new SimplyNotification((nickname+" ha perso")));
                 match.deletePlayer(match.selectPlayer(nickname));
             }
+            sendBoard();
             try {
                 match.setTypeOfMatch(2);
             } catch (InvalidTypeOfMatch invalidTypeOfMatch) {
