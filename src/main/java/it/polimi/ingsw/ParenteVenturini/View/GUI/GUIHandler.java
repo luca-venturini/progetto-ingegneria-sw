@@ -92,15 +92,15 @@ public class GUIHandler extends Application implements ViewInterface {
         Platform.runLater(() -> {
             loader = new FXMLLoader(getClass().getResource("/fxmlFiles/selectCards.fxml"));
             Scene scene = null;
-            FlowPane flowPane = null;
+            VBox vBox = null;
             try {
-                flowPane = (FlowPane) loader.load();
+                vBox = (VBox) loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             FXMLSelectCardsController controller = loader.getController();
             controller.setCards(cardsName, numberOfCardsRequired);
-            scene = new Scene(flowPane);
+            scene = new Scene(vBox);
             primaryStage.setScene(scene);
             primaryStage.show();
         });
@@ -112,13 +112,13 @@ public class GUIHandler extends Application implements ViewInterface {
         Platform.runLater(() -> {
             loader = new FXMLLoader(getClass().getResource("/fxmlFiles/selectPlayerCard.fxml"));
             Scene scene = null;
-            FlowPane flowPane = null;
+            VBox vBox = null;
             try {
-                flowPane = (FlowPane) loader.load();
+                vBox = (VBox) loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            scene = new Scene(flowPane);
+            scene = new Scene(vBox);
             primaryStage.setScene(scene);
             primaryStage.show();
         });

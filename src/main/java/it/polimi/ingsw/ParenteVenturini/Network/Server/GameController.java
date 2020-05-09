@@ -104,6 +104,9 @@ public class GameController {
             }
 
         }
+        else{
+            throw new IllegalCardException();
+        }
         if(chosenCards.size() == match.getNumPlayers()){
             match.setChosenCards(chosenCards);
             try {
@@ -111,9 +114,8 @@ public class GameController {
             } catch (NoPlayerException e) {
                 e.printStackTrace();
             }
-
-            notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, inizia "+cardSetupHandler.getNextPlayer()));
             notifyAllClients(new ChooseCardNotification());
+            notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, inizia "+cardSetupHandler.getNextPlayer()));
         }
         else{
             throw new IllegalCardException();
@@ -171,6 +173,7 @@ public class GameController {
                 notifyAllClients(new PlaceWorkersNotification(placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
             } catch (AlreadyChosenStarterException | NoPlayerException e) {
                 e.printStackTrace();
+                System.out.println("Giocatore iniziale gia settato");
             } catch (InvalidNamePlayerException e) {
                 notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( false, "Il nickname scelto non è disponibile"));
             }
@@ -326,6 +329,12 @@ public class GameController {
                 notifyAllClients(new SimplyNotification((nickname+" ha perso")));
                 match.deletePlayer(match.selectPlayer(nickname));
             }
+            try {
+                match.setTypeOfMatch(2);
+            } catch (InvalidTypeOfMatch invalidTypeOfMatch) {
+                invalidTypeOfMatch.printStackTrace();
+            }
+
         }
     }
 
@@ -465,6 +474,7 @@ public class GameController {
     }
 
     public synchronized void disconnectPlayer(ClientController clientController){
+        clients.remove(clientController);
         clientController.quitGame();
         notifySingleClient(clientController, new InterruptedGameNotification());
     }
@@ -487,6 +497,10 @@ public class GameController {
             return false;
         }
         return false;
+    }
+
+    public synchronized void removeClient(ClientController clientController){
+        clients.remove(clientController);
     }
 
 }

@@ -322,6 +322,7 @@
 .no-border{
     -fx-border-color: transparent;
     -fx-border-width: 0;
+    -fx-box-border: transparent;
 }
 
 .game-card{

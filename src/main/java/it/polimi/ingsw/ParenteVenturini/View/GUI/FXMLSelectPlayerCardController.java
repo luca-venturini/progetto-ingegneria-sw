@@ -23,10 +23,14 @@ public class FXMLSelectPlayerCardController implements ViewController{
     private Image images[];
     private int currentImage;
     private String chosenCard;
+    private String message1="";
+    private String message2="";
 
     @FXML
     private void initialize() {
         chosen_cards.setVisible(false);
+        label1_message.setText("");
+        label2_message.setText("");
         MessageToServer message = new AvailableCardRequest(GUIHandler.clientSideController.getNickname());
         GUIHandler.clientSideController.sendMessage(message);
     }
@@ -45,6 +49,12 @@ public class FXMLSelectPlayerCardController implements ViewController{
 
     @FXML
     private Label chosen_cards;
+
+    @FXML
+    private Label label1_message;
+
+    @FXML
+    private Label label2_message;
 
     public void setCards(List<String> cards){
         chosen_cards.setVisible(false);
@@ -129,7 +139,11 @@ public class FXMLSelectPlayerCardController implements ViewController{
 
     @Override
     public void displayMessage(String s) {
-        showAlert(s);
+        message2 = message1;
+        message1 = s;
+        if(!message2.equals(""))
+            label2_message.setText(message2);
+        label1_message.setText(message1);
         MessageToServer message = new AvailableCardRequest(GUIHandler.clientSideController.getNickname());
         GUIHandler.clientSideController.sendMessage(message);
     }

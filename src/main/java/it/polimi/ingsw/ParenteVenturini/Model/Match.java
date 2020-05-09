@@ -47,6 +47,8 @@ public class Match {
         else throw new NoMorePlayersException();
     }
 
+
+
     public boolean directGameOver(){
         Move move = this.getTurn().getCurrentPlayer().getMove();
         Worker currentWorker = turn.getCurrentWorker();

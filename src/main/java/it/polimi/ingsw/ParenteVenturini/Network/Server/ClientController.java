@@ -47,16 +47,20 @@ public class ClientController implements ServerMessageHandler {
         if(gameController != null && gameController.isPlaying(player)){
             gameController.disconnectAllPlayers();
         }
+        if(gameController != null && !gameController.isPlaying(player)){
+            gameController.removeClient(this);
+        }
     }
 
     public void quitGame(){
         gameController = null;
-        player = null;
     }
 
 
     @Override
     public void visit(AccessGameMessageRequest msg) {
+        player = null;
+        if(gameController != null) return;
         System.out.println("Messaggio arrivato");
         insertPlayerInGame(msg.getNickname(), msg.getValues().get(0));
     }
@@ -67,7 +71,7 @@ public class ClientController implements ServerMessageHandler {
         try {
             gameController.addCardsToMatch(msg.getNickname(), msg.getValues());
         } catch (IllegalCardException e) {
-            sendMessage(new SimplyNotification("Questo non dovrebbe succedere..."));
+            sendMessage(new SimplyNotification("Non è il tuo turno, o non hai selezionata il numero giusto di carte"));
         }
         for (String s: msg.getValues()){
             System.out.println(s);
