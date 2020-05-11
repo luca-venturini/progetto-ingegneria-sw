@@ -3,9 +3,15 @@ package it.polimi.ingsw.ParenteVenturini.Model.Cards;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class contains all the possible cards
+ */
 public class Deck {
     private List<Card> cards;
 
+    /**
+     * init the deck
+     */
     public Deck(){
         cards = new ArrayList<Card>();
 
@@ -25,6 +31,11 @@ public class Deck {
         cards.add(new ChronusCard() );
     }
 
+    /**
+     * select a card by the name
+     * @param name the card's name
+     * @return return a reference to the card
+     */
     public Card selectByName(String name){
         for(Card c: cards){
             if( name.equals(c.getName()) ) {
@@ -34,6 +45,10 @@ public class Deck {
         return null;
     }
 
+    /**
+     * get a list of the names of the cards
+     * @return list of names of the cards
+     */
     public List<String> getCardNames(){
         ArrayList<String> cardsName = new ArrayList<>();
         for (Card c: cards)

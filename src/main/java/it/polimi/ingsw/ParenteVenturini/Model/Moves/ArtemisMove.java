@@ -11,6 +11,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handle the moves of this Card's owner
+ */
 public class ArtemisMove extends Move {
 
     private int numOfMovements;

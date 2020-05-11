@@ -39,7 +39,7 @@ class BasicWinCheckTest {
             instance.getTurn().getCurrentWorker().setPosition(p);
             instance.getBoard().setBlockLevel(p,3);
             assertTrue(player.hasWon(instance.getBoard(), instance.getTurn().getCurrentWorker(), instance.getPlayers()));
-            player.setCard(new MinotaurCard());
+            //player.setCard(new MinotaurCard());
             Point p2= new Point(0,2);
             instance.getTurn().getCurrentWorker().setPosition(p2);
             instance.getBoard().setBlockLevel(p2,3);

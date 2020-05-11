@@ -11,10 +11,31 @@ import java.util.List;
 
 public abstract class Action {
 
+    /**
+     * do the action
+     * @param point the selected point
+     * @param board the used board
+     * @param worker the worker
+     * @throws IllegalBuildingException thrown if you can't build
+     * @throws IllegalMovementException thrown if yu can't move
+     */
     public abstract void  doAction(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException;
 
+    /**
+     * evaluate the point before the action
+     * @param point the selected point
+     * @param board the used board
+     * @param worker the worker
+     * @return true if the move is valid
+     */
     public abstract boolean  isValid(Point point, Board board, Worker worker);
 
+    /**
+     *
+     * @param point a point
+     * @param possibleActions list of points
+     * @return true if the point is in the list
+     */
     protected boolean  checkValid(Point point,List<Point> possibleActions) {
         for(Point p: possibleActions){
             if(p.equals(point))
@@ -22,6 +43,13 @@ public abstract class Action {
         }
         return false;
     }
+
+    /**
+     * list of possible points where you can do the action
+     * @param board the board
+     * @param worker the worker
+     * @return list of possibile points
+     */
 
     public  List<Point> getPossibleActions(Board board, Worker worker) {
         Point workerPoint = new Point(worker.getPosition());

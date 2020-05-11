@@ -10,6 +10,10 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.List;
 
+/**
+ * Handle the moves of this Card's owner
+ */
+
 public class ApolloMove extends Move {
 
     public ApolloMove() {

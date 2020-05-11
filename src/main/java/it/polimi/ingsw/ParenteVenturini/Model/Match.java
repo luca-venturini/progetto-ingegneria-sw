@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * the Match class
+ */
 public class Match {
     private List<Player> players;
     private List<Card> chosenCards;
@@ -32,10 +35,19 @@ public class Match {
         this.turn = null;
     }
 
+    /**
+     * set turn attribute to the match
+     */
     public void setTurn() {
         this.turn = new Turn(players,opponentEffectContainer);
     }
 
+    /**
+     * add a new player to the match
+     * @param nickname the player nickname
+     * @throws NoMorePlayersException thrown if the match is full
+     * @throws AlreadyPresentPlayerException thrown if the nickname is already taken in this match
+     */
     public void addPlayer(String nickname) throws NoMorePlayersException, AlreadyPresentPlayerException {
         if(getNumPlayers() < getTypeOfMatch()) {
             if(selectPlayer(nickname)==null) {
@@ -47,7 +59,10 @@ public class Match {
         else throw new NoMorePlayersException();
     }
 
-
+    /**
+     * check the gameover due to building
+     * @return true if the player has lost
+     */
 
     public boolean directGameOver(){
         Move move = this.getTurn().getCurrentPlayer().getMove();
@@ -57,6 +72,11 @@ public class Match {
         }
         return false;
     }
+
+    /**
+     * check the player's game over
+     * @return true if the player has lost
+     */
 
     public boolean gameOver()  {
         Move move = this.getTurn().getCurrentPlayer().getMove();
@@ -74,6 +94,13 @@ public class Match {
         return result;
     }
 
+    /**
+     * check if the worker can't walk
+     * @param move the player's walk
+     * @param board the current board
+     * @param currentWorker the current worker
+     * @return true if the player can't walk
+     */
     private boolean gameOverMovement(Move move, Board board, Worker currentWorker)  {
         List<Point> points = null;
         try {
@@ -85,6 +112,14 @@ public class Match {
         return points.isEmpty();
     }
 
+    /**
+     *
+     * check if the worker can't build
+     * @param move the player's build
+     * @param board the current board
+     * @param currentWorker the current worker
+     * @return true if the player can't build
+     */
     private boolean gameOverBuilding(Move move, Board board, Worker currentWorker)  {
         List<Point> points = null;
         try {
@@ -96,44 +131,82 @@ public class Match {
         return points.isEmpty();
     }
 
+    /**
+     *
+     * @return the used board
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     *
+     * @return the selected challenger
+     */
     public Player getChallenger() {
         return challenger;
     }
 
+    /**
+     *
+     * @return list of players in game
+     * @throws NoPlayerException thrown if the list is empty
+     */
     public List<Player> getPlayers() throws NoPlayerException {
         if( !players.isEmpty() )
             return players;
         else throw new NoPlayerException();
     }
 
+    /**
+     *
+     * @return the opponentEffectContainer reference
+     */
     public OpponentEffectContainer getOpponentEffectContainer() {
         return opponentEffectContainer;
     }
 
+    /**
+     *
+     * @return the number of the players in game
+     */
     public int getNumPlayers() {
         if( !players.isEmpty() )
             return players.size();
         else return 0;
     }
 
+    /**
+     *
+     * @return the type of match, 2 or 3 players
+     */
     public int getTypeOfMatch() {
         return typeOfMatch;
     }
 
+    /**
+     *
+     * @return the starting player
+     */
     public Player getStarter() {
         return starter;
     }
 
+    /**
+     * set if the match is a 3 or 2 players match
+     * @param typeOfMatch the type of match (2 or 3)
+     * @throws InvalidTypeOfMatch thrown if the value is incorrect
+     */
     public void setTypeOfMatch(int typeOfMatch) throws InvalidTypeOfMatch {
         if(typeOfMatch==3 || typeOfMatch==2)
             this.typeOfMatch = typeOfMatch;
         else throw new InvalidTypeOfMatch();
     }
 
+    /**
+     * select a random challenger
+     * @throws NoPlayerException thrown if there are no players
+     */
     public void setChallenger() throws NoPlayerException {
         if( !players.isEmpty() ) {
             Random rand = new Random();
@@ -142,6 +215,11 @@ public class Match {
         else throw new NoPlayerException();
     }
 
+    /**
+     * select a player by name
+     * @param name the String name
+     * @return reference to the selected player, null if the player doesn't exists
+     */
     public Player selectPlayer(String name){
         if( !players.isEmpty() ) {
             for (Player p : players) {
@@ -154,6 +232,12 @@ public class Match {
         else return null;
     }
 
+    /**
+     * pick a card from the deck
+     * @param name the name of the card
+     * @throws InvalidCardException thrown if the name given doesn't match with any card
+     * @throws NoMoreCardsException thrown if you can't pick others card
+     */
     public void selectCardFromDeck(String name) throws InvalidCardException, NoMoreCardsException {
         Card c = this.deck.selectByName(name);
         if (chosenCards.size() < getTypeOfMatch()){
@@ -163,6 +247,13 @@ public class Match {
         }else throw  new NoMoreCardsException();
     }
 
+    /**
+     *
+     * @param nickname the starting player nickname
+     * @throws AlreadyChosenStarterException thrown if the starting player has already been chosen
+     * @throws InvalidNamePlayerException thrown if the given name doesn't exists in the match
+     * @throws NoPlayerException thrown if there are no players
+     */
     public void selectStarter(String nickname) throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException {
         if( !players.isEmpty() ) {
             if (starter == null) {
@@ -180,10 +271,20 @@ public class Match {
         else throw new NoPlayerException();
     }
 
+    /**
+     *
+     * @return list of chosen cards
+     */
+
     public List<Card> getChosenCards(){
         return chosenCards;
     }
 
+    /**
+     * order the players to start playing
+     * @throws NoStarterException thrown if the starter hasn't been selected
+     * @throws NoPlayerException thrown if there are no players
+     */
     public void orderPlayers() throws NoStarterException, NoPlayerException {
         if( !players.isEmpty() ) {
             if (this.starter != null) {
@@ -200,14 +301,26 @@ public class Match {
         else throw new NoPlayerException();
     }
 
+    /**
+     * set thelist of cards choosen by the challenger
+     * @param cards the list of chosen cards
+     */
     public void setChosenCards(List<Card> cards){
         chosenCards = cards;
     }
 
+    /**
+     * return a reference to turn class
+     * @return reference to turn class
+     */
     public Turn getTurn() {
         return turn;
     }
 
+    /**
+     * check if a player has won during another player turn, thanks to special effects
+     * @return the winner
+     */
     public Player outOfTurnWin(){
         for (Player p: players){
             if(p.getCard().getWinCheck() != null && p.getCard().getWinCheck().outOfTurnWon(board))
@@ -216,6 +329,10 @@ public class Match {
         return null;
     }
 
+    /**
+     * delete a player from the match
+     * @param player the player you want to delete
+     */
     public void deletePlayer(Player player){
         try {
             this.chosenCards.remove(player.getCard());
