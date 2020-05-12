@@ -10,20 +10,33 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
 public class ClientController implements ServerMessageHandler {
 
+    /** reference to the class that generated this class */
     private ClientThreadFromServer clientThread;
+    /** reference to the game the client is playing */
     private GameController gameController;
+    /** reference to the player in the game */
     private Player player;
 
+    /** init the class*/
     public ClientController(ClientThreadFromServer clientThread) {
         this.clientThread = clientThread;
         gameController = null;
     }
 
+    /**
+     * send a message to the client
+     * @param msg the message that should be send
+     */
     public void sendMessage(MessageToClient msg){
         clientThread.sendMessage(msg);
     }
 
 
+    /**
+     * insert the player associated to this controller in the game
+     * @param nickname the player's nickname
+     * @param numOfPlayers the number of players you want the match to be
+     */
     private void insertPlayerInGame(String nickname, String numOfPlayers){
         GameDispatcher gameDispatcher = GameDispatcher.getInstance();
         if(Integer.parseInt(numOfPlayers) != 2 && Integer.parseInt(numOfPlayers) != 3) {
@@ -43,6 +56,9 @@ public class ClientController implements ServerMessageHandler {
         System.out.println("giocatore aggiunto: "+player.getNickname());
     }
 
+    /**
+     * end the game
+     */
     public void endGame(){
         if(gameController != null && gameController.isPlaying(player)){
             gameController.disconnectAllPlayers();
@@ -52,11 +68,18 @@ public class ClientController implements ServerMessageHandler {
         }
     }
 
+    /**
+     * finish playing the game
+     */
     public void quitGame(){
         gameController = null;
     }
 
 
+    /**
+     * message received from the client who want to access a new game
+     * @param msg the message
+     */
     @Override
     public void visit(AccessGameMessageRequest msg) {
         player = null;
@@ -65,6 +88,10 @@ public class ClientController implements ServerMessageHandler {
         insertPlayerInGame(msg.getNickname(), msg.getValues().get(0));
     }
 
+    /**
+     * message received by the challenger who want to store the possible cards
+     * @param msg the message
+     */
     @Override
     public void visit(StoreSelectedCardsRequest msg) {
         if(gameController == null) return;
@@ -78,12 +105,20 @@ public class ClientController implements ServerMessageHandler {
         }
     }
 
+    /**
+     * client message that requests the available cards
+     * @param msg the message
+     */
     @Override
     public void visit(AvailableCardRequest msg) {
         if(gameController == null) return;
         gameController.sendPossibleCards(this);
     }
 
+    /**
+     * client message that requests to set the player's card
+     * @param msg the message
+     */
     @Override
     public void visit(SetPlayerCardRequest msg) {
         if(gameController == null) return;
@@ -91,18 +126,30 @@ public class ClientController implements ServerMessageHandler {
         gameController.setPlayerCard(player, card);
     }
 
+    /**
+     * client message that requests the available players
+     * @param msg the message
+     */
     @Override
     public void visit(AvailablePlayerRequest msg) {
         if(gameController == null) return;
         gameController.sendPossiblePlayers(this);
     }
 
+    /**
+     * client message that requests to set the starting player
+     * @param msg the message
+     */
     @Override
     public void visit(SetStartingPlayerRequest msg) {
         if(gameController == null) return;
         gameController.setStartingPlayer(this.player.getNickname(), msg.getValues().get(0));
     }
 
+    /**
+     * client message that requests to place a worker
+     * @param msg the message
+     */
     @Override
     public void visit(PlaceWorkerRequest msg) {
         if(gameController == null) return;
@@ -110,17 +157,30 @@ public class ClientController implements ServerMessageHandler {
             gameController.placeWorkers(player, msg.getPoint());
     }
 
+    /**
+     * client message that request the available cards
+     * @param msg the message
+     */
     @Override
     public void visit(AvailablePlaceWorkerPointRequest msg) {
         if(gameController == null) return;
         gameController.sendPossibleWorkersSetupPoint(this);
     }
 
+    /**
+     * message from the client that want to do an action
+     * @param msg the message
+     */
     @Override
     public void visit(ActionRequest msg) {
         if(gameController == null) return;
         gameController.doMove(this,msg.getTypeOfAction(),msg.getNickname());
     }
+
+    /**
+     * message from client that want to set the worker
+     * @param msg the message
+     */
 
     @Override
     public void visit(SelectWorkerRequest msg) {
@@ -128,23 +188,39 @@ public class ClientController implements ServerMessageHandler {
         gameController.selectWorker(this,msg.getNickname(),msg.getIndex());
     }
 
+    /**
+     * message from the client that want to set a new walk or build point
+     * @param msg the message
+     */
     @Override
     public void visit(ActionPointRequest msg) {
         if(gameController == null) return;
         gameController.doAction(this,msg.getPoint(), msg.getNickname());
     }
 
+    /**
+     * message from client that requires to end the game
+     * @param msg the message
+     */
     @Override
     public void visit(EndGameRequest msg) {
         if(gameController == null) return;
         gameController.disconnectPlayer(this);
     }
 
+    /**
+     * message from client that asks to quit the game
+     * @param msg the message
+     */
     @Override
     public void visit(QuitRequest msg) {
         gameController.manageQuit(msg.getNickname());
     }
 
+    /**
+     * get the player
+     * @return the player
+     */
     public Player getPlayer() {
         return player;
     }
