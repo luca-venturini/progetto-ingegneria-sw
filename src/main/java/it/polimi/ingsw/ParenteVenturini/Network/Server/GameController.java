@@ -14,14 +14,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * this class controls the conduct of the game
+ */
 public class GameController {
+    /** list of clients */
     private List<ClientController> clients = new ArrayList<>();
+    /** the actual match */
     private Match match;
+    /** reference to card setup handler */
     private CardSetupHandler cardSetupHandler;
+    /** reference to place worker setup handler */
     private PlaceWorkerSetupHandler placeWorkerSetupHandler;
+    /** reference to move handler */
     private MoveHandler moveHandler;
+    /** reference to the deck */
     private Deck deck = new Deck();
 
+    /**
+     * init a new match
+     * @param numOfPlayers number of players
+     */
     public GameController(int numOfPlayers){
         match = new Match();
         try {
@@ -32,6 +45,12 @@ public class GameController {
         System.out.println("Creata partita da "+numOfPlayers+" giocatori");
     }
 
+    /**
+     * add a new player
+     * @param client the client
+     * @param nickname the nickname
+     * @return a reference to the player added
+     */
     public synchronized Player addPlayer(ClientController client, String nickname){
 
         int i = 1;
@@ -53,10 +72,18 @@ public class GameController {
         return match.selectPlayer(nickname);
     }
 
+    /**
+     * check the nickname
+     * @param nickname the nickname
+     * @return true if the nickname is correct
+     */
     public synchronized boolean isValidNickname(String nickname){
         return !nickname.equals("") && match.selectPlayer(nickname) == null;
     }
 
+    /**
+     * handle startup after player login
+     */
     public synchronized void startSetup(){
         if(match.getTypeOfMatch() == clients.size()) {
             notifyAllClients(new SimplyNotification( "E' iniziata la fase di setUp, tra poco tocca a te..."));
@@ -72,16 +99,30 @@ public class GameController {
             notifyAllClients(new SimplyNotification( "Attendi altri giocatori"));
     }
 
+    /**
+     * send messages to all clients
+     * @param msg the message
+     */
     public synchronized void notifyAllClients(MessageToClient msg){
         for (ClientController client: clients){
             client.sendMessage(msg);
         }
     }
 
+    /**
+     * send message to a specific client
+     * @param client the client
+     * @param msg the message
+     */
     public synchronized void notifySingleClient(ClientController client, MessageToClient msg){
         client.sendMessage(msg);
     }
 
+    /**
+     * send message to a specific client
+     * @param player the player, that has a client associated
+     * @param msg the message
+     */
     public synchronized void notifySingleClient(Player player, MessageToClient msg){
         for (ClientController c: clients){
             if(c.getPlayer().getNickname().equals(player.getNickname())) {
@@ -91,6 +132,12 @@ public class GameController {
         }
     }
 
+    /**
+     * add a new card to the match
+     * @param nickname the player nickname
+     * @param values the name of the cards
+     * @throws IllegalCardException thrown if the given card name doesn't exists
+     */
     public synchronized void addCardsToMatch(String nickname, List<String> values) throws IllegalCardException {
         List<Card> chosenCards = new ArrayList<>();
 
@@ -122,6 +169,11 @@ public class GameController {
         }
     }
 
+    /**
+     * set a card to the player
+     * @param player the player
+     * @param card the card you want to set
+     */
     public synchronized void setPlayerCard(Player player, String card){
         if (card == null){
             notifySingleClient(player, new SetPlayerCardResponse( false, "Scegli una carta"));
@@ -149,6 +201,10 @@ public class GameController {
         }
     }
 
+    /**
+     * send to the client all the possible cards
+     * @param clientController the interested client
+     */
     public synchronized void sendPossibleCards(ClientController clientController){
         List<String> cardsName = new ArrayList<>();
         if(cardSetupHandler.getPossibleCards().isEmpty()) {
@@ -162,6 +218,11 @@ public class GameController {
     }
 
 
+    /**
+     * set the player who starts the game
+     * @param nickname the nickname of the player who want to set the starting player
+     * @param startingPlayerNickname the nickname of the starting player
+     */
     public synchronized void setStartingPlayer(String nickname, String startingPlayerNickname){
         if(nickname.equals(match.getChallenger().getNickname())) {
             try {
@@ -182,6 +243,10 @@ public class GameController {
         }
     }
 
+    /**
+     * send a list of the player's nickname
+     * @param clientController the client who will receive the list
+     */
     public synchronized void sendPossiblePlayers(ClientController clientController){
         List<String> playersNickname = new ArrayList<>();
         try {
@@ -196,6 +261,11 @@ public class GameController {
     }
 
 
+    /**
+     * place the workers on the board
+     * @param player the player who want to place the workers
+     * @param position the point where the player want to place the workers
+     */
     public synchronized void placeWorkers(Player player, Point position){
         Point point = new Point(position.getX(), position.getY());
         try {
@@ -223,6 +293,10 @@ public class GameController {
         }
     }
 
+    /**
+     * send to the client the possibile points where he can place workers
+     * @param clientController the client
+     */
     public synchronized void sendPossibleWorkersSetupPoint(ClientController clientController){
         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
         if(placeWorkerSetupHandler.getCurrentPlayer() != null)
@@ -231,6 +305,12 @@ public class GameController {
             System.out.println("fine setup");
     }
 
+    /**
+     * generate a message in which you describe where the player can place the workers and where the others workers are
+     * @param points list of possible points
+     * @param nickname the player's nickname that will receive the message
+     * @return a message about the possible points where to place workers
+     */
     private AvailablePlaceWorkerPointResponse buildAvailablePlaceWorkerPointResponse(List<Point> points, String nickname){
         List<Worker> placedWorkers = match.getBoard().getWorkers();
         List<Point> workersPoints = new ArrayList<>();
@@ -243,6 +323,9 @@ public class GameController {
 
     }
 
+    /**
+     * send the board updated to the clients
+     */
     public synchronized void sendBoard() {
         Block[][] blocks= new Block[5][5];
         List<Point> positionworker = new ArrayList<>();
@@ -267,6 +350,9 @@ public class GameController {
         notifyAllClients(new BoardUpdateNotification(blocks,positionworker,colours,index) );
     }
 
+    /**
+     * notify a client that it is his turn
+     */
     public synchronized void notifyYourTurn(){
         if(match.gameOver()) {
             notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
@@ -284,6 +370,10 @@ public class GameController {
         }
     }
 
+    /**
+     * menage the gameover, acting differently if the match is played by 2 or 3 players
+     * @throws NoPlayerException thrown if there are not players
+     */
     public void manageGameOver() throws NoPlayerException {
         if (match.getPlayers().size() == 2) {
             match.getTurn().setNextPlayer();
@@ -305,6 +395,10 @@ public class GameController {
         }
     }
 
+    /**
+     * menage the quit of a player
+     * @param nickname the nickname of the player that quit the game
+     */
     public void manageQuit(String nickname){
         if(match.getTypeOfMatch() == 2) {
             if (!nickname.equals(match.getTurn().getCurrentPlayer().getNickname())) {
@@ -340,6 +434,12 @@ public class GameController {
         }
     }
 
+    /**
+     * the player can set the worker he will use during the turn
+     * @param clientController the client
+     * @param nickname the player's nickname
+     * @param index the index of the selected worker
+     */
     public synchronized void selectWorker(ClientController clientController, String nickname, int index){
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)){
             match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
@@ -348,6 +448,12 @@ public class GameController {
         else notifySingleClient(clientController,new SelectWorkerResponse("Non è il tuo turno",false));
     }
 
+    /**
+     * the client requests to do a move, using a message, this method handle that message and send to the client the possible points for that move
+     * @param clientController teh client who requires
+     * @param typeOfMove the type of the move (walk, build, specialBuild, endMove)
+     * @param nickname the nickname of the player
+     */
     public synchronized void doMove(ClientController clientController, String typeOfMove,String nickname){
         moveHandler.init();
         List<Point> points;
@@ -427,6 +533,12 @@ public class GameController {
         }
     }
 
+    /**
+     * after the client select the move using the doMove method, he send the point where he want to do the move, this method handle it
+     * @param clientController the client who asks to do the action
+     * @param x the selected point
+     * @param nickname the client nickname
+     */
     public synchronized void doAction(ClientController clientController,Point x, String nickname) {
         try {
             try {
@@ -471,16 +583,27 @@ public class GameController {
         }
     }
 
+    /**
+     * get the number of clients connected
+     * @return the number of players connected
+     */
     public synchronized int getNumOfPlayers(){
         return clients.size();
     }
 
+    /**
+     * disconnect a player from the game
+     * @param clientController the client that want to leave the game
+     */
     public synchronized void disconnectPlayer(ClientController clientController){
         clients.remove(clientController);
         clientController.quitGame();
         notifySingleClient(clientController, new InterruptedGameNotification());
     }
 
+    /**
+     * disconnect all players, for example when the match end
+     */
     public synchronized void disconnectAllPlayers(){
         for(ClientController c: clients){
             c.quitGame();
@@ -490,6 +613,11 @@ public class GameController {
         gd.removeGame(this);
     }
 
+    /**
+     * check if a player is really playing or justa watching the match
+     * @param player the player
+     * @return true if the player is playing
+     */
     public synchronized boolean isPlaying(Player player){
         try {
             if(match.getPlayers().contains(player))
@@ -501,6 +629,10 @@ public class GameController {
         return false;
     }
 
+    /**
+     * remove the client from the list of clients
+     * @param clientController the client that must be removed
+     */
     public synchronized void removeClient(ClientController clientController){
         clients.remove(clientController);
     }

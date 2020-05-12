@@ -6,9 +6,13 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageToServer
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * thread generated from the server to handle single client requests
+ */
 public class ClientThreadFromServer {
+    /** client socket*/
     private Socket clientSocket;
-
+    /** the client controller */
     private ClientController clientController;
 
     // Not used to write or read
@@ -19,10 +23,17 @@ public class ClientThreadFromServer {
     private ObjectInputStream readStream;
     private ObjectOutputStream writeStream;
 
+    /**
+     * init the class
+     * @param socket
+     */
     public ClientThreadFromServer(Socket socket) {
         this.clientSocket = socket;
     }
 
+    /**
+     * handle the connection directly with client, reading the messages from it
+     */
     public void handleConnection(){
         try{
             // Communication streams
@@ -59,6 +70,9 @@ public class ClientThreadFromServer {
         }
     }
 
+    /**
+     * close the connection
+     */
     public void closeConnection(){
         try {
             readStream.close();
@@ -69,10 +83,18 @@ public class ClientThreadFromServer {
         }
     }
 
+    /**
+     * handle the received messages
+     * @param msg the message
+     */
     private void handleMessage(MessageToServer msg){
         msg.accept(clientController);
     }
 
+    /**
+     * send a message to the client
+     * @param message the message
+     */
     public void sendMessage(MessageToClient message){
         try {
             writeStream.reset();

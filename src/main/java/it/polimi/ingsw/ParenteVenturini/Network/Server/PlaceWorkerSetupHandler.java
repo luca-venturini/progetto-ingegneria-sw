@@ -9,13 +9,25 @@ import it.polimi.ingsw.ParenteVenturini.Network.Exceptions.IllegalPlaceWorkerExc
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class handle the setup phase in which each player place two workers
+ */
 public class PlaceWorkerSetupHandler {
 
+    /** list of players */
     private List<Player> players;
+    /** current player */
     private Player currentPlayer;
+    /** the board */
     private Board board;
+    /** number of workers added */
     private int numberOfAdd;
 
+    /**
+     * init the class
+     * @param players list of players
+     * @param board the game board
+     */
     public PlaceWorkerSetupHandler(List<Player> players, Board board) {
         this.players = players;
         this.board = board;
@@ -23,14 +35,28 @@ public class PlaceWorkerSetupHandler {
         numberOfAdd = 0;
     }
 
+    /**
+     * discover if this phase has finished
+     * @return true if this setup phase has finished
+     */
     public boolean hasFinished() {
         return currentPlayer == null;
     }
 
+    /**
+     * get the current player
+     * @return thecurrent player
+     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * set the worker in a point chosen by the player
+     * @param mPlayer the player
+     * @param mPoint the selected point
+     * @throws IllegalPlaceWorkerException thrown if the player can't place the worker in the selected point
+     */
     public void setWorkerPosition(Player mPlayer, Point mPoint) throws IllegalPlaceWorkerException {
         if(mPoint.getX()<0 || mPoint.getX()>4 || mPoint.getY()<0 || mPoint.getY()>4 )
             throw new IllegalPlaceWorkerException();
@@ -53,6 +79,9 @@ public class PlaceWorkerSetupHandler {
             throw new IllegalPlaceWorkerException();
     }
 
+    /**
+     * updete the player that has to place the workers
+     */
     private void updateCurrentPlayer(){
         if (numberOfAdd == 2)
             currentPlayer = players.get(1);
@@ -64,6 +93,10 @@ public class PlaceWorkerSetupHandler {
             currentPlayer = null;
     }
 
+    /**
+     * get a list of possible points where to place the workers
+     * @return list of possible points
+     */
     public List<Point> getPossiblePoint(){
         List<Point> possiblePoints = new ArrayList<>();
 
