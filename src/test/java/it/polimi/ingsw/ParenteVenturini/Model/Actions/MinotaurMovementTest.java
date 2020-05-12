@@ -49,15 +49,16 @@ class MinotaurMovementTest {
         assertThrows(IllegalMovementException.class,()->tester.doAction(p4,instance.getBoard(),player.selectWorker(0)));
 
         //check if worker moves on a position occupied by another worker
+        Player player2= new Player("player2",instance);
         Point p5= new Point(1,0);
         Point p6= new Point(2,0);
         player.selectWorker(0).setPosition(p3);
-        player.placeWorker(1,p5,instance.getBoard());
+        player2.placeWorker(1,p5,instance.getBoard());
         tester.doAction(p5,instance.getBoard(),player.selectWorker(0));
         assertEquals(player.selectWorker(0).getPosition().getX(), p5.getX());
         assertEquals(player.selectWorker(0).getPosition().getY(), p5.getY());
-        assertEquals(player.selectWorker(1).getPosition().getX(), p6.getX());
-        assertEquals(player.selectWorker(1).getPosition().getY(), p6.getY());
+        assertEquals(player2.selectWorker(0).getPosition().getX(), p6.getX());
+        assertEquals(player2.selectWorker(0).getPosition().getY(), p6.getY());
         Point p= new Point(3,0);
         instance.getBoard().setBlockLevel(p,4);
         tester.doAction(p6,instance.getBoard(),player.selectWorker(0));

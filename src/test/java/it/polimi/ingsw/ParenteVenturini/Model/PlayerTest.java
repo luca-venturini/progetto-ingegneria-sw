@@ -108,20 +108,37 @@ class PlayerTest {
     }
 
     @Test
-    void build(){
-
+    void build() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, IllegalBlockUpdateException, NoMorePlayersException, AlreadyPresentPlayerException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, OutOfOrderMoveException {
+        Point p0= new Point(2,2);
+        Point p1= new Point(1,1);
+        Point p2= new Point(1,2);
+        instance.addPlayer("player2");
+        testplayer.setCard(new HestiaCard());
+        instance.selectStarter("player");
+        instance.setTurn();
+        testplayer.placeWorker(1,p0,instance.getBoard());
+        instance.setTurn();
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        testplayer.walk(p1);
+        testplayer.build(p2);
+        assertTrue(instance.getBoard().blockLevel(p2)==1);
     }
 
     @Test
-    void specialBuild() {
-    }
-
-    @Test
-    void getPossibleMovements() {
-    }
-
-    @Test
-    void getPossibleBuildings() {
+    void specialBuild() throws NoMorePlayersException, AlreadyPresentPlayerException, AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, OutOfOrderMoveException {
+        Point p0= new Point(2,2);
+        Point p1= new Point(1,1);
+        Point p2= new Point(1,2);
+        instance.addPlayer("player2");
+        testplayer.setCard(new PanCard());
+        instance.selectStarter("player");
+        instance.setTurn();
+        testplayer.placeWorker(1,p0,instance.getBoard());
+        instance.setTurn();
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        testplayer.walk(p1);
+        testplayer.specialBuild(p2);
+        assertTrue(instance.getBoard().blockLevel(p2)==1);
     }
 
     @Test

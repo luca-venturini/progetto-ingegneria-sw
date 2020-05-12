@@ -195,7 +195,7 @@ public class Player{
     }
 
     /**
-     * the current worker setted in match build in a specified point
+     * the current worker set in match build in a specified point
      * @param p the specified point
      * @throws OpponentEffectException thrown if the action is not valid due to an OpponentEffect
      * @throws NotPossibleEndMoveException thrown if the action is not valid
