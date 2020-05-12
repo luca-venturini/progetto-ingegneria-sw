@@ -29,7 +29,6 @@ public class ClientDiProva {
         Scanner stdIn = new Scanner(System.in);
 
         clientSideController = new ClientSideController(stdIn, readStream, writeStream);
-        System.out.println("fase 4");
         viewInterface = new CLI(clientSideController);
 
         clientSideController.setView(viewInterface);
@@ -58,7 +57,7 @@ public class ClientDiProva {
         ClientDiProva c = new ClientDiProva();
 
         try {
-            System.out.println("test");
+            System.out.println("Utente connesso");
             c.startClient();
         } catch (Throwable e) {
             e.printStackTrace();

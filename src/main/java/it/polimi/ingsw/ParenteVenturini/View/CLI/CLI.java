@@ -28,11 +28,17 @@ public class CLI implements ViewInterface {
 
     @Override
     public String login(){
+        String numOfPlayers="";
+        boolean done=false;
         try {
             System.out.println("Inserire nickname");
             String name = stdIn.nextLine();
-            System.out.println("Inserire numero giocatori");
-            String numOfPlayers = stdIn.nextLine();
+            while (!done) {
+                System.out.println("Inserire numero giocatori");
+                numOfPlayers = stdIn.nextLine();
+                if(numOfPlayers.equals("2") || numOfPlayers.equals("3"))
+                    done=true;
+            }
             MessageToServer message = new AccessGameMessageRequest(name, numOfPlayers);
             clientSideController.sendMessage(message);
             System.out.println("Message inviato");
@@ -50,7 +56,8 @@ public class CLI implements ViewInterface {
     public void chooseCards(List<String> cardsName, int numberOfCardsRequired) {
         System.out.println("Digita il numero delle carte che vuoi usare:");
         List<String> choosen = new ArrayList<>();
-
+        boolean done=false;
+        String num="";
         int i = 1;
         for (String name: cardsName){
             System.out.println(i+" - "+name);
@@ -58,12 +65,21 @@ public class CLI implements ViewInterface {
         }
 
         while(choosen.size()!=numberOfCardsRequired){
-            System.out.println("numero: ");
-            String num = stdIn.nextLine();
+            while(!done) {
+                System.out.println("numero: ");
+                num = stdIn.nextLine();
+                try{
+                    Integer.parseInt(num);
+                    done=true;
+                }catch (NumberFormatException e){
+                    printString("Carattere inserito non valido");
+                }
+            }
             if(!choosen.contains(cardsName.get(Integer.parseInt(num)-1)))
                 choosen.add(cardsName.get(Integer.parseInt(num)-1));
             else
                 System.out.println("Carta già scelta");
+            done=false;
         }
 
         MessageToServer message = new StoreSelectedCardsRequest(nickname, choosen);
@@ -105,7 +121,12 @@ public class CLI implements ViewInterface {
             printString("2- Choose and send your card");
             printString("Choice: ");
             String number = stdIn.nextLine();
-            choice = Integer.parseInt(number);
+            if(number.equals("1") || number.equals("2")){
+                choice = Integer.parseInt(number);
+            }
+            else {
+                choice=3;
+            }
             if (choice == 1) {
                 MessageToServer message = new AvailableCardRequest(nickname);
                 clientSideController.sendMessage(message);
@@ -120,31 +141,31 @@ public class CLI implements ViewInterface {
 
     @Override
     public void displayBoard(Block[][] blocks, List<Point>workers, List<String>colours, List<String>index) {
-        printString("        0            1            2           3            4   ");
+        boolean q=false;
+        printString("     0      1      2      3      4   ");
         for(int i=0;i<5;i++) {
-            printString("  ------------------------------------------------------------------");
+            printString("  ------------------------------------");
             print(i+" | ");
             for (int j = 0; j < 5; j++) {
                 if(blocks[i][j].isDome()){
-                    print("O");
-                }
-                else {
-                    print(" ");
+                    print(" O");
                 }
                 for(Point p: workers) {
                     if (p.equals(i,j)) {
                         int k = Integer.parseInt(colours.get(workers.indexOf(p)));
                         colourPrint.print(k, "&"+index.get(workers.indexOf(p)));
-                    }
-                    else {
-                        print("  ");
+                        q=true;
                     }
                 }
-                print(" "+blocks[i][j].getLevel()+"| ");
+                if(q==false) {
+                    print("  ");
+                }
+                q=false;
+                print(" "+blocks[i][j].getLevel()+" | ");
             }
             print("\n");
         }
-        printString("  ------------------------------------------------------------------");
+        printString("  ------------------------------------");
     }
 
     @Override
@@ -161,7 +182,12 @@ public class CLI implements ViewInterface {
             printString("2- Choose starting player");
             printString("Choice: ");
             String number = stdIn.nextLine();
-            choice = Integer.parseInt(number);
+            if(number.equals("1") || number.equals("2")){
+                choice = Integer.parseInt(number);
+            }
+            else {
+                choice=3;
+            }
             if (choice == 1) {
                 MessageToServer message = new AvailablePlayerRequest(nickname);
                 clientSideController.sendMessage(message);
@@ -176,6 +202,9 @@ public class CLI implements ViewInterface {
 
     @Override
     public void displayPlaceWorkerMenu(String startingPlayer) {
+        String xPos="";
+        String yPos="";
+        boolean done=false;
         printString("--Menu Place Worker setUp--");
         printString("Inizia "+startingPlayer);
         if(nickname.equals(startingPlayer)) {
@@ -185,15 +214,29 @@ public class CLI implements ViewInterface {
                 printString("2- Place worker");
                 printString("Choice: ");
                 String number = stdIn.nextLine();
-                choice = Integer.parseInt(number);
+                if(number.equals("1") || number.equals("2")){
+                    choice = Integer.parseInt(number);
+                }
+                else {
+                    choice=3;
+                }
                 if (choice == 1) {
                     MessageToServer message = new AvailablePlaceWorkerPointRequest();
                     clientSideController.sendMessage(message);
                 } else if (choice == 2) {
-                    printString("x :");
-                    String xPos = stdIn.nextLine();
-                    printString("y :");
-                    String yPos = stdIn.nextLine();
+                    while (!done) {
+                        printString("x :");
+                        xPos = stdIn.nextLine();
+                        printString("y :");
+                        yPos = stdIn.nextLine();
+                        try{
+                            Integer.parseInt(xPos);
+                            Integer.parseInt(yPos);
+                            done=true;
+                        }catch (NumberFormatException e){
+                            printString("Carattere inserito non valido");
+                        }
+                    }
                     Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
                     MessageToServer message = new PlaceWorkerRequest(point, nickname);
                     clientSideController.sendMessage(message);
@@ -209,11 +252,23 @@ public class CLI implements ViewInterface {
 
     @Override
     public void displaySelectPoint(List<Point> points) {
-        printString("Seleziona punto:");
-        printString("x :");
-        String xPos = stdIn.nextLine();
-        printString("y :");
-        String yPos = stdIn.nextLine();
+        String xPos="";
+        String yPos="";
+        boolean done=false;
+        while(!done) {
+            printString("Seleziona punto:");
+            printString("x :");
+            xPos = stdIn.nextLine();
+            printString("y :");
+            yPos = stdIn.nextLine();
+            try{
+                Integer.parseInt(xPos);
+                Integer.parseInt(yPos);
+                done=true;
+            }catch (NumberFormatException e){
+                printString("Carattere inserito non valido");
+            }
+        }
         Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
         MessageToServer message = new ActionPointRequest(point, nickname);
         clientSideController.sendMessage(message);
@@ -266,7 +321,27 @@ public class CLI implements ViewInterface {
 
     @Override
     public void displayPlaceWorkerPossiblePoints(List<Point> points, String actualPlayer, List<Point> workersPoint, List<Integer> workersColor) {
-        printString(points.toString());
+        boolean k=false;
+        printString("    0   1   2   3   4   ");
+        for(int i=0;i<5;i++) {
+            printString("  ---------------------");
+            print(i+" | ");
+            for (int j = 0; j < 5; j++) {
+                for(Point p: points) {
+                    if (p.equals(i,j)) {
+                        print(" ");
+                        k=true;
+                    }
+                }
+                if(k==false) {
+                    print("X");
+                }
+                k=false;
+                print(" | ");
+            }
+            print("\n");
+        }
+        printString("  ---------------------");
         if(nickname.equals(actualPlayer))
             displayPlaceWorkerMenu(actualPlayer);
     }
@@ -319,7 +394,12 @@ public class CLI implements ViewInterface {
             printString("4- End Move");
             printString("Scelta: ");
             String number= stdIn.nextLine();
-            choice = Integer.parseInt(number);
+             if(number.equals("1") || number.equals("2") || number.equals("3") || number.equals("4") ){
+                 choice = Integer.parseInt(number);
+             }
+             else {
+                 choice=5;
+             }
             if (choice == 1) {
                 MessageToServer message = new ActionRequest(nickname,"Movement");
                 clientSideController.sendMessage(message);
@@ -347,7 +427,12 @@ public class CLI implements ViewInterface {
                 printString("2- Worker 2");
                 printString("Choice: ");
                 String number = stdIn.nextLine();
-                choice = Integer.parseInt(number);
+                if(number.equals("1") || number.equals("2")){
+                    choice = Integer.parseInt(number);
+                }
+                else {
+                    choice=3;
+                }
                 if(choice ==1 || choice ==2) {
                     MessageToServer message = new SelectWorkerRequest(nickname, number);
                     clientSideController.sendMessage(message);
