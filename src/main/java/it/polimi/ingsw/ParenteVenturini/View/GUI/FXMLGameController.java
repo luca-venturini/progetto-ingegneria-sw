@@ -269,6 +269,9 @@ public class FXMLGameController implements ViewController{
         move_button.setDisable(true);
         build_button.setDisable(true);
         specialbuild_button.setDisable(true);
+        if( !GUIHandler.clientSideController.getYourCard().equals("Atlas") ){
+            specialbuild_button.setVisible(false);
+        }
         endMove_button.setDisable(true);
         move_button.setOnAction(e -> sendMove("Movement") );
         build_button.setOnAction(e -> sendMove("Construction") );
