@@ -29,20 +29,23 @@ public class TritonMove extends Move {
         if(!hasEnded) {
             if( !hasBuilt) {
                 if (numOfMovements <= 1) {
+
+
                     if (numOfMovements == 1) {
                         Action action = new BasicMovement();
                         action.doAction(point, board, worker);
-                        numOfMovements++;
+                        if(!board.isPerimeterPoint(point))
+                            numOfMovements = 2;
                     }
                     if (numOfMovements == 0) {
                         Action action = new BasicMovement();
                         action.doAction(point, board, worker);
-                        if(board.isPerimeterPoint(point))
-                            numOfMovements++;
-                        else
+                        if(!board.isPerimeterPoint(point))
                             numOfMovements = 2;
                         hasWalked = true;
                     }
+
+
                 } else throw new AlreadyWalkedException();
             }else throw  new AlreadyBuiltException();
         }else throw  new endedMoveException();

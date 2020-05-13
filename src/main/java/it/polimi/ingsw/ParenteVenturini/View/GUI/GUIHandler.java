@@ -4,6 +4,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
+import it.polimi.ingsw.ParenteVenturini.View.ViewType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -35,7 +36,7 @@ public class GUIHandler extends Application implements ViewInterface {
     @Override
     public void start(Stage stage) throws Exception {
         connection = new Connection();
-        connection.connect();
+        connection.connect(ViewType.GUI);
 
         clientSideController = connection.getClientSideController();
         clientSideController.setView(this);

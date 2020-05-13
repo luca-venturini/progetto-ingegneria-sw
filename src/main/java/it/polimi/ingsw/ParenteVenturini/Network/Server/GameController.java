@@ -574,7 +574,7 @@ public class GameController {
             } catch (endedMoveException e) {
                 notifySingleClient(clientController,new ActionPointResponse("Hai terminato già la tua mossa",false));
             } catch (OutOfOrderMoveException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Devi prima muovere",false));
+                notifySingleClient(clientController,new ActionPointResponse("Mossa fuori ordine, devi prima muovere",false));
             } catch (NoPlayerException e) {
                 System.out.println("Errore inaspettato: Non ci sono giocatori");
             }

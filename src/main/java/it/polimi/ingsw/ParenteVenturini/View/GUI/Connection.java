@@ -2,6 +2,7 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.MessageListener;
+import it.polimi.ingsw.ParenteVenturini.View.ViewType;
 import javafx.application.Platform;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class Connection {
     private Socket socket;
     private ClientSideController clientSideController;
 
-    public void connect() {
+    public void connect(ViewType viewType) {
         socket = null;
         try {
             socket = new Socket(ip, port);
@@ -37,7 +38,8 @@ public class Connection {
         clientSideController = new ClientSideController(stdIn, readStream, writeStream);
 
         messageListener = new Thread(new MessageListener(clientSideController, readStream));
-        messageListener.setDaemon(true);
+        if(viewType.equals(ViewType.GUI))
+            messageListener.setDaemon(true);
         messageListener.start();
     }
 
