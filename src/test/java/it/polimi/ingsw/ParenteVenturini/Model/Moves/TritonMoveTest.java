@@ -46,6 +46,25 @@ class TritonMoveTest {
     }
 
     @Test
+    void walk_test3() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(0,1);
+        Point p3= new Point(1,1);
+        Point p4= new Point(1,2);
+        Point p5 = new Point(0,0);
+        Point p6 = new Point(1,0);
+        player.placeWorker(1,p1,instance.getBoard());
+        tester.walk(p2,instance.getBoard(),player.selectWorker(1));
+        tester.walk(p5,instance.getBoard(),player.selectWorker(1));
+        tester.walk(p6,instance.getBoard(),player.selectWorker(1));
+        tester.walk(p3,instance.getBoard(),player.selectWorker(1));
+        assertThrows(AlreadyWalkedException.class,()->tester.walk(p4,instance.getBoard(),player.selectWorker(1)));
+        assertFalse(tester.forcedMovement());
+        tester.build(new Point(2,1),instance.getBoard(),player.selectWorker(0));
+        assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
     void build() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,1);
