@@ -61,7 +61,7 @@ public class GameController {
         }
         try {
             match.addPlayer(nickname);
-            System.out.println("U add player");
+            System.out.println("add player");
             for (Player p: match.getPlayers())
                 System.out.println("---: "+p.getNickname());
         } catch (NoMorePlayersException | AlreadyPresentPlayerException | NoPlayerException e) {
@@ -175,6 +175,7 @@ public class GameController {
      * @param card the card you want to set
      */
     public synchronized void setPlayerCard(Player player, String card){
+        if(cardSetupHandler == null) return;
         if (card == null){
             notifySingleClient(player, new SetPlayerCardResponse( false, "Scegli una carta"));
         }
@@ -206,6 +207,7 @@ public class GameController {
      * @param clientController the interested client
      */
     public synchronized void sendPossibleCards(ClientController clientController){
+        if(cardSetupHandler == null) return;
         List<String> cardsName = new ArrayList<>();
         if(cardSetupHandler.getPossibleCards().isEmpty()) {
             notifySingleClient(clientController, new SimplyNotification("Nessuna carta disponibile"));
@@ -267,6 +269,7 @@ public class GameController {
      * @param position the point where the player want to place the workers
      */
     public synchronized void placeWorkers(Player player, Point position){
+        if(placeWorkerSetupHandler == null) return;
         Point point = new Point(position.getX(), position.getY());
         try {
             placeWorkerSetupHandler.setWorkerPosition(player, position);
@@ -298,6 +301,7 @@ public class GameController {
      * @param clientController the client
      */
     public synchronized void sendPossibleWorkersSetupPoint(ClientController clientController){
+        if(placeWorkerSetupHandler == null) return;
         List<Point> points = placeWorkerSetupHandler.getPossiblePoint();
         if(placeWorkerSetupHandler.getCurrentPlayer() != null)
             notifySingleClient(clientController, buildAvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()) );
@@ -455,6 +459,7 @@ public class GameController {
      * @param nickname the nickname of the player
      */
     public synchronized void doMove(ClientController clientController, String typeOfMove,String nickname){
+        if(moveHandler == null) return;
         moveHandler.init();
         List<Point> points;
         if(match.directGameOver()){
@@ -540,6 +545,7 @@ public class GameController {
      * @param nickname the client nickname
      */
     public synchronized void doAction(ClientController clientController,Point x, String nickname) {
+        if(moveHandler == null) return;
         try {
             try {
                 moveHandler.doAction(nickname,x);

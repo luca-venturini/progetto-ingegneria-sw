@@ -183,6 +183,7 @@ public class Player{
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
+        if(myWorker == null) throw new IllegalMovementException();
         if(match.getOpponentEffectContainer().checkMovementPoint(p, myWorker,match.getBoard())){
                 move.walk(p, match.getBoard(), myWorker);
                 OpponentEffect temp = card.getOpponentEffect();
@@ -209,6 +210,7 @@ public class Player{
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
+        if(myWorker == null) throw new IllegalBuildingException();
         if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard()) ){
                 move.build(p, match.getBoard(), myWorker);
                 OpponentEffect temp = card.getOpponentEffect();
@@ -234,6 +236,7 @@ public class Player{
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
+        if(myWorker == null) throw new IllegalBuildingException();
         if(match.getOpponentEffectContainer().checkConstructionPoint(p, myWorker, match.getBoard())){
                 move.specialBuild(p, match.getBoard(), myWorker);
                 OpponentEffect temp= card.getOpponentEffect();
@@ -254,6 +257,7 @@ public class Player{
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
+        if(myWorker == null) return new ArrayList<Point>();
         List<Point> temp = move.possibleMovements(match.getBoard(), myWorker);
         temp = match.getOpponentEffectContainer().removeMovementPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());
         return temp;
@@ -270,6 +274,7 @@ public class Player{
         if( this.move== null )
             this.move = callMove();
         Worker myWorker = match.getTurn().getCurrentWorker();
+        if(myWorker == null) return new ArrayList<Point>();
         List<Point> temp = move.possibleBuildings(match.getBoard(), myWorker);
         temp = match.getOpponentEffectContainer().removeConstructionPoint(temp, myWorker.getPosition(), myWorker.getEffect(), match.getBoard());
         return temp;

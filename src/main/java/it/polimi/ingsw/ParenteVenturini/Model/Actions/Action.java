@@ -48,7 +48,7 @@ public abstract class Action {
      * list of possible points where you can do the action
      * @param board the board
      * @param worker the worker
-     * @return list of possibile points
+     * @return list of possible points
      */
 
     public  List<Point> getPossibleActions(Board board, Worker worker) {

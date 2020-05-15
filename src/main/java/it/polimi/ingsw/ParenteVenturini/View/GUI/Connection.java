@@ -36,6 +36,7 @@ public class Connection {
         Scanner stdIn = new Scanner(System.in);
 
         clientSideController = new ClientSideController(stdIn, readStream, writeStream);
+        clientSideController.setConnection(this);
 
         messageListener = new Thread(new MessageListener(clientSideController, readStream));
         if(viewType.equals(ViewType.GUI))

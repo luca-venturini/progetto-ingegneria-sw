@@ -3,6 +3,7 @@ package it.polimi.ingsw.ParenteVenturini.Network.Client;
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
+import it.polimi.ingsw.ParenteVenturini.View.GUI.Connection;
 import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
 
@@ -21,6 +22,11 @@ public class ClientSideController implements ClientMessageHandler {
     private String nickname;
     private int color;
     private String yourCard;
+    private Connection connection;
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -83,7 +89,8 @@ public class ClientSideController implements ClientMessageHandler {
             //e.printStackTrace();
         }
         finally {
-            client.closeConnection();
+            connection.quitConnection();
+            //client.closeConnection();
         }
     }
 

@@ -23,7 +23,7 @@ public class GUIHandler extends Application implements ViewInterface {
 
     private Stage primaryStage;
     public static ClientSideController clientSideController;
-    Connection connection;
+    private Connection connection;
     private String nickname;
     private boolean inizializedboard=false;
     private FXMLStartButtonController firstPageController;

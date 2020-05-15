@@ -422,6 +422,7 @@ public class CLI implements ViewInterface {
         {
             int choice;
             do {
+                printString("Il tuo colore è: "+colorGenerator(clientSideController.getColor()));
                 printString("Seleziona il worker (1 o 2): ");
                 printString("1- Worker 1");
                 printString("2- Worker 2");
@@ -440,6 +441,16 @@ public class CLI implements ViewInterface {
             }while(choice<1 || choice>2);
         }
 
+    }
+
+    private String colorGenerator(int n){
+        if(n == 1)
+            return "red";
+        if(n == 2)
+            return "blue";
+        if(n == 3)
+            return "green";
+        return "none";
     }
 
 }
