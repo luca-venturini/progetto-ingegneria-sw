@@ -8,8 +8,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.List;
 
+/**
+ * check if a player win thanks to basic rules
+ */
 public class BasicWinCheck implements WinCheck {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasWon(Board board, Worker worker, List<Player> players) {
         for(Player p: players){
@@ -25,6 +31,9 @@ public class BasicWinCheck implements WinCheck {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean outOfTurnWon(Board board) {
         return false;

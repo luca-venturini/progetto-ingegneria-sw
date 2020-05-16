@@ -17,9 +17,14 @@ import java.util.List;
  */
 public class ZeusMove extends Move {
 
+    /** keep track of the number of building the player has already done */
     private int numOfBuilding;
+    /** used to check if the player has already built */
     private Point firstBuilding;
 
+    /**
+     * init the move
+     */
     public ZeusMove() {
         this.hasWalked = false;
         this.hasBuilt = false;
@@ -28,6 +33,9 @@ public class ZeusMove extends Move {
         this.firstBuilding = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -41,6 +49,9 @@ public class ZeusMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -55,6 +66,9 @@ public class ZeusMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
@@ -64,6 +78,9 @@ public class ZeusMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new ZeusConstruction();

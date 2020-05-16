@@ -6,6 +6,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.List;
 
+/**
+ * interface for the WinCHeck classes
+ */
 public interface WinCheck {
     /**
      * check if a player has won

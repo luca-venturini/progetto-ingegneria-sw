@@ -9,6 +9,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
  * this class represent the cards, it returns Move class, WinCheck class and OpponentEffect based on the specific card
  */
 public abstract class Card {
+    /** card's name */
     private String name;
 
     /**
@@ -20,13 +21,13 @@ public abstract class Card {
     }
 
     /**
-     * return a new Move
+     * get a new Move
      * @return the move based on the specific class
      */
     public abstract Move getMove();
 
     /**
-     * gat the name card
+     * get the name card
      * @return the card's name
      */
     public String getName() {
@@ -34,14 +35,14 @@ public abstract class Card {
     }
 
     /**
-     * return a new WinCheck
+     * get a new WinCheck
      * @return the WinCheck based on the specific class
      */
 
     public abstract WinCheck getWinCheck();
 
     /**
-     * return a new OpponentEffect
+     * get a new OpponentEffect
      * @return the OpponentEffect based on the specific class
      */
     public abstract OpponentEffect getOpponentEffect();

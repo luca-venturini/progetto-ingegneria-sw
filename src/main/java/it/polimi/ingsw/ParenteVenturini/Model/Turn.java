@@ -7,10 +7,15 @@ import java.util.List;
  */
 public class Turn {
 
+    /** list of players */
     private List<Player> players;
+    /** reference to the opponent effect container*/
     private OpponentEffectContainer opponentEffectContainer;
+    /** the current player */
     private Player currentPlayer;
+    /** the current worker */
     private Worker currentWorker;
+    /** turn's number */
     private int numTurn;
 
     /**
@@ -59,7 +64,7 @@ public class Turn {
     }
 
     /**
-     *
+     * get the current player
      * @return the player that must play at that moment
      */
     public Player getCurrentPlayer() {
@@ -67,7 +72,7 @@ public class Turn {
     }
 
     /**
-     *
+     * get the current worker
      * @return the chosen worker
      */
     public Worker getCurrentWorker() {
@@ -75,7 +80,7 @@ public class Turn {
     }
 
     /**
-     *
+     * get the number of the current turn
      * @return the number of the turn
      */
 

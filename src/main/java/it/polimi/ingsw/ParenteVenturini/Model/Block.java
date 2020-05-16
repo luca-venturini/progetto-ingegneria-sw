@@ -24,7 +24,7 @@ public class Block implements Serializable {
     }
 
     /**
-     *
+     * get the block level
      * @return the block level
      */
     public int getLevel() {
@@ -32,7 +32,7 @@ public class Block implements Serializable {
     }
 
     /**
-     *
+     * check if there is a dome
      * @return true if there is a dome
      */
     public boolean isDome() {
@@ -40,7 +40,7 @@ public class Block implements Serializable {
     }
 
     /**
-     *
+     * update the level of a block
      * @param level the new level of this block
      * @throws IllegalBlockUpdateException thrown if level values is incorrect
      */

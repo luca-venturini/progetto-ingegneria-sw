@@ -8,7 +8,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Special build action of Atlas card
+ */
 public class AtlasConstruction extends Action {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doAction(Point point, Board board, Worker worker) throws IllegalBuildingException {
         if(isValid(point, board, worker)){
@@ -17,12 +24,18 @@ public class AtlasConstruction extends Action {
         else throw new IllegalBuildingException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isValid(Point point, Board board, Worker worker) {
         List<Point> possibleActions=getPossibleActions(board,worker);
         return checkValid(point,possibleActions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> getPossibleActions(Board board, Worker worker) {
         List<Point> possibleActions;

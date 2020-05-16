@@ -97,7 +97,7 @@ public class Board {
     }
 
     /**
-     *
+     * get the block level
      * @param point the point you want ot check
      * @return the block level
      */
@@ -107,7 +107,7 @@ public class Board {
 
     /**
      *
-     *
+     * get the block level
      * @param x the x coordinate of the point you want to check
      * @param y the y coordinate of the point you want to check
      * @return the block level
@@ -141,7 +141,7 @@ public class Board {
 
 
     /**
-     *
+     * find the worker by his position
      * @param point the point of the board you are referring to
      * @return the worker placed in that specific point if there's one, else null
      */
@@ -154,7 +154,7 @@ public class Board {
     }
 
     /**
-     *
+     * find the worker by his position
      * @param x x coordinate of the point
      * @param y y coordinate of the point
      * @return the worker placed in that specific point if there's one, else null
@@ -170,7 +170,7 @@ public class Board {
     }
 
     /**
-     *
+     * check if th epoint is valid
      * @param point point of the board
      * @return true if the coordinates of the point are in the board
      */
@@ -180,7 +180,7 @@ public class Board {
 
     /**
      *
-     *
+     * check if the point is valid
      * @param x x coordinate of the point
      * @param y y coordinate of the point
      * @return true if the coordinates of the point are in the board
@@ -190,7 +190,7 @@ public class Board {
     }
 
     /**
-     *
+     * check if the point is a perimeter point
      * @param point point of the board
      * @return true if the point is on the perimeter
      */
@@ -199,7 +199,7 @@ public class Board {
     }
 
     /**
-     *
+     * find a block by his position
      * @param x x coordinate of the point
      * @param y y coordinate of the point
      * @return the block placed at that point
@@ -209,7 +209,7 @@ public class Board {
     }
 
     /**
-     *
+     * get the list of all of the workers placed on the board
      * @return list of all of the workers
      */
     public List<Worker> getWorkers() {
@@ -217,7 +217,7 @@ public class Board {
     }
 
     /**
-     *
+     * get the complete list of all of the blocks on the board
      * @return list of all of the blocks in the board
      */
     public List<Block> getBlocks(){

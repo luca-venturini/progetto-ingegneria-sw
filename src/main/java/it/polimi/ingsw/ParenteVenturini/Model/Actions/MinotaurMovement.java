@@ -9,7 +9,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * walk action of Minotaur card
+ */
 public class MinotaurMovement extends Action {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doAction(Point point, Board board, Worker worker) throws IllegalMovementException {
         if( isValid(point, board, worker) ){
@@ -23,12 +30,18 @@ public class MinotaurMovement extends Action {
         else throw new IllegalMovementException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isValid(Point point, Board board, Worker worker) {
         List<Point> possibleActions=getPossibleActions(board,worker);
         return checkValid(point,possibleActions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> getPossibleActions(Board board, Worker worker) {
         List<Point> possibleActions =  super.getPossibleActions(board, worker);

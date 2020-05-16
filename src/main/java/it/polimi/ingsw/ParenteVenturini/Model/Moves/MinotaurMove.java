@@ -16,12 +16,18 @@ import java.util.List;
  */
 public class MinotaurMove extends Move {
 
+    /**
+     * init the move
+     */
     public MinotaurMove() {
         hasWalked = false;
         hasBuilt = false;
         hasEnded = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws IllegalMovementException, AlreadyWalkedException, IllegalBuildingException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -35,6 +41,9 @@ public class MinotaurMove extends Move {
         }else throw  new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyBuiltException, OutOfOrderMoveException, endedMoveException {
         if(!hasEnded){
@@ -49,6 +58,9 @@ public class MinotaurMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new MinotaurMovement();
@@ -58,6 +70,9 @@ public class MinotaurMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();

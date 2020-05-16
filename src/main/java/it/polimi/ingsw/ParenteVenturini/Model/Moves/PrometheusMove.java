@@ -15,8 +15,12 @@ import java.util.List;
  */
 public class PrometheusMove extends Move {
 
+    /** used to check if the effect has already been activated*/
     private boolean specialEffectAlreadyActivated;
 
+    /**
+     * init the move
+     */
     public PrometheusMove() {
         hasWalked=false;
         hasBuilt=false;
@@ -24,6 +28,9 @@ public class PrometheusMove extends Move {
         specialEffectAlreadyActivated=false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException {
         if(!hasEnded) {
@@ -35,6 +42,9 @@ public class PrometheusMove extends Move {
         }else throw  new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, endedMoveException, AlreadyWalkedException {
         if(!hasEnded) {
@@ -51,6 +61,9 @@ public class PrometheusMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
@@ -60,6 +73,9 @@ public class PrometheusMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {
         Action action = new BasicConstruction();
@@ -72,11 +88,21 @@ public class PrometheusMove extends Move {
         else throw new AlreadyBuiltException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean forcedMovement() {
         return !hasWalked && specialEffectAlreadyActivated;
     }
 
+    /**
+     * supprot method to check if the card can use the special effect
+     * @param board the board
+     * @param worker the worker
+     * @return true if the special effect can be used
+     * @throws AlreadyWalkedException thrown if the effect can't be used because the worker has alredy built
+     */
     private boolean canUseSpecialEffect(Board board, Worker worker) throws AlreadyWalkedException {
         int level = board.blockLevel(worker.getPosition());
         List<Point> possiblePoints = possibleMovements(board, worker);

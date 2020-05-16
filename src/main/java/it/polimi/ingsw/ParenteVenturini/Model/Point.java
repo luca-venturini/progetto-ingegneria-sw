@@ -11,7 +11,7 @@ public class Point implements Serializable {
     private int y;
 
     /**
-     *
+     * create a new point
      * @param x x coordinate of the point
      * @param y y coordinate of the point
      */
@@ -30,7 +30,7 @@ public class Point implements Serializable {
     }
 
     /**
-     *
+     * get the X coordinate
      * @return the x coordinate of the point
      */
     public int getX() {
@@ -38,7 +38,7 @@ public class Point implements Serializable {
     }
 
     /**
-     *
+     * get the Y coordinate
      * @return the y coordinate of the point
      */
     public int getY() {
@@ -66,7 +66,7 @@ public class Point implements Serializable {
     }
 
     /**
-     *
+     * compare two points
      * @param p the other point
      * @return true if the points are equal
      */

@@ -20,6 +20,8 @@ public class MoveHandler {
     private boolean construction;
     /** true if the player requests to use specialBuilding */
     private boolean specialconstruction;
+    /** check if the player has already completed at least an action during his turn */
+    private boolean hasDoneAction;
 
     /**
      * init the class
@@ -30,7 +32,12 @@ public class MoveHandler {
         this.construction= false;
         this.movement= false;
         this.specialconstruction= false;
+        this.hasDoneAction = false;
 
+    }
+
+    public boolean hasDoneAction() {
+        return hasDoneAction;
     }
 
     /**
@@ -93,6 +100,8 @@ public class MoveHandler {
     public void doMovement(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().walk(x);
+            hasDoneAction = true;
+
         }
         else{
             throw new NotYourTurnException();
@@ -113,10 +122,12 @@ public class MoveHandler {
      * @throws NotPossibleEndMoveException exception thrown if you can't do the action, the name is self-explanatory
      * @throws AlreadyWalkedException exception thrown if you can't do the action, the name is self-explanatory
      * @throws endedMoveException exception thrown if you can't do the action, the name is self-explanatory
+     * @throws OutOfOrderMoveException exception thrown if the movement is not done in the right order
      */
     public void doBuilding(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, OutOfOrderMoveException, NotPossibleEndMoveException, AlreadyBuiltException, AlreadyWalkedException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().build(x);
+            hasDoneAction = true;
         }
         else{
             throw new NotYourTurnException();
@@ -140,6 +151,7 @@ public class MoveHandler {
     public void doSpecialBuilding(String nickname, Point x) throws NotYourTurnException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().specialBuild(x);
+            hasDoneAction = true;
         }
         else{
             throw new NotYourTurnException();
@@ -155,6 +167,7 @@ public class MoveHandler {
     public void doEndMove(String nickname) throws NotYourTurnException, NotPossibleEndMoveException {
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)) {
             match.getTurn().getCurrentPlayer().endMove();
+            hasDoneAction = false;
         }
         else{
             throw new NotYourTurnException();
@@ -176,7 +189,11 @@ public class MoveHandler {
             if(!match.getTurn().getCurrentPlayer().getPossibleMovements().isEmpty()) {
                 return match.getTurn().getCurrentPlayer().getPossibleMovements();
             }
-            else throw new NoPossibleActionException();
+            else{
+                if(hasDoneAction)
+                    throw new NoPossibleActionException("Nessuna azione possibile");
+                else throw new NoPossibleActionException("Nessuna azione possibile. Seleziona un altro worker");
+            }
         }
         else{
             throw new NotYourTurnException();
@@ -200,7 +217,9 @@ public class MoveHandler {
                 return match.getTurn().getCurrentPlayer().getPossibleBuildings();
             }
             else{
-                throw new NoPossibleActionException();
+                if(hasDoneAction)
+                    throw new NoPossibleActionException("Nessuna azione possibile");
+                else throw new NoPossibleActionException("Nessuna azione possibile. Seleziona un altro worker");
             }
         }
         else{
@@ -224,7 +243,11 @@ public class MoveHandler {
             if(!match.getTurn().getCurrentPlayer().getPossibleBuildings().isEmpty()) {
                 return match.getTurn().getCurrentPlayer().getPossibleBuildings();
             }
-            else throw new NoPossibleActionException();
+            else{
+                if(hasDoneAction)
+                    throw new NoPossibleActionException("Nessuna azione possibile");
+                else throw new NoPossibleActionException("Nessuna azione possibile. Seleziona un altro worker");
+            }
         }
         else{
             throw new NotYourTurnException();

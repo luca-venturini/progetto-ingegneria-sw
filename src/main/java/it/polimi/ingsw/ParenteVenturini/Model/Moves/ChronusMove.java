@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class ChronusMove extends Move {
 
+    /**
+     * init the move
+     */
     public ChronusMove() {
         this.hasWalked = false;
         this.hasBuilt = false;
@@ -22,6 +25,9 @@ public class ChronusMove extends Move {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -35,6 +41,9 @@ public class ChronusMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -51,6 +60,9 @@ public class ChronusMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
@@ -60,6 +72,9 @@ public class ChronusMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public java.util.List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();

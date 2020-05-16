@@ -15,8 +15,12 @@ import java.util.List;
  */
 public class TritonMove extends Move {
 
+    /** keep trackof the number of movements*/
     private int numOfMovements;
 
+    /**
+     * init the move
+     */
     public TritonMove() {
         this.hasWalked = false;
         this.hasBuilt = false;
@@ -24,6 +28,9 @@ public class TritonMove extends Move {
         this.numOfMovements = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -51,6 +58,9 @@ public class TritonMove extends Move {
         }else throw  new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -65,6 +75,9 @@ public class TritonMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public java.util.List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
@@ -80,6 +93,9 @@ public class TritonMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();
@@ -90,5 +106,13 @@ public class TritonMove extends Move {
             else throw new OutOfOrderMoveException();
         }
         else throw new AlreadyBuiltException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean forcedBuilding() {
+        return false;
     }
 }

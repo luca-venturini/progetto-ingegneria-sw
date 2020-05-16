@@ -9,7 +9,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * walk action of Apollo card
+ */
 public class ApolloMovement extends Action {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doAction(Point point, Board board, Worker worker) throws IllegalMovementException {
         if (isValid(point, board, worker)) {
@@ -21,6 +28,9 @@ public class ApolloMovement extends Action {
         } else throw new IllegalMovementException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isValid(Point point, Board board, Worker worker) {
         List<Point> possibleActions = getPossibleActions(board, worker);
@@ -28,6 +38,9 @@ public class ApolloMovement extends Action {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> getPossibleActions(Board board, Worker worker) {
         List<Point> possibleActions = super.getPossibleActions(board, worker);

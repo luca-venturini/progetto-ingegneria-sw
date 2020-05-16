@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class AtlasMove extends Move {
 
+    /**
+     * init the move
+     */
     public AtlasMove() {
         this.hasWalked = false;
         this.hasBuilt = false;
@@ -23,6 +26,9 @@ public class AtlasMove extends Move {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -36,6 +42,9 @@ public class AtlasMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -52,6 +61,9 @@ public class AtlasMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void specialBuild(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -68,6 +80,9 @@ public class AtlasMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
@@ -77,6 +92,9 @@ public class AtlasMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();

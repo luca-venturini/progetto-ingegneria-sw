@@ -9,8 +9,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Common build action
+ */
 public class BasicConstruction extends Action{
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doAction(Point point, Board board, Worker worker) throws IllegalBuildingException {
         if(isValid(point, board, worker)){
@@ -25,12 +31,18 @@ public class BasicConstruction extends Action{
         else throw new IllegalBuildingException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isValid(Point point, Board board, Worker worker) {
         List<Point> possibleActions=getPossibleActions(board,worker);
         return checkValid(point,possibleActions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> getPossibleActions(Board board, Worker worker) {
         List<Point> possibleActions=super.getPossibleActions(board, worker);

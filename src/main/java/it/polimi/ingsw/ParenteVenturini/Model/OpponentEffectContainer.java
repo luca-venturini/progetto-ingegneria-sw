@@ -5,9 +5,12 @@ import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 import java.util.ArrayList;
 import java.util.List;
 
+/** this class contains the Opponent Effect active and the Effect that will be activated the next turn */
 public class OpponentEffectContainer {
 
+    /** active opponent effects */
     List<OpponentEffect> nextTurn = new ArrayList<>();
+    /** effect that are activating the next turn */
     List<OpponentEffect> thisTurn = new ArrayList<>();
 
     /**
@@ -20,7 +23,7 @@ public class OpponentEffectContainer {
     }
 
     /**
-     * remov the effect from the container
+     * remove the effect from the container
      * @param effect the effect that must be removed
      */
     public void removeEffect(OpponentEffect effect){

@@ -10,6 +10,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class represent a single player
+ */
 public class Player{
 
     /** the player's card */
@@ -87,7 +90,7 @@ public class Player{
     }
 
     /**
-     * return a new Move object
+     * get a new Move object
      * @return a new Move object
      */
     public Move callMove(){
@@ -205,6 +208,7 @@ public class Player{
      * @throws IllegalBuildingException thrown if you can not build
      * @throws endedMoveException thrown if you can't do anything else
      * @throws IllegalMovementException thrown if the action is not valid
+     * @throws OutOfOrderMoveException thrown if the movement isn't done in the right order
      */
     public void build(Point p) throws OpponentEffectException, AlreadyBuiltException, IllegalBuildingException, OutOfOrderMoveException, endedMoveException, IllegalMovementException, NotPossibleEndMoveException, AlreadyWalkedException {
         if( this.move== null )
@@ -231,6 +235,7 @@ public class Player{
      * @throws IllegalBuildingException thrown if you can not build
      * @throws endedMoveException thrown if you can't do anything else
      * @throws IllegalMovementException thrown if the action is not valid
+     * @throws OutOfOrderMoveException thrown if the movement isn't done in the right order
      */
     public void specialBuild(Point p) throws OpponentEffectException, OutOfOrderMoveException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyWalkedException {
         if( this.move== null )

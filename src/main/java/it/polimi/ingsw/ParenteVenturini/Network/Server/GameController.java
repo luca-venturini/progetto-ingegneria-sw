@@ -359,7 +359,8 @@ public class GameController {
      */
     public synchronized void notifyYourTurn(){
         if(match.gameOver()) {
-            notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
+            if(match.getNumPlayers()>2)
+                notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
             try {
                 manageGameOver();
             } catch (NoPlayerException e) {
@@ -462,8 +463,9 @@ public class GameController {
         if(moveHandler == null) return;
         moveHandler.init();
         List<Point> points;
-        if(match.directGameOver()){
-            notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
+        if(moveHandler.hasDoneAction() && match.directGameOver()){
+            if(match.getNumPlayers()>2)
+                notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
             try {
                 manageGameOver();
             } catch (NoPlayerException e) {
@@ -479,7 +481,7 @@ public class GameController {
                     } catch (NotYourTurnException e) {
                         notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
                     } catch (NoPossibleActionException e) {
-                        notifySingleClient(clientController, new ActionNotification("Nessuna azione possibile. Seleziona un altro worker"));
+                        notifySingleClient(clientController, new ActionNotification(e.getErrorMessage()));
                     } catch (AlreadyWalkedException e) {
                         notifySingleClient(clientController, new ActionNotification("Hai già mosso"));
                     }
@@ -492,7 +494,7 @@ public class GameController {
                     } catch (NotYourTurnException e) {
                         notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
                     } catch (NoPossibleActionException e) {
-                        notifySingleClient(clientController, new ActionNotification("Nessuna azione possibile"));
+                        notifySingleClient(clientController, new ActionNotification(e.getErrorMessage()));
                     } catch (OutOfOrderMoveException e) {
                         notifySingleClient(clientController, new ActionNotification("Devi prima muovere"));
                     } catch (AlreadyBuiltException e) {
@@ -509,7 +511,7 @@ public class GameController {
                     } catch (NotYourTurnException e) {
                         notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
                     } catch (NoPossibleActionException e) {
-                        notifySingleClient(clientController, new ActionNotification("Nessuna azione possibile"));
+                        notifySingleClient(clientController, new ActionNotification(e.getErrorMessage()));
                     } catch (OutOfOrderMoveException e) {
                         notifySingleClient(clientController, new ActionNotification("Devi prima muovere"));
                     } catch (AlreadyBuiltException e) {
@@ -554,11 +556,21 @@ public class GameController {
                 if(moveHandler.isMovement() && match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
                     notifyAllClients(new WinNotification(nickname));
                     notifySingleClient(clientController, new VictoryNotification() );
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     disconnectAllPlayers();
                 }
                 else if(match.outOfTurnWin() != null){
                     notifyAllClients(new WinNotification(match.outOfTurnWin().getNickname()));
                     notifySingleClient(clientController, new VictoryNotification() );
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     disconnectAllPlayers();
                 }
                 else{

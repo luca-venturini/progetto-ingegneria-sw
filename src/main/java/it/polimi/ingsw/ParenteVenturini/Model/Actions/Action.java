@@ -9,6 +9,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * action that the workers can do, based on the player's card
+ */
 public abstract class Action {
 
     /**
@@ -31,7 +34,7 @@ public abstract class Action {
     public abstract boolean  isValid(Point point, Board board, Worker worker);
 
     /**
-     *
+     * check if the point is in the possible actions
      * @param point a point
      * @param possibleActions list of points
      * @return true if the point is in the list

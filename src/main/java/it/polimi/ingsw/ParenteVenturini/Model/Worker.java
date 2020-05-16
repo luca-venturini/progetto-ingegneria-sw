@@ -4,11 +4,18 @@ import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
 
 import java.io.Serializable;
 
+/**
+ * class that represent a worker
+ */
 public class Worker implements Serializable {
 
+    /** the worker position */
     private Point position;
+    /** the previous worker position */
     private Point lastPosition;
+    /** the player that owns the worker */
     private Player player;
+    /** the worker color */
     private int colour;
 
     /**

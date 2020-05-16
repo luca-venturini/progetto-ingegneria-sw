@@ -16,12 +16,18 @@ import java.util.List;
 
 public class ApolloMove extends Move {
 
+    /**
+     * init the move
+     */
     public ApolloMove() {
         hasWalked=false;
         hasBuilt = false;
         hasEnded=false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws AlreadyWalkedException, IllegalBuildingException, IllegalMovementException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -35,6 +41,9 @@ public class ApolloMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws OutOfOrderMoveException, IllegalBuildingException, IllegalMovementException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -51,6 +60,9 @@ public class ApolloMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new ApolloMovement();
@@ -60,6 +72,9 @@ public class ApolloMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();

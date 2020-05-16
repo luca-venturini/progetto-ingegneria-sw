@@ -7,6 +7,7 @@ import java.util.List;
  * this class contains all the possible cards
  */
 public class Deck {
+    /** list of deck's card */
     private List<Card> cards;
 
     /**

@@ -14,16 +14,28 @@ import java.util.Random;
  * the Match class
  */
 public class Match {
+    /** list of players */
     private List<Player> players;
+    /** list of chosen cards */
     private List<Card> chosenCards;
+    /** the board */
     private Board board;
+    /** the deck */
     private Deck deck;
+    /** starting player */
     private Player starter;
+    /** the type of match */
     private int typeOfMatch;
+    /** the container that contains the active opponent effects */
     private OpponentEffectContainer opponentEffectContainer;
+    /** reference to the turn */
     private Turn turn;
+    /** the chosen challenger */
     private Player challenger;
 
+    /**
+     * init the match class
+     */
     public Match(){
         this.board= new Board();
         this.deck= new Deck();
@@ -60,15 +72,24 @@ public class Match {
     }
 
     /**
-     * check the gameover due to building
+     * check the gameOver due to impossible walk or building
      * @return true if the player has lost
      */
 
     public boolean directGameOver(){
-        Move move = this.getTurn().getCurrentPlayer().getMove();
+        Move move = turn.getCurrentPlayer().getMove();
         Worker currentWorker = turn.getCurrentWorker();
+        if(move.forcedMovement()) {
+            System.out.println("game over movement");
+            return gameOverMovement(move, board, currentWorker);
+        }
         if(move.forcedBuilding()) {
+            System.out.println("game over building");
             return gameOverBuilding(move, board, currentWorker);
+        }
+        if(!move.forcedMovement() && !move.forcedBuilding() && !move.getHasWalkedandBuilt()) {
+            System.out.println("game over not forced");
+            return gameOverMovement(move, board, currentWorker) && gameOverBuilding(move, board, currentWorker);
         }
         return false;
     }
@@ -80,7 +101,6 @@ public class Match {
 
     public boolean gameOver()  {
         Move move = this.getTurn().getCurrentPlayer().getMove();
-
         List<Worker> workers = this.getTurn().getCurrentPlayer().getWorkers();
         boolean result = false;
         if(move.forcedMovement()){
@@ -132,7 +152,7 @@ public class Match {
     }
 
     /**
-     *
+     * get the game board
      * @return the used board
      */
     public Board getBoard() {
@@ -140,7 +160,7 @@ public class Match {
     }
 
     /**
-     *
+     * get the challenger
      * @return the selected challenger
      */
     public Player getChallenger() {
@@ -159,7 +179,7 @@ public class Match {
     }
 
     /**
-     *
+     * get the container which contains the opponent effects activated
      * @return the opponentEffectContainer reference
      */
     public OpponentEffectContainer getOpponentEffectContainer() {
@@ -167,7 +187,7 @@ public class Match {
     }
 
     /**
-     *
+     * get the number of players
      * @return the number of the players in game
      */
     public int getNumPlayers() {
@@ -177,7 +197,7 @@ public class Match {
     }
 
     /**
-     *
+     * get the type of match (2 or 3 players)
      * @return the type of match, 2 or 3 players
      */
     public int getTypeOfMatch() {
@@ -185,7 +205,7 @@ public class Match {
     }
 
     /**
-     *
+     * get the starting player
      * @return the starting player
      */
     public Player getStarter() {
@@ -248,7 +268,7 @@ public class Match {
     }
 
     /**
-     *
+     * select the starting player by his nickname
      * @param nickname the starting player nickname
      * @throws AlreadyChosenStarterException thrown if the starting player has already been chosen
      * @throws InvalidNamePlayerException thrown if the given name doesn't exists in the match
@@ -272,7 +292,7 @@ public class Match {
     }
 
     /**
-     *
+     * get the list of chosen cards
      * @return list of chosen cards
      */
 
@@ -302,7 +322,7 @@ public class Match {
     }
 
     /**
-     * set thelist of cards choosen by the challenger
+     * set the list of cards chosen by the challenger
      * @param cards the list of chosen cards
      */
     public void setChosenCards(List<Card> cards){

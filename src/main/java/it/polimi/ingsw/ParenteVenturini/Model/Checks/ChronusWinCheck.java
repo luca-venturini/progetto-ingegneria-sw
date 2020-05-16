@@ -7,13 +7,22 @@ import it.polimi.ingsw.ParenteVenturini.Model.Worker;
 
 import java.util.List;
 
+/**
+ * check if the player wins thanks to basic or Chronus win rules
+ */
 public class ChronusWinCheck extends BasicWinCheck{
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasWon(Board board, Worker worker, List<Player> players) {
         return super.hasWon(board, worker, players);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean outOfTurnWon(Board board) {
         int sum = 0;

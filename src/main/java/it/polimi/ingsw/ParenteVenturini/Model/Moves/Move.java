@@ -14,8 +14,11 @@ import java.util.List;
  */
 public abstract class Move {
 
+    /** variable that check if the player has already walked */
     protected boolean hasWalked;
+    /** variable that check if the player has already built */
     protected boolean hasBuilt;
+    /** variable that check if the player can't do other actions */
     protected boolean hasEnded;
 
     /**

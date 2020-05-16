@@ -8,6 +8,9 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.MessageToClient
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.SimplyNotification;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 
+/**
+ * this controller controls a single client connected
+ */
 public class ClientController implements ServerMessageHandler {
 
     /** reference to the class that generated this class */
@@ -17,7 +20,10 @@ public class ClientController implements ServerMessageHandler {
     /** reference to the player in the game */
     private Player player;
 
-    /** init the class*/
+    /**
+     * init the class
+     * @param clientThread the thread that handle the client
+     */
     public ClientController(ClientThreadFromServer clientThread) {
         this.clientThread = clientThread;
         gameController = null;

@@ -25,7 +25,7 @@ public class ClientThreadFromServer {
 
     /**
      * init the class
-     * @param socket
+     * @param socket the socket
      */
     public ClientThreadFromServer(Socket socket) {
         this.clientSocket = socket;

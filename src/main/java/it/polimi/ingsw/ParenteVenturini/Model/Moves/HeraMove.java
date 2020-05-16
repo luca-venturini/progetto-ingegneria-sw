@@ -14,6 +14,10 @@ import java.util.List;
  * Handle the moves of this Card's owner
  */
 public class HeraMove extends Move {
+
+    /**
+     * init the move
+     */
     public HeraMove() {
         this.hasWalked = false;
         this.hasBuilt = false;
@@ -21,6 +25,9 @@ public class HeraMove extends Move {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void walk(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, AlreadyWalkedException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -34,6 +41,9 @@ public class HeraMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, endedMoveException, AlreadyBuiltException {
         if(!hasEnded) {
@@ -50,6 +60,9 @@ public class HeraMove extends Move {
         }else throw new endedMoveException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
@@ -59,6 +72,9 @@ public class HeraMove extends Move {
         else throw new AlreadyWalkedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public java.util.List<Point> possibleBuildings(Board board, Worker worker) throws OutOfOrderMoveException, AlreadyBuiltException {
         Action action = new BasicConstruction();
