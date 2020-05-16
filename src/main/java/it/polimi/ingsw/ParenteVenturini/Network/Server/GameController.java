@@ -246,7 +246,7 @@ public class GameController {
     }
 
     /**
-     * send a list of the player's nickname
+     * send a list of the player's nicknames
      * @param clientController the client who will receive the list
      */
     public synchronized void sendPossiblePlayers(ClientController clientController){
