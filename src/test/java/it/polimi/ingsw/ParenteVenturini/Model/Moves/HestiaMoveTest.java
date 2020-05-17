@@ -71,4 +71,38 @@ class HestiaMoveTest {
         tester.build(p3,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
     }
+
+    @Test
+    void notAllowedBuilding() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        Point p3= new Point(2,0);
+        assertThrows(OutOfOrderMoveException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        for(Point p: tester.possibleBuildings(instance.getBoard(), player.selectWorker(0))) {
+            if (p.getX() == 0 || p.getY() == 0)
+                assertThrows(IllegalBuildingException.class, () -> tester.build(p3,instance.getBoard(),player.selectWorker(0)) );
+        }
+    }
+
+    @Test
+    void buildOnTheSameBlock() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+    }
+
+    @Test
+    void buildOnDifferentBlock() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        Point p3= new Point(1,2);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        tester.build(p3,instance.getBoard(),player.selectWorker(0));
+    }
+
 }

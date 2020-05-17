@@ -12,14 +12,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class MinotaurMoveTest {
     private Match instance;
     private Player player;
+    private Player otherPlayer;
     private Move tester;
 
     @BeforeEach
     void setUp() {
         instance= new Match();
         player= new Player("player",instance);
+        otherPlayer = new Player("other", instance);
         Point x= new Point(2,2);
         player.placeWorker(1,x,instance.getBoard());
+        otherPlayer.placeWorker(2, new Point(3,3),instance.getBoard());
         tester= new MinotaurMove();
     }
 
@@ -31,6 +34,14 @@ class MinotaurMoveTest {
         assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
+    void walkVersusAnother() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {
+        Point p1= new Point(3,3);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        boolean res = otherPlayer.getWorkers().get(0).getPosition().equals(new Point(4,4));
+        assertTrue(res);
     }
 
     @Test
@@ -62,4 +73,6 @@ class MinotaurMoveTest {
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
     }
+
+
 }

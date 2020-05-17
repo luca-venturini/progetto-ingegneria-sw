@@ -19,7 +19,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane alignment="CENTER" columnHalignment="CENTER" styleClass="light-blue-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLGameController">
+<FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="775.0" prefWidth="1280.0" styleClass="light-blue-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLGameController">
    <children>
       <HBox prefHeight="57.0" prefWidth="1278.0">
          <children>

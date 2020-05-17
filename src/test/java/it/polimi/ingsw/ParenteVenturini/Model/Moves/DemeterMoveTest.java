@@ -7,6 +7,8 @@ import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DemeterMoveTest {
@@ -51,6 +53,17 @@ class DemeterMoveTest {
     }
 
     @Test
+    void notPossibleBuildingTest() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        Point p3= new Point(2,2);
+        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        assertThrows(IllegalBuildingException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)) );
+    }
+
+    @Test
     void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {
         Point p1= new Point(1,1);
         assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));
@@ -69,5 +82,28 @@ class DemeterMoveTest {
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         tester.build(p3,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
+    void doubleBuildingNotPossible() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        Point p3= new Point(2,2);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        List<Point> pointList = tester.possibleBuildings(instance.getBoard(), player.selectWorker(0));
+        boolean res = checkIfContainsPoint(pointList, new Point(0,0));
+        assertTrue(res);
+        tester.build(new Point(0,0),instance.getBoard(),player.selectWorker(0));
+        pointList = tester.possibleBuildings(instance.getBoard(), player.selectWorker(0));
+        boolean res2 = checkIfContainsPoint(pointList, new Point(0,0));
+        assertTrue(!res2);
+    }
+
+    private boolean checkIfContainsPoint(List<Point> points, Point p){
+        for(Point point: points) {
+            if (point.equals(p))
+                return true;
+        }
+        return false;
     }
 }

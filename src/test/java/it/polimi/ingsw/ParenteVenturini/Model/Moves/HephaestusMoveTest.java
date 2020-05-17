@@ -74,4 +74,12 @@ class HephaestusMoveTest {
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
     }
+
+    @Test
+    void possibleBuildings2() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, IllegalBlockUpdateException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,2);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        assertEquals(p2, tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)).get(0)); }
 }

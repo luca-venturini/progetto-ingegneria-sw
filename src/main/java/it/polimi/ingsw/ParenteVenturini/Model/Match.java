@@ -79,6 +79,7 @@ public class Match {
     public boolean directGameOver(){
         Move move = turn.getCurrentPlayer().getMove();
         Worker currentWorker = turn.getCurrentWorker();
+        if(move == null || currentWorker == null) return false;
         if(move.forcedMovement()) {
             System.out.println("game over movement");
             return gameOverMovement(move, board, currentWorker);
@@ -101,6 +102,7 @@ public class Match {
 
     public boolean gameOver()  {
         Move move = this.getTurn().getCurrentPlayer().getMove();
+        if(move == null) return false;
         List<Worker> workers = this.getTurn().getCurrentPlayer().getWorkers();
         boolean result = false;
         if(move.forcedMovement()){

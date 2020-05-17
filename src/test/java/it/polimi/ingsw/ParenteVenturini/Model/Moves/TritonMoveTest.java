@@ -93,7 +93,6 @@ class TritonMoveTest {
         tester.walk(p1,instance.getBoard(),player.selectWorker(1));
         assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(1)));
         tester.walk(p2,instance.getBoard(),player.selectWorker(1));
-        assertThrows(AlreadyWalkedException.class,()->tester.possibleMovements(instance.getBoard(),player.selectWorker(1)));
     }
 
     @Test

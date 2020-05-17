@@ -50,6 +50,7 @@ class AtlasMoveTest {
         assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         tester.specialBuild(p2,instance.getBoard(),player.selectWorker(0));
+        assertEquals(true, instance.getBoard().isThereDome(p2));
         assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));
         assertThrows(endedMoveException.class,()->tester.specialBuild(p2,instance.getBoard(),player.selectWorker(0)));
     }

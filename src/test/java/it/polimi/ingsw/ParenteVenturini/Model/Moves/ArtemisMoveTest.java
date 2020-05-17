@@ -64,11 +64,20 @@ class ArtemisMoveTest {
     void possibleMovements() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,1);
-        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));
+        assertTrue(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)).size()==3);
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
-        assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));
+        assertTrue(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)).size()==7);
         tester.walk(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyWalkedException.class,()->tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
+    void eliminateFirstPointForSecondWalk() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, AlreadyBuiltException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        for(Point p: tester.possibleMovements(instance.getBoard(), player.selectWorker(0)))
+            assertTrue(!p.equals(new Point(0,0)));
     }
 
     @Test
