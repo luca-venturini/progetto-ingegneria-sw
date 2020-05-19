@@ -4,7 +4,6 @@ import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ColourPrint;
-import it.polimi.ingsw.ParenteVenturini.Network.Client.LightWorker;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
 import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 
@@ -17,12 +16,10 @@ public class CLI implements ViewInterface {
     private Scanner stdIn = new Scanner(System.in);
     private ClientSideController clientSideController;
     private String nickname;
-    private List<LightWorker> lightWorkers;
     private ColourPrint colourPrint;
 
     public CLI(ClientSideController clientInMessageHandler) {
         this.clientSideController = clientInMessageHandler;
-        this.lightWorkers = new ArrayList<>();
         this.colourPrint = new ColourPrint();
     }
 
@@ -31,18 +28,18 @@ public class CLI implements ViewInterface {
         String numOfPlayers="";
         boolean done=false;
         try {
-            System.out.println("Inserire nickname");
+            System.out.println("Insert nickname: ");
             String name = stdIn.nextLine();
             while (!done) {
-                System.out.println("Inserire numero giocatori");
+                System.out.println("Insert number of players: ");
                 numOfPlayers = stdIn.nextLine();
                 if(numOfPlayers.equals("2") || numOfPlayers.equals("3"))
                     done=true;
             }
             MessageToServer message = new AccessGameMessageRequest(name, numOfPlayers);
             clientSideController.sendMessage(message);
-            System.out.println("Message inviato");
-            System.out.println("Il tuo nickname è: "+name);
+            System.out.println("Message sent");
+            System.out.println("your nickname is: "+name);
             nickname = name;
             return name;
         }
@@ -54,7 +51,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void chooseCards(List<String> cardsName, int numberOfCardsRequired) {
-        System.out.println("Digita il numero delle carte che vuoi usare:");
+        System.out.println("Choose your card by number:");
         List<String> choosen = new ArrayList<>();
         boolean done=false;
         String num="";
@@ -66,25 +63,25 @@ public class CLI implements ViewInterface {
 
         while(choosen.size()!=numberOfCardsRequired){
             while(!done) {
-                System.out.println("numero: ");
+                System.out.println("number: ");
                 num = stdIn.nextLine();
                 try{
                     Integer.parseInt(num);
                     done=true;
                 }catch (NumberFormatException e){
-                    printString("Carattere inserito non valido");
+                    printString("Not valid digit");
                 }
             }
             if(!choosen.contains(cardsName.get(Integer.parseInt(num)-1)))
                 choosen.add(cardsName.get(Integer.parseInt(num)-1));
             else
-                System.out.println("Carta già scelta");
+                System.out.println("Card already chosen");
             done=false;
         }
 
         MessageToServer message = new StoreSelectedCardsRequest(nickname, choosen);
         clientSideController.sendMessage(message);
-        System.out.println("Message inviato");
+        System.out.println("Message sent");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -105,9 +102,9 @@ public class CLI implements ViewInterface {
     public void displayMenu(){
         while(true) {
             printString("--Menu--");
-            printString("1- Scegli la tua carta");
-            printString("2- Posiziona operai");
-            printString("Scelta: ");
+            printString("1- Choose your card");
+            printString("2- Place your worker");
+            printString("Choice: ");
             stdIn.nextLine();
         }
     }
@@ -131,7 +128,7 @@ public class CLI implements ViewInterface {
                 MessageToServer message = new AvailableCardRequest(nickname);
                 clientSideController.sendMessage(message);
             } else if (choice == 2) {
-                printString("card name:");
+                printString("Card name:");
                 String card = stdIn.nextLine();
                 MessageToServer message = new SetPlayerCardRequest(nickname, card);
                 clientSideController.sendMessage(message);
@@ -192,7 +189,7 @@ public class CLI implements ViewInterface {
                 MessageToServer message = new AvailablePlayerRequest(nickname);
                 clientSideController.sendMessage(message);
             } else if (choice == 2) {
-                printString("player name:");
+                printString("Player name:");
                 String playerName = stdIn.nextLine();
                 MessageToServer message = new SetStartingPlayerRequest(nickname, playerName);
                 clientSideController.sendMessage(message);
@@ -206,7 +203,7 @@ public class CLI implements ViewInterface {
         String yPos="";
         boolean done=false;
         printString("--Menu Place Worker setUp--");
-        printString("Inizia "+startingPlayer);
+        printString("Start "+startingPlayer);
         if(nickname.equals(startingPlayer)) {
             int choice;
             do {
@@ -234,7 +231,7 @@ public class CLI implements ViewInterface {
                             Integer.parseInt(yPos);
                             done=true;
                         }catch (NumberFormatException e){
-                            printString("Carattere inserito non valido");
+                            printString("Not valid digit");
                         }
                     }
                     Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
@@ -245,10 +242,6 @@ public class CLI implements ViewInterface {
         }
     }
 
-    @Override
-    public void addLightWorker(Point point) {
-        lightWorkers.add(new LightWorker(point));
-    }
 
     @Override
     public void displaySelectPoint(List<Point> points) {
@@ -256,7 +249,7 @@ public class CLI implements ViewInterface {
         String yPos="";
         boolean done=false;
         while(!done) {
-            printString("Seleziona punto:");
+            printString("Choose a point:");
             printString("x :");
             xPos = stdIn.nextLine();
             printString("y :");
@@ -266,7 +259,7 @@ public class CLI implements ViewInterface {
                 Integer.parseInt(yPos);
                 done=true;
             }catch (NumberFormatException e){
-                printString("Carattere inserito non valido");
+                printString("Not valid digit");
             }
         }
         Point point = new Point(Integer.parseInt(xPos), Integer.parseInt(yPos));
@@ -278,16 +271,6 @@ public class CLI implements ViewInterface {
     public void startGame(ClientSideController clientSideController) {
         nickname = login();
         clientSideController.setNickname(nickname);
-    }
-
-    @Override
-    public void setController(ClientSideController clientSideController) {
-
-    }
-
-    @Override
-    public void closeConnection() {
-
     }
 
     @Override
@@ -304,7 +287,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void waitPage() {
-        System.out.println("Attendi...");
+        System.out.println("Wait...");
     }
 
     @Override
@@ -353,29 +336,14 @@ public class CLI implements ViewInterface {
 
     @Override
     public void loadLogin() {
-        System.out.println("INIZIA UNA NUOVA PARTITA!");
+        System.out.println("START A NEW MATCH!");
         startGame(clientSideController);
     }
 
     @Override
-    public void displayTurn(String num) {
-
-    }
-
-    @Override
-    public void displayEndMove() {
-
-    }
-
-    @Override
-    public void displayWin() {
-
-    }
-
-    @Override
     public void displayEndGame() {
-        printString("Vuoi continuare a vedere la partita?");
-        printString("Scegli (y o n):");
+        printString("Do you want to continue watching the match?");
+        printString("Choice (y o n):");
         String choice = stdIn.nextLine();
         if(!choice.equals("y")){
             MessageToServer message = new EndGameRequest();
@@ -392,7 +360,7 @@ public class CLI implements ViewInterface {
             printString("2- Construction");
             printString("3- Special Construction");
             printString("4- End Move");
-            printString("Scelta: ");
+            printString("Choice: ");
             String number= stdIn.nextLine();
              if(number.equals("1") || number.equals("2") || number.equals("3") || number.equals("4") ){
                  choice = Integer.parseInt(number);
@@ -422,8 +390,8 @@ public class CLI implements ViewInterface {
         {
             int choice;
             do {
-                printString("Il tuo colore è: "+colorGenerator(clientSideController.getColor()));
-                printString("Seleziona il worker (1 o 2): ");
+                printString("Your color is: "+colorGenerator(clientSideController.getColor()));
+                printString("Select which worker you want to use (1 o 2): ");
                 printString("1- Worker 1");
                 printString("2- Worker 2");
                 printString("Choice: ");
@@ -451,6 +419,32 @@ public class CLI implements ViewInterface {
         if(n == 3)
             return "green";
         return "none";
+    }
+
+    @Override
+    public void displayTurn(String num) {
+
+    }
+
+    @Override
+    public void displayEndMove() {
+
+    }
+
+    @Override
+    public void displayWin() {
+
+    }
+
+    @Override
+    public void displayOtherPlayers(List<String> nicknames, List<String> cards, List<Integer> colors) {
+
+    }
+
+
+    @Override
+    public void closeConnection() {
+
     }
 
 }

@@ -3,16 +3,23 @@ package it.polimi.ingsw.ParenteVenturini.View.GUI;
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Model.Point;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
+import it.polimi.ingsw.ParenteVenturini.Network.Client.Connection;
 import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.ViewType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -325,16 +332,60 @@ public class GUIHandler extends Application implements ViewInterface {
     }
 
     @Override
-    public void addLightWorker(Point point) {
-
+    public void displayOtherPlayers(List<String> nicknames, List<String> cards, List<Integer> colors) {
+        Platform.runLater(()-> {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Other Players");
+            VBox vBox = new VBox();
+            vBox.getStylesheets().add("fxmlFiles/style.css");
+            vBox.getStyleClass().add("light-blue-background");
+            vBox.setSpacing(20);
+            vBox.setPadding(new Insets(10));
+            GridPane gridPane = new GridPane();
+            for(int i = 0; i< nicknames.size(); i++){
+                gridPane.setHgap(10);
+                gridPane.setVgap(10);
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(220);
+                imageView.setFitWidth(131);
+                Circle circle = new Circle(20);
+                circle.setFill(generateColor(colors.get(i)));
+                Label nicknameLabel = new Label(nicknames.get(i).toUpperCase());
+                nicknameLabel.getStylesheets().add("fxmlFiles/style.css");
+                nicknameLabel.getStyleClass().add("game-text");
+                nicknameLabel.setStyle("-fx-text-fill: #c35312");
+                imageView.setImage(new Image("/cards/"+cards.get(i)+".png"));
+                gridPane.add(circle, 0,i);
+                gridPane.add(nicknameLabel, 1, i);
+                gridPane.add(imageView, 2, i);
+            }
+            vBox.getChildren().add(gridPane);
+            Scene scene = new Scene(vBox);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        });
     }
 
+    private Color generateColor(int color){
+        switch (color){
+            case 1:
+                return Color.RED;
+            case 2:
+                return Color.BLUE;
+            case 3:
+                return Color.GREEN;
+            default:
+                return Color.BLACK;
+        }
+    }
 
     @Override
     public void displaySelectPoint(List<Point> points) {
         Platform.runLater(()-> {
             FXMLGameController controller = loader.getController();
-            controller.displayMessage("Seleziona punto in cui fare l'azione");
+            controller.displayMessage("Select a point where do the action");
             controller.enableActionPoints(points);
         });
     }
@@ -355,7 +406,7 @@ public class GUIHandler extends Application implements ViewInterface {
             Button siButton = (Button) modalScene.lookup("#siModal");
             Button noButton = (Button) modalScene.lookup("#noModal");
             Label textMessage = (Label) modalScene.lookup("#modalMessage");
-            textMessage.setText("Vuoi continuare a vedere la partita?");
+            textMessage.setText("Continue watching the match?");
             noButton.addEventHandler(ActionEvent.ACTION, actionEvent -> stage.close());
             noButton.addEventHandler(ActionEvent.ACTION, e -> controller.endGame() );
             siButton.addEventHandler(ActionEvent.ACTION, actionEvent -> stage.close());
@@ -374,10 +425,6 @@ public class GUIHandler extends Application implements ViewInterface {
 
     }
 
-    @Override
-    public void setController(ClientSideController clientSideController) {
-
-    }
 
     @Override
     public void closeConnection() {

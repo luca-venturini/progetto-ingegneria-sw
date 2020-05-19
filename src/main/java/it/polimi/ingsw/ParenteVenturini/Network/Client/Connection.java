@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ParenteVenturini.View.GUI;
+package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
 import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 import it.polimi.ingsw.ParenteVenturini.Network.Client.MessageListener;

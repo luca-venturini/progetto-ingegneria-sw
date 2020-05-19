@@ -117,7 +117,7 @@ class PlayerTest {
     }
 
     @Test
-    void nothingSet() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, NoMorePlayersException, AlreadyPresentPlayerException {
+    void nothingSetWlak() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, NoMorePlayersException, AlreadyPresentPlayerException {
         testplayer.setCard(new AthenaCard());
         instance.addPlayer("player2");
         Player p2 = instance.selectPlayer("player2");
@@ -125,10 +125,53 @@ class PlayerTest {
         instance.selectStarter("player2");
         instance.setTurn();
         assertThrows(IllegalMovementException.class, () -> testplayer.walk(new Point(0,0)) );
-        assertThrows(IllegalBuildingException.class, () -> testplayer.build(new Point(0,0)) );
-        assertThrows(IllegalBuildingException.class, () -> testplayer.specialBuild(new Point(0,0)) );
-
     }
+
+    @Test
+    void nothingSetBuild() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, NoMorePlayersException, AlreadyPresentPlayerException {
+        testplayer.setCard(new AthenaCard());
+        instance.addPlayer("player2");
+        Player p2 = instance.selectPlayer("player2");
+        p2.setCard(new AtlasCard());
+        instance.selectStarter("player2");
+        instance.setTurn();
+        assertThrows(IllegalBuildingException.class, () -> testplayer.build(new Point(0,0)) );
+    }
+
+    @Test
+    void nothingSetSpecialBuild() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, NoMorePlayersException, AlreadyPresentPlayerException {
+        testplayer.setCard(new AthenaCard());
+        instance.addPlayer("player2");
+        Player p2 = instance.selectPlayer("player2");
+        p2.setCard(new AtlasCard());
+        instance.selectStarter("player2");
+        instance.setTurn();
+        assertThrows(IllegalBuildingException.class, () -> testplayer.specialBuild(new Point(0,0)) );
+    }
+
+    @Test
+    void nothingSetPossibleMovements() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, NoMorePlayersException, AlreadyPresentPlayerException, AlreadyWalkedException {
+        testplayer.setCard(new AthenaCard());
+        instance.addPlayer("player2");
+        Player p2 = instance.selectPlayer("player2");
+        p2.setCard(new AtlasCard());
+        instance.selectStarter("player2");
+        instance.setTurn();
+        assertEquals(0, testplayer.getPossibleMovements().size());
+    }
+
+    @Test
+    void nothingSetBuildPossibleBuildings() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, NoMorePlayersException, AlreadyPresentPlayerException, OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException {
+        testplayer.setCard(new AthenaCard());
+        instance.addPlayer("player2");
+        Player p2 = instance.selectPlayer("player2");
+        p2.setCard(new AtlasCard());
+        instance.selectStarter("player2");
+        instance.setTurn();
+        assertEquals(0, testplayer.getPossibleBuildings().size());
+    }
+
+
     @Test
     void build() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, IllegalBlockUpdateException, NoMorePlayersException, AlreadyPresentPlayerException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, OutOfOrderMoveException {
         Point p0= new Point(2,2);

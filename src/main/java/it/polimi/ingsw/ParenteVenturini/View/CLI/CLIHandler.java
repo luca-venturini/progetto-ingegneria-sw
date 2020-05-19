@@ -1,18 +1,11 @@
-package it.polimi.ingsw.ParenteVenturini.Network.Client;
+package it.polimi.ingsw.ParenteVenturini.View.CLI;
 
-import it.polimi.ingsw.ParenteVenturini.View.CLI.CLI;
-import it.polimi.ingsw.ParenteVenturini.View.GUI.Connection;
+import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
+import it.polimi.ingsw.ParenteVenturini.Network.Client.Connection;
 import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.ViewType;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-
-public class ClientDiProva {
+public class CLIHandler {
     private int port=1337;
     private String ip = "127.0.0.1";
     private ViewInterface viewInterface;
@@ -31,7 +24,7 @@ public class ClientDiProva {
     }
 
     public static void main(String[] args) {
-        ClientDiProva c = new ClientDiProva();
+        CLIHandler c = new CLIHandler();
 
         try {
             System.out.println("Utente connesso");

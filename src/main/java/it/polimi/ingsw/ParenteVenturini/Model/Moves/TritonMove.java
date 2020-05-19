@@ -98,6 +98,6 @@ public class TritonMove extends Move {
      */
     @Override
     public boolean forcedBuilding() {
-        return hasWalked && numOfMovements == 2;
+        return !hasBuilt && hasWalked && numOfMovements == 2;
     }
 }

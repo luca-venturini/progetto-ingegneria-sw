@@ -220,7 +220,14 @@ public class ClientController implements ServerMessageHandler {
      */
     @Override
     public void visit(QuitRequest msg) {
+        if(gameController == null) return;
         gameController.manageQuit(msg.getNickname());
+    }
+
+    @Override
+    public void visit(OtherPlayersRequest msg) {
+        if(gameController == null) return;
+        gameController.sendOtherPlayersOverview(this);
     }
 
     /**

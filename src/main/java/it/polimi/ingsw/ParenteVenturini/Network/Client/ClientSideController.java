@@ -3,7 +3,6 @@ package it.polimi.ingsw.ParenteVenturini.Network.Client;
 import it.polimi.ingsw.ParenteVenturini.Model.Block;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToClient.*;
 import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.*;
-import it.polimi.ingsw.ParenteVenturini.View.GUI.Connection;
 import it.polimi.ingsw.ParenteVenturini.View.ViewInterface;
 import it.polimi.ingsw.ParenteVenturini.View.GUI.GUIHandler;
 
@@ -104,6 +103,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(SetUpNotification msg) {
+        color = 0;
         client.displayMessage("Fase di setUp iniziata");
     }
 
@@ -292,11 +292,16 @@ public class ClientSideController implements ClientMessageHandler {
     }
 
     @Override
+    public void visit(OtherPlayersResponse msg) {
+        client.displayOtherPlayers(msg.getNicknames(), msg.getPlayersCards(), msg.getPlayersColors());
+    }
+
+    @Override
     public void visit(PlaceWorkerResponse msg) {
         System.out.println(msg.getSettedPoint().toString());
         if(msg.isSet()) {
             //client.addLightWorker(new LightWorker(msg.getSettedPoint() ));
-            client.addLightWorker(msg.getSettedPoint());
+            //client.addLightWorker(msg.getSettedPoint());
             System.out.println("fatto");
         }
         if(msg.getColor() > 0){

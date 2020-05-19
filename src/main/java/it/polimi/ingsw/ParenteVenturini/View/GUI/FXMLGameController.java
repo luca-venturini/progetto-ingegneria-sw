@@ -199,6 +199,9 @@ public class FXMLGameController implements ViewController{
     private Button quit_button;
 
     @FXML
+    private Button see_other_players_button;
+
+    @FXML
     private ImageView card_image_view;
 
     private Button[][] buttons = new Button[5][5];
@@ -273,10 +276,12 @@ public class FXMLGameController implements ViewController{
             specialbuild_button.setVisible(false);
         }
         endMove_button.setDisable(true);
+        see_other_players_button.setDisable(false);
         move_button.setOnAction(e -> sendMove("Movement") );
         build_button.setOnAction(e -> sendMove("Construction") );
         specialbuild_button.setOnAction(e -> sendMove("SpecialConstruction") );
         endMove_button.setOnAction(e -> sendMove("EndMove") );
+        see_other_players_button.setOnAction(e -> sendOtherPlayerRequest());
         quit_button.setOnAction(e -> sendQuit());
         nickname.setText(GUIHandler.clientSideController.getNickname().toUpperCase());
         card_image_view.setImage(new Image("/cards/"+GUIHandler.clientSideController.getYourCard()+".png"));
@@ -381,6 +386,11 @@ public class FXMLGameController implements ViewController{
         GUIHandler.clientSideController.sendMessage(message);
     }
 
+    private void sendOtherPlayerRequest(){
+        MessageToServer message = new OtherPlayersRequest();
+        GUIHandler.clientSideController.sendMessage(message);
+    }
+
     public void enableMovebuttons(){
         move_button.setDisable(false);
         build_button.setDisable(false);
@@ -469,12 +479,13 @@ public class FXMLGameController implements ViewController{
         specialbuild_button.setVisible(false);
         endMove_button.setVisible(false);
         quit_button.setVisible(false);
+        see_other_players_button.setVisible(false);
     }
 
     @Override
     public void displayMessage(String s) {
-        System.out.println("Arrivata notifica");
-        System.out.println("Messaggio: "+s);
+        System.out.println("New notification");
+        System.out.println("Message: "+s);
         messages.clear();
         messages.setText(s);
     }

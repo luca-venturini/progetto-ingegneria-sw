@@ -7,6 +7,9 @@ import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.IllegalBlockUpdateExcep
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OpponentEffectContainerTest {
@@ -69,6 +72,32 @@ class OpponentEffectContainerTest {
         player.setCard(new ApolloCard());
         assertTrue(test.checkConstructionPoint(p2,player.selectWorker(0),instance.getBoard()));
 
+    }
+
+    @Test
+    void removeNotAllowedMovementPoints() throws IllegalBlockUpdateException {
+        test.addEffect(new AthenaEffect());
+        test.switchToNewTurn();
+        Board board = instance.getBoard();
+        board.setBlockLevel(new Point(0,0), 1);
+        List<Point> myPoints = new ArrayList<>();
+        myPoints.add(new Point(0,0));
+        myPoints.add(new Point(1,1));
+        assertEquals(1, test.removeMovementPoint(myPoints, new Point(1,0), null, board).size());
+        assertEquals(2, test.removeMovementPoint(myPoints, new Point(1,0), new AthenaEffect(), board).size());
+    }
+
+    @Test
+    void removeNotAllowedConstructionPoints() throws IllegalBlockUpdateException {
+        test.addEffect(new AthenaEffect());
+        test.switchToNewTurn();
+        Board board = instance.getBoard();
+        board.setBlockLevel(new Point(0,0), 1);
+        List<Point> myPoints = new ArrayList<>();
+        myPoints.add(new Point(0,0));
+        myPoints.add(new Point(1,1));
+        assertEquals(2, test.removeConstructionPoint(myPoints, new Point(1,0), null, board).size());
+        assertEquals(2, test.removeConstructionPoint(myPoints, new Point(1,0), new AthenaEffect(), board).size());
     }
 
 }

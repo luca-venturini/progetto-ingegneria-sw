@@ -44,6 +44,14 @@ class HeraMoveTest {
     }
 
     @Test
+    void buildAfterEnd() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        assertThrows(endedMoveException.class,()->tester.build(new Point(1,2),instance.getBoard(),player.selectWorker(0)));
+    }
+    @Test
     void possibleMovements() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {
         Point p1= new Point(1,1);
         assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));

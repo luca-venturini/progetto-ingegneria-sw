@@ -17,11 +17,9 @@ public interface ViewInterface {
     void displayMessage(String s);
     void displayChooseStartingPlayerMenu();
     void displayPlaceWorkerMenu(String startingPlayer);
-    void addLightWorker(Point point);
     void displaySelectPoint(List<Point> points);
     void displayEndGame();
     void startGame(ClientSideController clientSideController);
-    void setController(ClientSideController clientSideController);
     void closeConnection();
     void displayAviableCards(List<String> cards);
     void updateChooseCardMenu();
@@ -34,4 +32,5 @@ public interface ViewInterface {
     void displayTurn(String num);
     void displayEndMove();
     void displayWin();
+    void displayOtherPlayers(List<String> nicknames, List<String> cards, List<Integer> colors);
 }

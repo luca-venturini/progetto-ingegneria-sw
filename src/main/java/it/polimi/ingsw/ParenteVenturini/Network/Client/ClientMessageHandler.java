@@ -30,4 +30,5 @@ public interface ClientMessageHandler {
     void visit(InterruptedGameNotification msg);
     void visit(TurnNotification msg);
     void visit(VictoryNotification msg);
+    void visit(OtherPlayersResponse msg);
 }

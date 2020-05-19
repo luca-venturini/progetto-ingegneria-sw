@@ -395,6 +395,11 @@ public class GameController {
             Player delplayer=match.getTurn().getCurrentPlayer();
             match.getTurn().setNextPlayer();
             match.deletePlayer(delplayer);
+            try {
+                match.setTypeOfMatch(2);
+            } catch (InvalidTypeOfMatch invalidTypeOfMatch) {
+                invalidTypeOfMatch.printStackTrace();
+            }
             sendBoard();
             notifyYourTurn();
         }
@@ -653,6 +658,25 @@ public class GameController {
      */
     public synchronized void removeClient(ClientController clientController){
         clients.remove(clientController);
+    }
+
+    public void sendOtherPlayersOverview(ClientController clientController){
+        List<String> names = new ArrayList<>();
+        List<String> cards = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+        try {
+            for(Player p : match.getPlayers()){
+                names.add(p.getNickname());
+                cards.add(p.getCard().getName());
+                if(p.getWorkers() != null && p.getWorkers().size()>0)
+                    colors.add(p.selectWorker(0).getColour());
+                else
+                    colors.add(0);
+            }
+        } catch (NoPlayerException e) {
+            e.printStackTrace();
+        }
+        notifySingleClient(clientController, new OtherPlayersResponse(names, cards, colors));
     }
 
 }

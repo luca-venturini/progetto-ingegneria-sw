@@ -96,6 +96,14 @@ class TritonMoveTest {
     }
 
     @Test
+    void possibleMovements_test3() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(new Point(1,2),instance.getBoard(),player.selectWorker(0));
+        assertThrows(AlreadyWalkedException.class,()->tester.possibleMovements(instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
     void possibleBuildings() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,1);

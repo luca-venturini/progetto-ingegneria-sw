@@ -247,13 +247,19 @@
                   </VBox>
                   <VBox layoutX="55.0" layoutY="441.0" prefHeight="235.0" prefWidth="180.0">
                      <children>
-                        <Button fx:id="endMove_button" mnemonicParsing="false" prefHeight="130.0" prefWidth="203.0" styleClass="game_button" text="Termina Mossa" textFill="#fffafa">
+                        <Button fx:id="endMove_button" mnemonicParsing="false" prefHeight="130.0" prefWidth="203.0" styleClass="game_button" text="End Move" textFill="#fffafa">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
                         <Region prefHeight="23.0" prefWidth="180.0" />
-                        <Button fx:id="quit_button" mnemonicParsing="false" prefHeight="131.0" prefWidth="199.0" styleClass="game_button" text="Chiudi" textFill="WHITE">
+                        <Button fx:id="quit_button" mnemonicParsing="false" prefHeight="131.0" prefWidth="199.0" styleClass="game_button" text="Close" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Region layoutX="10.0" layoutY="70.0" prefHeight="23.0" prefWidth="180.0" />
+                        <Button fx:id="see_other_players_button" layoutX="10.0" layoutY="93.0" mnemonicParsing="false" prefHeight="131.0" prefWidth="199.0" styleClass="game_button" text="See other players" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
