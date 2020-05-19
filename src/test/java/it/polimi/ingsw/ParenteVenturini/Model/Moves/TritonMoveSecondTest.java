@@ -49,4 +49,18 @@ class TritonMoveSecondTest {
         tester.build(new Point(3,0), instance.getBoard(), player.getWorkers().get(1));
         assertThrows(endedMoveException.class, ()->tester.build(new Point(3,2), instance.getBoard(), player.getWorkers().get(1)) );
     }
+
+    @Test
+    void forcedBuilding() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {
+        tester.walk(new Point(1,2), instance.getBoard(), player.getWorkers().get(1));
+        assertTrue(tester.forcedBuilding());
+    }
+
+    @Test
+    void notForcedBuilding() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {
+        tester.walk(new Point(1,0), instance.getBoard(), player.getWorkers().get(1));
+        tester.walk(new Point(2,0), instance.getBoard(), player.getWorkers().get(1));
+        tester.walk(new Point(3,0), instance.getBoard(), player.getWorkers().get(1));
+        assertTrue(!tester.forcedBuilding());
+    }
 }

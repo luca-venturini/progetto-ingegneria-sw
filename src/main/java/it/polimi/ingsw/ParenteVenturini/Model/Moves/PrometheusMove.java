@@ -58,6 +58,7 @@ public class PrometheusMove extends Move {
                 hasBuilt = true;
                 hasEnded = true;
             }
+            else throw new IllegalBuildingException();
         }else throw new endedMoveException();
     }
 

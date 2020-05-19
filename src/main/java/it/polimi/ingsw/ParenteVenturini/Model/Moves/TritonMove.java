@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class TritonMove extends Move {
 
-    /** keep trackof the number of movements*/
+    /** keep track of the number of movements*/
     private int numOfMovements;
 
     /**
@@ -36,23 +36,11 @@ public class TritonMove extends Move {
         if(!hasEnded) {
             if( !hasBuilt) {
                 if (numOfMovements <= 1) {
-
-
-                    if (numOfMovements == 1) {
-                        Action action = new BasicMovement();
-                        action.doAction(point, board, worker);
-                        if(!board.isPerimeterPoint(point))
-                            numOfMovements = 2;
-                    }
-                    if (numOfMovements == 0) {
-                        Action action = new BasicMovement();
-                        action.doAction(point, board, worker);
-                        if(!board.isPerimeterPoint(point))
-                            numOfMovements = 2;
-                        hasWalked = true;
-                    }
-
-
+                    Action action = new BasicMovement();
+                    action.doAction(point, board, worker);
+                    if(!board.isPerimeterPoint(point))
+                        numOfMovements = 2;
+                    hasWalked = true;
                 } else throw new AlreadyWalkedException();
             }else throw  new AlreadyBuiltException();
         }else throw  new endedMoveException();
@@ -82,10 +70,7 @@ public class TritonMove extends Move {
     public java.util.List<Point> possibleMovements(Board board, Worker worker) throws AlreadyWalkedException {
         Action action = new BasicMovement();
         if(!hasEnded && !hasBuilt) {
-            if(numOfMovements == 0) {
-                return action.getPossibleActions(board, worker);
-            }
-            else if(numOfMovements==1){
+            if(numOfMovements != 2) {
                 return action.getPossibleActions(board, worker);
             }
             else throw new AlreadyWalkedException();
@@ -113,6 +98,6 @@ public class TritonMove extends Move {
      */
     @Override
     public boolean forcedBuilding() {
-        return false;
+        return hasWalked && numOfMovements == 2;
     }
 }

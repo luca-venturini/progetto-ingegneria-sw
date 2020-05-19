@@ -1,8 +1,6 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
-import it.polimi.ingsw.ParenteVenturini.Model.Cards.AthenaCard;
-import it.polimi.ingsw.ParenteVenturini.Model.Cards.ChronusCard;
-import it.polimi.ingsw.ParenteVenturini.Model.Cards.DemeterCard;
+import it.polimi.ingsw.ParenteVenturini.Model.Cards.*;
 import it.polimi.ingsw.ParenteVenturini.Model.Exceptions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -163,6 +161,45 @@ class MatchTest {
     }
 
     @Test
+    void directGameOverWalking() throws NoMorePlayersException, AlreadyPresentPlayerException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, IllegalBlockUpdateException {
+        instance.addPlayer("player1");
+        instance.selectPlayer("player1").setCard(new DemeterCard());
+        instance.setTurn();
+        Point p1= new Point(0,0);
+        Point p2= new Point(1,0);
+        Point p3= new Point(0,1);
+        Point p4= new Point(1,1);
+        instance.selectPlayer("player1").placeWorker(1,p1,instance.getBoard());
+        instance.selectPlayer("player1").setMove(instance.selectPlayer("player1").callMove());
+        instance.getTurn().setActualWorker(instance.selectPlayer("player1").selectWorker(0));
+        instance.getBoard().setBlockLevel(p2,4);
+        instance.getBoard().setBlockLevel(p3,4);
+        instance.getBoard().setBlockLevel(p4,4);
+        assertTrue(instance.selectPlayer("player1").getMove().forcedMovement());
+        assertTrue(instance.directGameOver());
+    }
+
+    @Test
+    void directGameOverNotForced() throws NoMorePlayersException, AlreadyPresentPlayerException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, IllegalBlockUpdateException {
+        instance.addPlayer("player1");
+        instance.selectPlayer("player1").setCard(new TritonCard());
+        instance.setTurn();
+        Point p1= new Point(0,0);
+        Point p2= new Point(1,0);
+        Point p3= new Point(0,1);
+        Point p4= new Point(1,1);
+        instance.selectPlayer("player1").placeWorker(1,p2,instance.getBoard());
+        instance.selectPlayer("player1").setMove(instance.selectPlayer("player1").callMove());
+        instance.getTurn().setActualWorker(instance.selectPlayer("player1").selectWorker(0));
+        instance.selectPlayer("player1").walk(p1);
+        instance.getBoard().setBlockLevel(p2,4);
+        instance.getBoard().setBlockLevel(p3,4);
+        instance.getBoard().setBlockLevel(p4,4);
+        assertFalse(instance.selectPlayer("player1").getMove().forcedMovement());
+        assertTrue(instance.directGameOver());
+    }
+
+    @Test
     void getChallenger() throws NoMorePlayersException, NoPlayerException, AlreadyPresentPlayerException {
         assertNull( instance.getChallenger() );
         instance.addPlayer("player1");
@@ -207,6 +244,21 @@ class MatchTest {
         instance.getBoard().setBlockLevel(p4,4);
         instance.getBoard().setBlockLevel(p5,4);
         assertEquals("player1", instance.outOfTurnWin().getNickname());
+    }
+
+    @Test
+    void deletePlayerTest() throws NoMorePlayersException, AlreadyPresentPlayerException {
+        instance.addPlayer("one");
+        instance.addPlayer("two");
+        Player p1 = instance.selectPlayer("one");
+        p1.setCard(new AthenaCard());
+        Player p2 = instance.selectPlayer("two");
+        p2.setCard(new ApolloCard());
+        p1.placeWorker(1, new Point(0,0), instance.getBoard());
+        p1.placeWorker(1, new Point(0,1), instance.getBoard());
+        p2.placeWorker(2, new Point(1,1), instance.getBoard());
+        p2.placeWorker(2, new Point(1,1), instance.getBoard());
+        instance.deletePlayer(p1);
     }
 
 }

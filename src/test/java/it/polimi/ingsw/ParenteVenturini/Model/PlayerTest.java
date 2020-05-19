@@ -54,13 +54,6 @@ class PlayerTest {
         assertEquals("PLAYER",testplayer.getNickname());
     }
 
-    @Test
-    void chooseCard() throws InvalidCardException, NoMoreCardsException {
-        instance.selectCardFromDeck("Apollo");
-        instance.selectCardFromDeck("Zeus");
-        assertThrows(InvalidCardException.class,()->testplayer.chooseCard("Apollo-False"));
-        assertThrows(InvalidCardException.class,()->testplayer.chooseCard("Minotaur"));
-    }
 
     @Test
     void hasWon() throws IllegalBlockUpdateException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, NoPlayerException {
@@ -108,6 +101,35 @@ class PlayerTest {
     }
 
     @Test
+    void walkAndAddEffect() throws IllegalBlockUpdateException, NoMorePlayersException, AlreadyPresentPlayerException, AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException {
+        Point p0= new Point(2,2);
+        Point p1= new Point(1,1);
+        testplayer.setCard(new AthenaCard());
+        instance.selectStarter("player");
+        instance.setTurn();
+        testplayer.placeWorker(1,p0,instance.getBoard());
+        instance.getBoard().setBlockLevel(p1,1);
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        assertTrue(instance.getOpponentEffectContainer().getActiveEffects().size()==0);
+        testplayer.walk(p1);
+        instance.getOpponentEffectContainer().switchToNewTurn();
+        assertTrue(instance.getOpponentEffectContainer().getActiveEffects().size()>0);
+    }
+
+    @Test
+    void nothingSet() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, NoMorePlayersException, AlreadyPresentPlayerException {
+        testplayer.setCard(new AthenaCard());
+        instance.addPlayer("player2");
+        Player p2 = instance.selectPlayer("player2");
+        p2.setCard(new AtlasCard());
+        instance.selectStarter("player2");
+        instance.setTurn();
+        assertThrows(IllegalMovementException.class, () -> testplayer.walk(new Point(0,0)) );
+        assertThrows(IllegalBuildingException.class, () -> testplayer.build(new Point(0,0)) );
+        assertThrows(IllegalBuildingException.class, () -> testplayer.specialBuild(new Point(0,0)) );
+
+    }
+    @Test
     void build() throws AlreadyChosenStarterException, InvalidNamePlayerException, NoPlayerException, IllegalBlockUpdateException, NoMorePlayersException, AlreadyPresentPlayerException, endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, OutOfOrderMoveException {
         Point p0= new Point(2,2);
         Point p1= new Point(1,1);
@@ -153,6 +175,47 @@ class PlayerTest {
         testplayer.callMove();
         assertThrows(NotPossibleEndMoveException.class,()->testplayer.endMove());
     }
+
+    @Test
+    void activateEndMove() throws endedMoveException, IllegalMovementException, IllegalBuildingException, OpponentEffectException, NotPossibleEndMoveException, AlreadyWalkedException, AlreadyBuiltException, OutOfOrderMoveException {
+        Point p1= new Point(2,2);
+        Point p2= new Point(1,1);
+        Point p3= new Point(2,1);
+        testplayer.setCard(new ArtemisCard());
+        instance.setTurn();
+        testplayer.placeWorker(1,p1,instance.getBoard());
+        instance.setTurn();
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        testplayer.walk(new Point(2,3));
+        assertEquals(new Point(2,3).toString(), testplayer.selectWorker(0).getPosition().toString());
+        testplayer.build(new Point(3,3));
+        assertEquals(1, instance.getBoard().getBlock(3,3).getLevel());
+        testplayer.endMove();
+    }
+
+    @Test
+    void getPossibleBuildingsTest() throws OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException, NotPossibleEndMoveException, IllegalBuildingException, endedMoveException, OpponentEffectException, IllegalMovementException {
+        assertNull(testplayer.getMove());
+        Point p1 = new Point(2, 2);
+        testplayer.placeWorker(1,p1,instance.getBoard());
+        testplayer.setCard(new ArtemisCard());
+        instance.setTurn();
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        testplayer.walk(new Point(2,3));
+        assertEquals(8, testplayer.getPossibleBuildings().size());
+    }
+
+    @Test
+    void getPossibleWalkTest() throws AlreadyWalkedException {
+        assertNull(testplayer.getMove());
+        Point p1 = new Point(2, 2);
+        testplayer.placeWorker(1,p1,instance.getBoard());
+        testplayer.setCard(new ArtemisCard());
+        instance.setTurn();
+        instance.getTurn().setActualWorker(testplayer.selectWorker(0));
+        assertEquals(8, testplayer.getPossibleMovements().size());
+    }
+
 
 
 }

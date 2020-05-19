@@ -141,21 +141,6 @@ public class Player{
     }
 
     /**
-     * set a new card to the player
-     * @param nameCard the name of the card
-     * @throws InvalidCardException thrown if the card doesn't exist
-     */
-    public void chooseCard(String nameCard) throws InvalidCardException {
-        List<Card> cards=match.getChosenCards();
-        for(Card c:cards) {
-            if ( nameCard.equals(c.getName()) ) {
-                setCard(c);
-            }
-            else throw new InvalidCardException();
-        }
-    }
-
-    /**
      * get the player's nickname
      * @return the player's nickname
      */

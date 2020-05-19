@@ -59,7 +59,9 @@ class PrometheusMoveTest {
     void build_test2() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
         Point p1= new Point(1,1);
         Point p2= new Point(2,1);
+        assertFalse(tester.forcedMovement());
         tester.build(p1,instance.getBoard(),player.selectWorker(0));
+        assertTrue(tester.forcedMovement());
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));
@@ -83,4 +85,32 @@ class PrometheusMoveTest {
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
     }
+
+    @Test
+    void possibleBuildingsFirst() throws IllegalBlockUpdateException {
+        instance.getBoard().setBlockLevel(new Point(0,1), 1);
+        assertThrows(OutOfOrderMoveException.class,()->tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)) );
+    }
+
+    @Test
+    void hasEnded() throws endedMoveException, IllegalBuildingException, IllegalMovementException, OutOfOrderMoveException, AlreadyWalkedException, AlreadyBuiltException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        tester.build(p1,instance.getBoard(),player.selectWorker(0));
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        assertThrows(endedMoveException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
+    void build_3() throws IllegalBlockUpdateException, OutOfOrderMoveException, AlreadyWalkedException, AlreadyBuiltException {
+        Point p1= new Point(1,1);
+        instance.getBoard().setBlockLevel(p1, 1);
+        assertThrows(IllegalBuildingException.class,()->tester.build(new Point(1,1),instance.getBoard(),player.selectWorker(0)) );
+        instance.getBoard().setBlockLevel(new Point(0,0), 3);
+        assertEquals(3, tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)).size());
+    }
+
+
+
 }
