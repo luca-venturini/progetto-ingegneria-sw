@@ -49,6 +49,10 @@ public class ClientSideController implements ClientMessageHandler {
         return color;
     }
 
+    public void clearColor(){
+        color = 0;
+    }
+
     public void setGui(GUIHandler gui) {
         this.gui = gui;
     }

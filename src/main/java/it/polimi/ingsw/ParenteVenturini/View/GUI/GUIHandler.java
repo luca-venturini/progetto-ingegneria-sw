@@ -79,6 +79,7 @@ public class GUIHandler extends Application implements ViewInterface {
     @Override
     public void loadLogin() {
         inizializedboard=false;
+        clientSideController.clearColor();
         Platform.runLater(() -> {
             loader = new FXMLLoader(getClass().getResource("/fxmlFiles/loginPage.fxml"));
             Scene scene = null;
@@ -191,8 +192,16 @@ public class GUIHandler extends Application implements ViewInterface {
                 }
                 FXMLGameController myController = loader.getController();
                 myController.fillBoard(blocks, workers, colours, index);
+                boolean maximized = false;
+                if(primaryStage.isMaximized()){
+                    maximized = true;
+                }
                 scene = new Scene(flowPane);
                 primaryStage.setScene(scene);
+                if (maximized) {
+                    primaryStage.setMaximized(false);
+                    primaryStage.setMaximized(true);
+                }
                 primaryStage.show();
             }
             else {
@@ -265,6 +274,7 @@ public class GUIHandler extends Application implements ViewInterface {
             }
             FXMLPlaceWorkerController myController = loader.getController();
             myController.setCurrentPlayer(startingPlayer);
+            primaryStage.setMaximized(false);
             scene = new Scene(stackPane);
             primaryStage.setScene(scene);
             primaryStage.show();

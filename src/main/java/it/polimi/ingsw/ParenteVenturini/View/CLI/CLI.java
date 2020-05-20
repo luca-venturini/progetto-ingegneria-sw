@@ -337,6 +337,7 @@ public class CLI implements ViewInterface {
     @Override
     public void loadLogin() {
         System.out.println("START A NEW MATCH!");
+        clientSideController.clearColor();
         startGame(clientSideController);
     }
 
