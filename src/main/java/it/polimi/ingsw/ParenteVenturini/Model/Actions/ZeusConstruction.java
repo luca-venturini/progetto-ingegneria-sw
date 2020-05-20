@@ -52,7 +52,8 @@ public class ZeusConstruction extends Action {
                 checkedActions.add(p);
             }
         }
-        checkedActions.add(worker.getPosition());
+        if(board.blockLevel(worker.getPosition())<3)
+            checkedActions.add(worker.getPosition());
         return checkedActions;
     }
 }

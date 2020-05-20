@@ -80,10 +80,12 @@ class HestiaMoveTest {
         assertThrows(OutOfOrderMoveException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        int tot = 0;
         for(Point p: tester.possibleBuildings(instance.getBoard(), player.selectWorker(0))) {
             if (p.getX() == 0 || p.getY() == 0)
-                assertThrows(IllegalBuildingException.class, () -> tester.build(p3,instance.getBoard(),player.selectWorker(0)) );
+                tot++;
         }
+        assertEquals(0, tot);
     }
 
     @Test

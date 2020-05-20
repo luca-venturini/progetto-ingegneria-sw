@@ -61,12 +61,12 @@ class MinotaurMovementTest {
         assertEquals(player2.selectWorker(0).getPosition().getY(), p6.getY());
         Point p= new Point(3,0);
         instance.getBoard().setBlockLevel(p,4);
-        tester.doAction(p6,instance.getBoard(),player.selectWorker(0));
+        assertThrows(IllegalMovementException.class, () ->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)) );
         assertThrows(IllegalMovementException.class,()->tester.doAction(p6,instance.getBoard(),player.selectWorker(0)));
 
         //check if worker moves on a position with dome
         Point p7= new Point(0,1);
-        instance.getBoard().setDome(p6, true);
+        instance.getBoard().setDome(p7, true);
         assertThrows(IllegalMovementException.class,()->tester.doAction(p7,instance.getBoard(),player.selectWorker(0)));
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.ParenteVenturini.Model;
 
 import it.polimi.ingsw.ParenteVenturini.Model.Effects.OpponentEffect;
+import javafx.scene.effect.Effect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,21 @@ public class OpponentEffectContainer {
      * @param effect the effect that must be removed
      */
     public void removeEffect(OpponentEffect effect){
-        thisTurn.remove(effect);
-        nextTurn.remove(effect);
+        OpponentEffect opponentEffect = null;
+        for(OpponentEffect eff: thisTurn){
+            if(eff.equals(effect))
+                opponentEffect = eff;
+        }
+        if(opponentEffect != null)
+            thisTurn.remove(opponentEffect);
+
+        OpponentEffect nextOpponentEffect = null;
+        for(OpponentEffect eff: nextTurn){
+            if(eff.equals(effect))
+                nextOpponentEffect = eff;
+        }
+        if(nextOpponentEffect != null)
+            nextTurn.remove(nextOpponentEffect);
     }
 
     /**

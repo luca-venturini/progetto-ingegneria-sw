@@ -44,6 +44,17 @@ class ZeusMoveTest {
     }
 
     @Test
+    void buildOnSamePosition() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        assertThrows(OutOfOrderMoveException.class,()->tester.build(p1,instance.getBoard(),player.selectWorker(0)));
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        tester.build(p1,instance.getBoard(),player.selectWorker(0));
+        assertThrows(endedMoveException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
+        assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
     void possibleMovements() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException {
         Point p1= new Point(1,1);
         assertNotNull(tester.possibleMovements(instance.getBoard(), player.selectWorker(0)));
@@ -59,6 +70,18 @@ class ZeusMoveTest {
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         assertNotNull(tester.possibleBuildings(instance.getBoard(), player.selectWorker(0)));
         assertTrue(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)).size()==9);
+        tester.build(p2,instance.getBoard(),player.selectWorker(0));
+        assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
+    void notBuildOnThirdLevel() throws OutOfOrderMoveException, AlreadyBuiltException, AlreadyWalkedException, IllegalMovementException, IllegalBuildingException, endedMoveException, IllegalBlockUpdateException {
+        Point p1= new Point(1,1);
+        Point p2= new Point(2,1);
+        assertThrows(OutOfOrderMoveException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
+        tester.walk(p1,instance.getBoard(),player.selectWorker(0));
+        instance.getBoard().setBlockLevel(p1, 3);
+        assertTrue(tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)).size()==8);
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyBuiltException.class,()->tester.possibleBuildings(instance.getBoard(),player.selectWorker(0)));
     }

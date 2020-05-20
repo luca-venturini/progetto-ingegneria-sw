@@ -33,12 +33,13 @@ class ApolloMoveTest {
         Point p2= new Point(2,1);
         tester.walk(p1,instance.getBoard(),player.selectWorker(0));
         assertThrows(AlreadyWalkedException.class,()->tester.walk(p2,instance.getBoard(),player.selectWorker(0)));
+        assertEquals(2, instance.getBoard().findByPosition(0,0).getColour());
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(endedMoveException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));
     }
 
     @Test
-    void OtherMoveTest() throws AlreadyWalkedException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException, AlreadyBuiltException {
+    void OtherMoveTest(){
         Point p1= new Point(1,1);
         tester = new PanMove();
         assertThrows(IllegalMovementException.class,()->tester.walk(p1,instance.getBoard(),player.selectWorker(0)));

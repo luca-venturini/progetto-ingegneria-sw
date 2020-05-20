@@ -45,6 +45,13 @@ class MinotaurMoveTest {
     }
 
     @Test
+    void walkWithDome(){
+        Point p1= new Point(3,3);
+        instance.getBoard().setDome(new Point(4,4), true);
+        assertThrows(IllegalMovementException.class, () -> tester.walk(p1,instance.getBoard(),player.selectWorker(0)));
+    }
+
+    @Test
     void build() throws AlreadyWalkedException, AlreadyBuiltException, IllegalBuildingException, endedMoveException, IllegalMovementException, OutOfOrderMoveException {
         Point p1= new Point(1,1);
         Point p2= new Point(0,0);

@@ -45,7 +45,7 @@ class HephaestusMoveTest {
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(IllegalBuildingException.class,()->tester.build(p3,instance.getBoard(),player.selectWorker(0)));
         instance.getBoard().setBlockLevel(p2,3);
-        assertThrows(IllegalBuildingException.class,()->tester.build(p3,instance.getBoard(),player.selectWorker(0)));
+        assertThrows(IllegalBuildingException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));
         instance.getBoard().setBlockLevel(p2,2);
         tester.build(p2,instance.getBoard(),player.selectWorker(0));
         assertThrows(endedMoveException.class,()->tester.build(p2,instance.getBoard(),player.selectWorker(0)));

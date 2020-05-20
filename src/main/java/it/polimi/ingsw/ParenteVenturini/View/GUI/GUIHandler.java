@@ -265,9 +265,7 @@ public class GUIHandler extends Application implements ViewInterface {
             }
             FXMLPlaceWorkerController myController = loader.getController();
             myController.setCurrentPlayer(startingPlayer);
-
             scene = new Scene(stackPane);
-
             primaryStage.setScene(scene);
             primaryStage.show();
         });

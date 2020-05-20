@@ -53,7 +53,7 @@ public class MinotaurMovement extends Action {
                 }
                 if (board.isOccupied(p) && !worker.getPlayer().getWorkers().contains(board.findByPosition(p))) {
                     Point thirdPoint = new Point(2 * p.getX() - worker.getPosition().getX(), 2 * p.getY() - worker.getPosition().getY());
-                    if (board.isValidPoint(thirdPoint) && !board.isOccupied(thirdPoint)) {
+                    if (board.isValidPoint(thirdPoint) && !board.isOccupied(thirdPoint) && !board.isThereDome(thirdPoint)) {
                         checkedActions.add(p);
                     }
                 }
