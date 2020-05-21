@@ -191,7 +191,7 @@ public class MoveHandler {
             }
             else{
                 if(hasDoneAction)
-                    throw new NoPossibleActionException("Nessuna azione possibile");
+                    throw new NoPossibleActionException("No action possible");
                 else throw new NoPossibleActionException("Nessuna azione possibile. Seleziona un altro worker");
             }
         }
@@ -218,7 +218,7 @@ public class MoveHandler {
             }
             else{
                 if(hasDoneAction)
-                    throw new NoPossibleActionException("Nessuna azione possibile");
+                    throw new NoPossibleActionException("No action possible");
                 else throw new NoPossibleActionException("Nessuna azione possibile. Seleziona un altro worker");
             }
         }
@@ -245,7 +245,7 @@ public class MoveHandler {
             }
             else{
                 if(hasDoneAction)
-                    throw new NoPossibleActionException("Nessuna azione possibile");
+                    throw new NoPossibleActionException("No action possible");
                 else throw new NoPossibleActionException("Nessuna azione possibile. Seleziona un altro worker");
             }
         }

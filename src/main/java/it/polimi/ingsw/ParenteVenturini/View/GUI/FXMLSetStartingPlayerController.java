@@ -53,7 +53,7 @@ public class FXMLSetStartingPlayerController implements ViewController{
 
     @Override
     public void displayMessage(String s) {
-        System.out.println("aaaaaa "+s);
+        //System.out.println("aaaaaa "+s);
     }
 
     @Override

@@ -11,6 +11,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
+/**
+ * this client side controller handle the messages arrived form the server,
+ * handling the User Interface, no matter if the user choose GUI or CLI
+ */
 public class ClientSideController implements ClientMessageHandler {
 
     private ObjectInputStream readStream;
@@ -69,17 +73,23 @@ public class ClientSideController implements ClientMessageHandler {
         this.client = client;
     }
 
+    //handle the messages using Visitor pattern
     public void handleMessage(MessageToClient msg){
         msg.accept(this);
     }
 
+
+    /**
+     * send messages to the server
+     * @param msg
+     */
     public void sendMessage(MessageToServer msg){
         try {
             writeStream.reset();
             writeStream.writeObject(msg);
             writeStream.flush();
         } catch (IOException e) {
-            System.out.println("Errore invio messaggio - connessione chiusa");
+            System.out.println("Error sending the message - connection closed");
             closeConnection();
         }
     }
@@ -100,7 +110,6 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(ErrorLoginNotification msg) {
-        System.out.println("errore login");
         client.displayMessage(msg.getNickname()+": "+msg.getValues().get(0));
         client.login();
     }
@@ -108,7 +117,7 @@ public class ClientSideController implements ClientMessageHandler {
     @Override
     public void visit(SetUpNotification msg) {
         color = 0;
-        client.displayMessage("Fase di setUp iniziata");
+        client.displayMessage("Starting setup phase");
     }
 
     @Override
@@ -116,6 +125,7 @@ public class ClientSideController implements ClientMessageHandler {
         client.chooseCards(msg.getValues(), msg.numberOfCardsRequired());
     }
 
+    //Text notification
     @Override
     public void visit(SimplyNotification msg) {
         client.displayMessage(msg.getValues().get(0));
@@ -181,7 +191,7 @@ public class ClientSideController implements ClientMessageHandler {
         client.displayMessage(msg.getValues().get(0));
         if(! msg.isSet()) {
             client.updateChooseStartingPlayerMenu();
-            System.out.println("Giocatore non settato");
+            //System.out.println("Giocatore non settato");
         }
     }
 
@@ -224,29 +234,31 @@ public class ClientSideController implements ClientMessageHandler {
         if(!msg.isDone())
             client.displayMoveMenu();
         else {
-            client.displayMessage("Il tuo turno è finito. Attendi...");
+            client.displayMessage("Your turn is over. Wait...");
             client.displayEndMove();
         }
     }
 
     @Override
     public void visit(YourTurnNotification msg) {
-        client.displayMessage("E' il tuo turno");
+        client.displayMessage("It's your turn");
         client.displaySelectWorker();
     }
 
     @Override
     public void visit(WinNotification msg) {
-        client.displayMessage("Il vincitore è: "+msg.getMessage());
+        client.displayMessage("The winner is: "+msg.getMessage());
 
     }
 
+    //Response to a request of points
     @Override
     public void visit(ActionResponse msg) {
         client.displayMessage(msg.getPoints().toString());
         client.displaySelectPoint(msg.getPoints());
     }
 
+    //Response to a movement
     @Override
     public void visit(ActionPointResponse msg) {
         client.displayMessage(msg.getMessage());
@@ -255,7 +267,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(ActionNotification msg) {
-        if(msg.getMessage().equals("Non è il tuo turno")){
+        if(msg.getMessage().equals("It's not your turn")){
             client.displayMessage(msg.getMessage());
         }
         else if(msg.getMessage().equals("Nessuna azione possibile. Seleziona un altro worker") ){
@@ -270,7 +282,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     @Override
     public void visit(GameOverNotification msg) {
-        client.displayMessage("Hai Perso ");
+        client.displayMessage("You lose");
         client.displayEndGame();
     }
 
@@ -279,10 +291,11 @@ public class ClientSideController implements ClientMessageHandler {
         client.waitPage();
     }
 
+    // If the game is interrupted by a disconnection
     @Override
     public void visit(InterruptedGameNotification msg) {
         client.loadLogin();
-        client.displayMessage("Partita precedente terminata");
+        client.displayMessage("The game is over");
     }
 
     @Override
@@ -295,6 +308,8 @@ public class ClientSideController implements ClientMessageHandler {
         client.displayWin();
     }
 
+
+    // make the UI to display the other players and their cards
     @Override
     public void visit(OtherPlayersResponse msg) {
         client.displayOtherPlayers(msg.getNicknames(), msg.getPlayersCards(), msg.getPlayersColors());
@@ -306,7 +321,7 @@ public class ClientSideController implements ClientMessageHandler {
         if(msg.isSet()) {
             //client.addLightWorker(new LightWorker(msg.getSettedPoint() ));
             //client.addLightWorker(msg.getSettedPoint());
-            System.out.println("fatto");
+            //System.out.println("fatto");
         }
         if(msg.getColor() > 0){
             this.color = msg.getColor();

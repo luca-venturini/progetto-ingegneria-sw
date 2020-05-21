@@ -42,7 +42,7 @@ public class GameController {
         } catch (InvalidTypeOfMatch invalidTypeOfMatch) {
             invalidTypeOfMatch.printStackTrace();
         }
-        System.out.println("Creata partita da "+numOfPlayers+" giocatori");
+        System.out.println("New match with "+numOfPlayers+" players");
     }
 
     /**
@@ -86,7 +86,7 @@ public class GameController {
      */
     public synchronized void startSetup(){
         if(match.getTypeOfMatch() == clients.size()) {
-            notifyAllClients(new SimplyNotification( "E' iniziata la fase di setUp, tra poco tocca a te..."));
+            notifyAllClients(new SimplyNotification( "Setup phase started, wait..."));
             try {
                 match.setChallenger();
             } catch (NoPlayerException e) {
@@ -96,7 +96,7 @@ public class GameController {
             notifySingleClient(challenger, new SelectCardNotification(deck.getCardNames(), match.getNumPlayers()));
         }
         else
-            notifyAllClients(new SimplyNotification( "Attendi altri giocatori"));
+            notifyAllClients(new SimplyNotification( "Wait for other players"));
     }
 
     /**
@@ -162,7 +162,7 @@ public class GameController {
                 e.printStackTrace();
             }
             notifyAllClients(new ChooseCardNotification());
-            notifyAllClients(new SimplyNotification( "A turno ogni giocatore sceglie una carta, inizia "+cardSetupHandler.getNextPlayer()));
+            notifyAllClients(new SimplyNotification( "Every player pick a card, starts "+cardSetupHandler.getNextPlayer()));
         }
         else{
             throw new IllegalCardException();
@@ -177,7 +177,7 @@ public class GameController {
     public synchronized void setPlayerCard(Player player, String card){
         if(cardSetupHandler == null) return;
         if (card == null){
-            notifySingleClient(player, new SetPlayerCardResponse( false, "Scegli una carta"));
+            notifySingleClient(player, new SetPlayerCardResponse( false, "Choose a card"));
         }
         else {
             try {
@@ -185,19 +185,19 @@ public class GameController {
 
                 if (cardSetupHandler.getNextPlayer() != null) {
 
-                    notifyAllClients(new SimplyNotification(player.getNickname() + " ha scelto la sua carta, tocca a " + cardSetupHandler.getNextPlayer()));
-                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta", card));
+                    notifyAllClients(new SimplyNotification(player.getNickname() + " has chosen a card, next: " + cardSetupHandler.getNextPlayer()));
+                    notifySingleClient(player, new SetPlayerCardResponse(true, "Card added", card));
                 }
                 else {
                     //notifyAllClients(new SimplyNotification("Inizio nuova fase, attendi..."));
-                    notifySingleClient(player, new SetPlayerCardResponse(true, "Carta aggiunta", card));
+                    notifySingleClient(player, new SetPlayerCardResponse(true, "Card added", card));
                     notifyAllClients(new WaitNotification());
                     notifySingleClient(match.getChallenger(), new ChooseStartingPlayerNotification());
                 }
             } catch (NotYourTurnException e) {
-                notifySingleClient(player, new SetPlayerCardResponse(false, "Non è il tuo turno"));
+                notifySingleClient(player, new SetPlayerCardResponse(false, "It's not your turn"));
             } catch (IllegalCardException e) {
-                notifySingleClient(player, new SetPlayerCardResponse(false, "La carta scelta non è disponibile"));
+                notifySingleClient(player, new SetPlayerCardResponse(false, "The card is not available"));
             }
         }
     }
@@ -210,7 +210,7 @@ public class GameController {
         if(cardSetupHandler == null) return;
         List<String> cardsName = new ArrayList<>();
         if(cardSetupHandler.getPossibleCards().isEmpty()) {
-            notifySingleClient(clientController, new SimplyNotification("Nessuna carta disponibile"));
+            notifySingleClient(clientController, new SimplyNotification("No card available"));
             return;
         }
         for(Card c: cardSetupHandler.getPossibleCards()){
@@ -229,16 +229,16 @@ public class GameController {
         if(nickname.equals(match.getChallenger().getNickname())) {
             try {
                 match.selectStarter(startingPlayerNickname);
-                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( true, "Giocatore iniziale settato"));
-                notifyAllClients(new SimplyNotification("Ogni giocatore dovrà posizionare i propri workers"));
-                System.out.println("Giocatore scelto come iniziale: "+match.getStarter().getNickname());
+                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( true, "Starting player set"));
+                notifyAllClients(new SimplyNotification("Each player has to place two workers"));
+                System.out.println("Starting player: "+match.getStarter().getNickname());
                 placeWorkerSetupHandler = new PlaceWorkerSetupHandler(match.getPlayers(), match.getBoard());
                 notifyAllClients(new PlaceWorkersNotification(placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
             } catch (AlreadyChosenStarterException | NoPlayerException e) {
                 e.printStackTrace();
-                System.out.println("Giocatore iniziale gia settato");
+                System.out.println("Starting player already set");
             } catch (InvalidNamePlayerException e) {
-                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( false, "Il nickname scelto non è disponibile"));
+                notifySingleClient(match.getChallenger(), new SetStartingPlayerResponse( false, "The player is not available"));
             }
         }else{
             System.out.println("Error setStartingPlayer method in gameController");
@@ -273,10 +273,10 @@ public class GameController {
         Point point = new Point(position.getX(), position.getY());
         try {
             placeWorkerSetupHandler.setWorkerPosition(player, position);
-            System.out.println("Settato punto: "+position);
+            System.out.println("set point: "+position);
             if(placeWorkerSetupHandler.hasFinished()){
-                notifyAllClients(new SimplyNotification("Operazioni completate, fine fase di setUp"));
-                notifyAllClients(new SimplyNotification("Inizio della fase di gioco"));
+                notifyAllClients(new SimplyNotification("Setup phase completed"));
+                notifyAllClients(new SimplyNotification("Starting the game"));
                 sendBoard();
                 match.setTurn();
                 moveHandler= new MoveHandler(this.match);
@@ -284,15 +284,15 @@ public class GameController {
             }
             else if(placeWorkerSetupHandler.getCurrentPlayer().equals(player)) {
                 int color = placeWorkerSetupHandler.getCurrentPlayer().selectWorker(0).getColour();
-                notifySingleClient(player, new PlaceWorkerResponse(true, false, "Primo worker posizionato, procedi col secondo", position, color));
+                notifySingleClient(player, new PlaceWorkerResponse(true, false, "First worker set, place the second, please", position, color));
                 notifyAllClients(buildAvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
             }
             else {
-                notifySingleClient(player, new PlaceWorkerResponse(true, true, "Secondo worker posizionato, attendi...", position));
+                notifySingleClient(player, new PlaceWorkerResponse(true, true, "Second worker placed, wait...", position));
                 notifyAllClients(buildAvailablePlaceWorkerPointResponse(placeWorkerSetupHandler.getPossiblePoint(), placeWorkerSetupHandler.getCurrentPlayer().getNickname()));
             }
         } catch (IllegalPlaceWorkerException e) {
-            notifySingleClient(player, new PlaceWorkerResponse( false, false, "Il worker non può essere posizionato in qualla casella",position ));
+            notifySingleClient(player, new PlaceWorkerResponse( false, false, "You can't place the worker here",position ));
         }
     }
 
@@ -306,7 +306,7 @@ public class GameController {
         if(placeWorkerSetupHandler.getCurrentPlayer() != null)
             notifySingleClient(clientController, buildAvailablePlaceWorkerPointResponse(points, placeWorkerSetupHandler.getCurrentPlayer().getNickname()) );
         else
-            System.out.println("fine setup");
+            System.out.println("Setup phase ended");
     }
 
     /**
@@ -368,10 +368,10 @@ public class GameController {
             }
         }
         else {
-            notifyAllClients(new SimplyNotification("E' il turno di " + match.getTurn().getCurrentPlayer().getNickname()));
+            notifyAllClients(new SimplyNotification("It's the turn of " + match.getTurn().getCurrentPlayer().getNickname()));
             notifyAllClients(new TurnNotification(""+match.getTurn().getNumTurn()));
             notifySingleClient(match.getTurn().getCurrentPlayer(), new YourTurnNotification());
-            System.out.println("Turno: " + match.getTurn().getNumTurn() + " Giocatore: " + match.getTurn().getCurrentPlayer().getNickname());
+            System.out.println("Turn: " + match.getTurn().getNumTurn() + " Player: " + match.getTurn().getCurrentPlayer().getNickname());
         }
     }
 
@@ -391,7 +391,7 @@ public class GameController {
             }
             disconnectAllPlayers();
         } else {
-            notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" ha perso")));
+            notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" lose")));
             Player delplayer=match.getTurn().getCurrentPlayer();
             match.getTurn().setNextPlayer();
             match.deletePlayer(delplayer);
@@ -423,7 +423,7 @@ public class GameController {
         else {
             if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)){
                 notifySingleClient(match.selectPlayer(nickname), new GameOverNotification());
-                notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" ha perso")));
+                notifyAllClients(new SimplyNotification((match.getTurn().getCurrentPlayer().getNickname()+" lose")));
                 Player delplayer=match.getTurn().getCurrentPlayer();
                 match.getTurn().setNextPlayer();
                 match.deletePlayer(delplayer);
@@ -431,7 +431,7 @@ public class GameController {
             }
             else{
                 notifySingleClient(match.selectPlayer(nickname), new GameOverNotification());
-                notifyAllClients(new SimplyNotification((nickname+" ha perso")));
+                notifyAllClients(new SimplyNotification((nickname+" lose")));
                 match.deletePlayer(match.selectPlayer(nickname));
             }
             sendBoard();
@@ -453,9 +453,9 @@ public class GameController {
     public synchronized void selectWorker(ClientController clientController, String nickname, int index){
         if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)){
             match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
-            notifySingleClient(clientController,new SelectWorkerResponse("Worker selezionato",true));
+            notifySingleClient(clientController,new SelectWorkerResponse("Worker selected",true));
         }
-        else notifySingleClient(clientController,new SelectWorkerResponse("Non è il tuo turno",false));
+        else notifySingleClient(clientController,new SelectWorkerResponse("It's not your turn",false));
     }
 
     /**
@@ -470,7 +470,7 @@ public class GameController {
         List<Point> points;
         if(moveHandler.hasDoneAction() && match.directGameOver()){
             if(match.getNumPlayers()>2)
-                notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
+                notifySingleClient( match.getTurn().getCurrentPlayer(), new GameOverNotification());
             try {
                 manageGameOver();
             } catch (NoPlayerException e) {
@@ -484,11 +484,11 @@ public class GameController {
                         points = moveHandler.getMovementsActions(nickname);
                         notifySingleClient(clientController, new ActionResponse(points));
                     } catch (NotYourTurnException e) {
-                        notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
+                        notifySingleClient(clientController, new ActionNotification("It's not your turn"));
                     } catch (NoPossibleActionException e) {
                         notifySingleClient(clientController, new ActionNotification(e.getErrorMessage()));
                     } catch (AlreadyWalkedException e) {
-                        notifySingleClient(clientController, new ActionNotification("Hai già mosso"));
+                        notifySingleClient(clientController, new ActionNotification("You have already walked"));
                     }
                     break;
 
@@ -497,13 +497,13 @@ public class GameController {
                         points = moveHandler.getConstructionActions(nickname);
                         notifySingleClient(clientController, new ActionResponse(points));
                     } catch (NotYourTurnException e) {
-                        notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
+                        notifySingleClient(clientController, new ActionNotification("It's not your turn"));
                     } catch (NoPossibleActionException e) {
                         notifySingleClient(clientController, new ActionNotification(e.getErrorMessage()));
                     } catch (OutOfOrderMoveException e) {
-                        notifySingleClient(clientController, new ActionNotification("Devi prima muovere"));
+                        notifySingleClient(clientController, new ActionNotification("You must move before building"));
                     } catch (AlreadyBuiltException e) {
-                        notifySingleClient(clientController, new ActionNotification("Hai già costruito"));
+                        notifySingleClient(clientController, new ActionNotification("You have already built"));
                     } catch (AlreadyWalkedException e) {
                         e.printStackTrace();
                     }
@@ -514,13 +514,13 @@ public class GameController {
                         points = moveHandler.getSpecialConstructionActions(nickname);
                         notifySingleClient(clientController, new ActionResponse(points));
                     } catch (NotYourTurnException e) {
-                        notifySingleClient(clientController, new ActionNotification("Non è il tuo turno"));
+                        notifySingleClient(clientController, new ActionNotification("It's not your turn"));
                     } catch (NoPossibleActionException e) {
                         notifySingleClient(clientController, new ActionNotification(e.getErrorMessage()));
                     } catch (OutOfOrderMoveException e) {
-                        notifySingleClient(clientController, new ActionNotification("Devi prima muovere"));
+                        notifySingleClient(clientController, new ActionNotification("You must move before building"));
                     } catch (AlreadyBuiltException e) {
-                        notifySingleClient(clientController, new ActionNotification("Hai già costruito"));
+                        notifySingleClient(clientController, new ActionNotification("You hve already built"));
                     } catch (AlreadyWalkedException e) {
                         e.printStackTrace();
                     }
@@ -529,12 +529,12 @@ public class GameController {
                 case "EndMove":
                     try {
                         moveHandler.doEndMove(nickname);
-                        notifySingleClient(clientController, new EndMoveResponse("Turno terminato", true));
+                        notifySingleClient(clientController, new EndMoveResponse("Your turn is over", true));
                         notifyYourTurn();
                     } catch (NotYourTurnException e) {
-                        notifySingleClient(clientController, new EndMoveResponse("Non è il tuo turno", false));
+                        notifySingleClient(clientController, new EndMoveResponse("It's not your turn", false));
                     } catch (NotPossibleEndMoveException e) {
-                        notifySingleClient(clientController, new EndMoveResponse("Non è possibile terminare il turno", false));
+                        notifySingleClient(clientController, new EndMoveResponse("You can't end your turn", false));
                     }
                     break;
 
@@ -579,30 +579,30 @@ public class GameController {
                     disconnectAllPlayers();
                 }
                 else{
-                    notifySingleClient(clientController,new ActionPointResponse("Azione effettuata",true));
+                    notifySingleClient(clientController,new ActionPointResponse("Action done",true));
                     sendBoard();
                 }
             } catch (OpponentEffectException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Mossa non consentita da carta avversaria",false));
+                notifySingleClient(clientController,new ActionPointResponse("Move not allowed by an opponent's card",false));
             } catch (AlreadyBuiltException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Hai già costruito",false));
+                notifySingleClient(clientController,new ActionPointResponse("You have already built",false));
             } catch (IllegalBuildingException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Costruzione non valida",false));
+                notifySingleClient(clientController,new ActionPointResponse("Build not valid",false));
             } catch (IllegalMovementException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Movimento non valido",false));
+                notifySingleClient(clientController,new ActionPointResponse("Walk not vaild",false));
             } catch (NotPossibleEndMoveException e) {
                 e.printStackTrace();
             } catch (AlreadyWalkedException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Hai già mosso",false));
+                notifySingleClient(clientController,new ActionPointResponse("You have already walked",false));
             } catch (endedMoveException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Hai terminato già la tua mossa",false));
+                notifySingleClient(clientController,new ActionPointResponse("You have ended",false));
             } catch (OutOfOrderMoveException e) {
-                notifySingleClient(clientController,new ActionPointResponse("Mossa fuori ordine, devi prima muovere",false));
+                notifySingleClient(clientController,new ActionPointResponse("Action out of order, remember to move first",false));
             } catch (NoPlayerException e) {
                 System.out.println("Errore inaspettato: Non ci sono giocatori");
             }
         } catch (NotYourTurnException e) {
-            notifySingleClient(clientController,new ActionPointResponse("Non è il tuo turno",false));
+            notifySingleClient(clientController,new ActionPointResponse("It's not your turn",false));
         }
     }
 
@@ -660,6 +660,10 @@ public class GameController {
         clients.remove(clientController);
     }
 
+    /**
+     * send to a client other players data
+     * @param clientController
+     */
     public void sendOtherPlayersOverview(ClientController clientController){
         List<String> names = new ArrayList<>();
         List<String> cards = new ArrayList<>();
@@ -667,7 +671,12 @@ public class GameController {
         try {
             for(Player p : match.getPlayers()){
                 names.add(p.getNickname());
-                cards.add(p.getCard().getName());
+                if(p.getCard() != null) {
+                    cards.add(p.getCard().getName());
+                }
+                else {
+                    cards.add("none");
+                }
                 if(p.getWorkers() != null && p.getWorkers().size()>0)
                     colors.add(p.selectWorker(0).getColour());
                 else

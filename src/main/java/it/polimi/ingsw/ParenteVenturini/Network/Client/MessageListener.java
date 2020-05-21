@@ -7,6 +7,10 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+
+/**
+ * this class is a thread that wait for server's messages
+ */
 public class MessageListener implements Runnable {
     ClientSideController clientSideController;
     ObjectInputStream readStream;
@@ -26,12 +30,12 @@ public class MessageListener implements Runnable {
                 if (msg != null)
                     clientSideController.handleMessage(msg);
             } while (msg != null);
-            System.out.println("Esco dal do");
+            System.out.println("Exiting do-while");
         }
         catch (IOException e){
 
             e.printStackTrace();
-            System.out.println("Errore di connessione");
+            System.out.println("Error during the connection");
             Platform.exit();
             System.exit(0);
             /*
@@ -46,7 +50,7 @@ public class MessageListener implements Runnable {
             */
         }
         catch (ClassNotFoundException e){
-            System.out.println("ClassNotFoundException - Thread listener in esecuzione");
+            System.out.println("ClassNotFoundException");
         }
 
     }

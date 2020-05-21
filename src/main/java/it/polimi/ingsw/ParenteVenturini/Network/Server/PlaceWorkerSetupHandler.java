@@ -71,9 +71,12 @@ public class PlaceWorkerSetupHandler {
             mPlayer.placeWorker(color, mPoint, board);
             numberOfAdd++;
             updateCurrentPlayer();
+            /*
             for(Worker w: mPlayer.getWorkers()){
                 System.out.println("il nome è: "+ w.getPlayer().getNickname());
             }
+
+             */
         }
         else
             throw new IllegalPlaceWorkerException();

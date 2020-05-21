@@ -11,7 +11,7 @@ public class MainClient {
         if(args.length>0 && args[0].toLowerCase().equals("cli")){
             CLIHandler c = new CLIHandler();
             try {
-                System.out.println("test");
+                System.out.println("Starting the client...");
                 c.startClient();
             } catch (Throwable e) {
                 e.printStackTrace();

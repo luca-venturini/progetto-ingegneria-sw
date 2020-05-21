@@ -1,5 +1,9 @@
 package it.polimi.ingsw.ParenteVenturini.Network.Client;
 
+
+/**
+ * this class convert the Integer into workers colors
+ */
 public class ColourPrint {
     static final String RESET = "\u001B[0m";
     private static final String TEXT_RED = "\u001B[31m";

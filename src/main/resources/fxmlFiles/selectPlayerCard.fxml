@@ -20,7 +20,7 @@
             <String fx:value="border_text" />
          </styleClass>
          <graphic>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli la tua carta">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose your card">
                <styleClass>
                   <String fx:value="border_text" />
                   <String fx:value="title_text" />

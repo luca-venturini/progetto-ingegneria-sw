@@ -16,7 +16,7 @@
    <children>
       <Label>
          <graphic>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scelgi le carte che saranno utllizzate">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select which crads you want to be use">
                <styleClass>
                   <String fx:value="border_text" />
                   <String fx:value="title_text" />

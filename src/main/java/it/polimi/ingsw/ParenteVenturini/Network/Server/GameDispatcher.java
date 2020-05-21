@@ -51,7 +51,7 @@ public class GameDispatcher {
         if(actualPlayers==0 ){
             gameController = new GameController(numOfPlayers);
             requiredPlayers = numOfPlayers;
-            System.out.println("partite in corso: "+gameControllers.size());
+            System.out.println("Matches already started: "+gameControllers.size());
         }
         actualPlayers++;
         if(actualPlayers == requiredPlayers){

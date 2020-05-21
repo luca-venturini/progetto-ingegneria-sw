@@ -55,14 +55,14 @@ public class ClientThreadFromServer {
                 if (msg != null)
                     handleMessage(msg);
             } while (msg != null);
-            System.out.println("Esco dal do");
+            System.out.println("Exiting do - while");
         }
         catch (IOException e){
             System.out.println("Exit");
             e.printStackTrace();
             clientController.endGame();
         } catch (ClassNotFoundException e) {
-            System.out.println("Classe non trovata");
+            System.out.println("Classe not found");
             e.printStackTrace();
         }
         finally {

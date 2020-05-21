@@ -46,20 +46,20 @@ public class ClientController implements ServerMessageHandler {
     private void insertPlayerInGame(String nickname, String numOfPlayers){
         GameDispatcher gameDispatcher = GameDispatcher.getInstance();
         if(Integer.parseInt(numOfPlayers) != 2 && Integer.parseInt(numOfPlayers) != 3) {
-            sendMessage(new ErrorLoginNotification(nickname, "Sono possibili partite solo da 2 o 3 giocatori"));
+            sendMessage(new ErrorLoginNotification(nickname, "You can choose only 2 or 3 players matches"));
             return;
         }
         try {
             gameController = gameDispatcher.getGameController(nickname, Integer.parseInt(numOfPlayers));
         } catch (InvalidNicknameException e) {
-            sendMessage(new ErrorLoginNotification(nickname, "Nickname non disponibile"));
+            sendMessage(new ErrorLoginNotification(nickname, "Nickname not available"));
             return;
         }
         if(gameController.getNumOfPlayers() != 0)
-            sendMessage(new SimplyNotification("Partita già inizializzata, sei stato aggiunto a quella"));
+            sendMessage(new SimplyNotification("Match already started, you will join it"));
         player = gameController.addPlayer(this, nickname);
         gameController.startSetup();
-        System.out.println("giocatore aggiunto: "+player.getNickname());
+        System.out.println("Added player: "+player.getNickname());
     }
 
     /**
@@ -90,7 +90,7 @@ public class ClientController implements ServerMessageHandler {
     public void visit(AccessGameMessageRequest msg) {
         player = null;
         if(gameController != null) return;
-        System.out.println("Messaggio arrivato");
+        System.out.println("Message arrived");
         insertPlayerInGame(msg.getNickname(), msg.getValues().get(0));
     }
 
@@ -104,7 +104,7 @@ public class ClientController implements ServerMessageHandler {
         try {
             gameController.addCardsToMatch(msg.getNickname(), msg.getValues());
         } catch (IllegalCardException e) {
-            sendMessage(new SimplyNotification("Non è il tuo turno, o non hai selezionata il numero giusto di carte"));
+            sendMessage(new SimplyNotification("Action not valid, check if it's your turn and select the right cards"));
         }
         for (String s: msg.getValues()){
             System.out.println(s);

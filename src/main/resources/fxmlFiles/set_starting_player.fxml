@@ -2,7 +2,6 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -11,7 +10,7 @@
    <children>
       <Label fx:id="starting_player_text">
          <graphic>
-            <Text fill="#a85f32" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli il giocatore che inizia!">
+            <Text fill="#a85f32" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the starting player!">
                <styleClass>
                   <String fx:value="border_text" />
                   <String fx:value="title_text" />

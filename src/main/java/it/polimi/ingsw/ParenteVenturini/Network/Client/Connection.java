@@ -11,6 +11,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * this class create a connection between the client and the server
+ */
 public class Connection {
     private int port = 1337;
     private String ip = "127.0.0.1";
@@ -28,7 +31,7 @@ public class Connection {
             readStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Server non in esecuzione");
+            System.out.println("Server not ready");
             Platform.exit();
             System.exit(0);
         }
@@ -49,7 +52,7 @@ public class Connection {
     }
 
     public void quitConnection() {
-        System.out.println("Sono in disconnessione");
+        System.out.println("disconnecting");
         try {
             socket.close();
             System.out.println("socket closed ok");

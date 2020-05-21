@@ -26,6 +26,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * this class receive inputs from ClientSideController and handle all the FXML controllers, updating them
+ */
 public class GUIHandler extends Application implements ViewInterface {
 
     private Stage primaryStage;
@@ -76,6 +79,8 @@ public class GUIHandler extends Application implements ViewInterface {
         return null;
     }
 
+
+    //load the login page
     @Override
     public void loadLogin() {
         inizializedboard=false;
@@ -221,7 +226,7 @@ public class GUIHandler extends Application implements ViewInterface {
     public void displayMoveMenu() {
         Platform.runLater(()-> {
             FXMLGameController controller = loader.getController();
-            controller.displayInfo("Scegli la tua mossa");
+            controller.displayInfo("Chose your move");
             controller.enableMovebuttons();
         });
     }
@@ -230,7 +235,7 @@ public class GUIHandler extends Application implements ViewInterface {
     public void displaySelectWorker() {
         Platform.runLater(()-> {
             FXMLGameController controller = loader.getController();
-            controller.displayInfo("Seleziona un worker");
+            controller.displayInfo("Select a worker");
             controller.activePlayerCircle();
             controller.enableWorkerSelection();
         });
@@ -328,7 +333,7 @@ public class GUIHandler extends Application implements ViewInterface {
             }
             Button close = (Button) modalScene.lookup("#closeModal");
             Label textMessage = (Label) modalScene.lookup("#modalMessage");
-            textMessage.setText("Hai vinto la partita !");
+            textMessage.setText("You won the match!");
             close.setOnAction(actionEvent -> stage.close());
             stage.setScene(modalScene);
             stage.initModality(Modality.APPLICATION_MODAL);

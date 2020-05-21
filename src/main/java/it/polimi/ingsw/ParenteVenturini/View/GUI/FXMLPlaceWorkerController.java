@@ -288,9 +288,9 @@ public class FXMLPlaceWorkerController implements ViewController{
 
     @Override
     public void displayMessage(String s) {
-        System.out.println("Arrivata notifica");
-        System.out.println("colore: "+GUIHandler.clientSideController.getColor());
-        System.out.println("Messaggio: "+s);
+        System.out.println("New message");
+        System.out.println("color: "+GUIHandler.clientSideController.getColor());
+        System.out.println("Message: "+s);
         Integer color = GUIHandler.clientSideController.getColor();
         if(color>0){
             your_color.setText(color.toString());

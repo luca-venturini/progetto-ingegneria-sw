@@ -446,7 +446,7 @@ public class FXMLGameController implements ViewController{
     }
 
     public void setNumTurn(String num){
-        turn.setText("Turno "+num);
+        turn.setText("Turn "+num);
     }
 
     public void endGame(){

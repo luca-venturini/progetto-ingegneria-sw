@@ -6,6 +6,9 @@ import it.polimi.ingsw.ParenteVenturini.Network.Client.ClientSideController;
 
 import java.util.List;
 
+/**
+ * This interface must be implemented to create a user interface
+ */
 public interface ViewInterface {
     String login();
     void chooseCards(List<String> cardsName, int numberOfCardsRequired);

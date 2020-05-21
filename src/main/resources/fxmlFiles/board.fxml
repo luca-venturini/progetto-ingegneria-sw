@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -10,6 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
 
 <StackPane minHeight="758.0" minWidth="1315.0" prefHeight="758.0" prefWidth="1315.0" styleClass="light-blue-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.ParenteVenturini.View.GUI.FXMLPlaceWorkerController">
    <children>
@@ -20,6 +22,11 @@
                   <Image url="@SantoriniBoard.png" />
                </image>
             </ImageView>
+            <Label layoutX="477.0" layoutY="30.0" style="-fx-font-size: 30;" styleClass="game-text" textFill="#bf4c13">
+               <graphic>
+                  <Text fill="#bf4c13" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="border_text" text="Place your workers" />
+               </graphic>
+            </Label>
             <GridPane layoutX="364.0" layoutY="102.0" prefHeight="563.0" prefWidth="559.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -188,12 +195,28 @@
                   </AnchorPane>
                </children>
             </GridPane>
-            <Label layoutX="14.0" layoutY="379.0" prefHeight="56.0" prefWidth="233.0" styleClass="label-text" text="TURNO DI:" />
-            <Label fx:id="actual_player" layoutX="43.0" layoutY="421.0" prefHeight="56.0" prefWidth="233.0" styleClass="label-text" />
+            <Label layoutX="14.0" layoutY="379.0" prefHeight="56.0" prefWidth="233.0" text="TURN OF:">
+               <styleClass>
+                  <String fx:value="label-text" />
+                  <String fx:value="game-text" />
+               </styleClass></Label>
+            <Label fx:id="actual_player" layoutX="43.0" layoutY="421.0" prefHeight="56.0" prefWidth="233.0">
+               <styleClass>
+                  <String fx:value="label-text" />
+                  <String fx:value="game-text" />
+               </styleClass></Label>
             <Button fx:id="show_points" disable="true" layoutX="435.0" layoutY="718.0" mnemonicParsing="false" onAction="#requirePossiblePoints" opacity="0.0" text="Mostra punti disponibili" />
-            <Label fx:id="your_name" layoutX="70.0" layoutY="21.0" prefHeight="56.0" prefWidth="251.0" styleClass="label-text" textFill="#a14f0b" />
+            <Label fx:id="your_name" layoutX="70.0" layoutY="21.0" prefHeight="56.0" prefWidth="251.0" textFill="#a14f0b">
+               <styleClass>
+                  <String fx:value="label-text" />
+                  <String fx:value="game-text" />
+               </styleClass></Label>
             <Label fx:id="your_color" layoutX="43.0" layoutY="49.0" opacity="0.0" text="color" />
-            <Label fx:id="notifications" alignment="TOP_LEFT" layoutX="14.0" layoutY="519.0" prefHeight="212.0" prefWidth="233.0" styleClass="label-text-notification" wrapText="true" />
+            <Label fx:id="notifications" alignment="TOP_LEFT" layoutX="14.0" layoutY="519.0" prefHeight="212.0" prefWidth="233.0" wrapText="true">
+               <styleClass>
+                  <String fx:value="label-text-notification" />
+                  <String fx:value="game-text" />
+               </styleClass></Label>
             <Circle fx:id="your_color_circle" fill="#a7a7a7" layoutX="43.0" layoutY="49.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </AnchorPane>

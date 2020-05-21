@@ -46,7 +46,7 @@ public class FXMLLoginButtonController implements ViewController{
             GUIHandler.clientSideController.sendMessage(message);
         }
         else{
-            displayMessage("Nickname non disponibile");
+            displayMessage("Login not possible, insert correct data");
         }
     }
 

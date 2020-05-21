@@ -92,7 +92,7 @@ public class FXMLSelectCardsController implements ViewController{
         else{
             chosenCards = new ArrayList<>();
             displayChosenCards();
-            showAlert("Devi selezionare esattamente "+ numOfCards +" carte");
+            showAlert("You must select "+ numOfCards +" cards");
         }
     }
 
