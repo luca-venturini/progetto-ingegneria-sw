@@ -56,7 +56,7 @@ public class Block implements Serializable {
 
     /**
      * set the dome on the block
-     * @param dome true if you ant to build a dome
+     * @param dome true if you want to build a dome
      */
 
     public void setDome(boolean dome) {

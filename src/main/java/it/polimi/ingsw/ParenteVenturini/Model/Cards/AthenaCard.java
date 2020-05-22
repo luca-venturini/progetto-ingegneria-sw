@@ -7,12 +7,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.AthenaMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * AthenaCard Power -
+ * Opponent's Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.
+ *
+ *  It returns Move class, WinCheck class and OpponentEffect class
  */
 public class AthenaCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public AthenaCard() {
         super();

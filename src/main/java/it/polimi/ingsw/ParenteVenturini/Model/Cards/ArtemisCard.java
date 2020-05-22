@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.ArtemisMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * ArtemisCard Power -
+ * Your Move: Your Worker may move one additional time, but not back to its initial space.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class ArtemisCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public ArtemisCard() {
         super();

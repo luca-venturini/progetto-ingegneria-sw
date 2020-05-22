@@ -6,11 +6,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.MinotaurMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * MinotaurCard Power -
+ * Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class MinotaurCard extends Card {
     /**
-     * init the card
+     * initialize the card
      */
     public MinotaurCard() {
         super();

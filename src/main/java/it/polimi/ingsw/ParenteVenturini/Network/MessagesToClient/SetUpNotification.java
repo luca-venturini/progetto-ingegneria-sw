@@ -6,10 +6,6 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * class never used, probably we must delete it
- */
-
 public class SetUpNotification implements MessageToClient {
     private List<String> notification = new ArrayList<>();
     private MessageType messageType = MessageType.NOTIFICATION;

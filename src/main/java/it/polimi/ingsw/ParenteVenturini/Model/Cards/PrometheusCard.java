@@ -6,11 +6,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.PrometheusMove;
 
 /**
- * {@inheritDoc}
+ * PrometheusCard Power -
+ * Your Turn: If your Worker does not move up, it may build both before and after moving.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class PrometheusCard extends Card {
     /**
-     * init the card
+     * initialize the card
      */
     public PrometheusCard() {
         super();

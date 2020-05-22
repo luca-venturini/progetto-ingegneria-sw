@@ -5,10 +5,6 @@ import it.polimi.ingsw.ParenteVenturini.Network.MessagesToServer.MessageType;
 
 import java.util.List;
 
-/**
- * this class is used to ask to the challenger player to choose 2/3 cards
- */
-
 public class SelectCardNotification implements MessageToClient {
 
     private MessageType messageType = MessageType.SELECT_CARD;

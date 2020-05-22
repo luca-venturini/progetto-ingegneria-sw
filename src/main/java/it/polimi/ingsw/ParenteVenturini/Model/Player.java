@@ -106,7 +106,7 @@ public class Player{
     }
 
     /**
-     * check if the player ha won
+     * check if the player has won
      * @param board the used board
      * @param worker specific worker
      * @param players list of all of the players, to check OpponentEffect on the victory
@@ -212,7 +212,7 @@ public class Player{
     }
 
     /**
-     * the current worker will do the special build
+     * the current worker will do the special build in a specified point
      * @param p the specified point
      * @throws OpponentEffectException thrown if the action is not valid due to an OpponentEffect
      * @throws AlreadyWalkedException thrown if the action is not valid because you have already walked

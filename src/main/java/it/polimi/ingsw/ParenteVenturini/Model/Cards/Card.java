@@ -6,7 +6,7 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.OpponentEffectContainer;
 
 /**
- * this class represent the cards, it returns Move class, WinCheck class and OpponentEffect based on the specific card
+ * this class represent the cards, it returns Move class, WinCheck class and OpponentEffect class based on the specific card
  */
 public abstract class Card {
     /** card's name */

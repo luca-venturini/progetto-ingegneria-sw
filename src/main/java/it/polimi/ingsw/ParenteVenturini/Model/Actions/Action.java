@@ -20,7 +20,7 @@ public abstract class Action {
      * @param board the used board
      * @param worker the worker
      * @throws IllegalBuildingException thrown if you can't build
-     * @throws IllegalMovementException thrown if yu can't move
+     * @throws IllegalMovementException thrown if you can't move
      */
     public abstract void  doAction(Point point, Board board, Worker worker) throws IllegalBuildingException, IllegalMovementException;
 

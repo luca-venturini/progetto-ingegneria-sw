@@ -19,7 +19,7 @@ public class Turn {
     private int numTurn;
 
     /**
-     * init the class
+     * initialize the class
      * @param players the players of the match
      * @param op reference to the opponentEffectContainer
      */

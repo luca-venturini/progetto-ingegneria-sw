@@ -18,7 +18,7 @@ public class Board {
     private List<Worker> workers;
 
     /**
-     * init the board
+     * initialize the board
      */
     public Board() {
         board = new Block[5][5];

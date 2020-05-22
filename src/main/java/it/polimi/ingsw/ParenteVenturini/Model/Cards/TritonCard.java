@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.TritonMove;
 
 /**
- * {@inheritDoc}
+ * TritonCard Power -
+ * Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class TritonCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public TritonCard() {
         super();

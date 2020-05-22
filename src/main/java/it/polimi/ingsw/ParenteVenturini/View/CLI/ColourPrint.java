@@ -1,8 +1,8 @@
-package it.polimi.ingsw.ParenteVenturini.Network.Client;
+package it.polimi.ingsw.ParenteVenturini.View.CLI;
 
 
 /**
- * this class convert the Integer into workers colors
+ * this class convert the Integer into workers colors in the CLI
  */
 public class ColourPrint {
     static final String RESET = "\u001B[0m";

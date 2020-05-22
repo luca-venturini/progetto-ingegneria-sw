@@ -9,11 +9,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.PanMove;
 
 /**
- * {@inheritDoc}
+ * ChronusCard Power -
+ * Win Condition: You also win when there are at least five Complete Towers on the board.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class ChronusCard extends Card{
     /**
-     * init the card
+     * initialize the card
      */
     public ChronusCard() {
         super();

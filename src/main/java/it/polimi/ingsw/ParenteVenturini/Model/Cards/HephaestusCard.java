@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.HephaestusMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * HephaestusCard Power -
+ * Your Build: Your Worker may build one additional block (not dome) on top of your first block.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class HephaestusCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public HephaestusCard() {
         super();

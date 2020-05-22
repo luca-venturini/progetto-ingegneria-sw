@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.HestiaMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * HestiaCard Power -
+ * Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class HestiaCard extends Card{
 
     /**
-     * init the card
+     * initialize the card
      */
     public HestiaCard() {
         super();

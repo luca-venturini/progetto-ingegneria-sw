@@ -81,7 +81,7 @@ public class ClientSideController implements ClientMessageHandler {
 
     /**
      * send messages to the server
-     * @param msg
+     * @param msg is the message
      */
     public void sendMessage(MessageToServer msg){
         try {

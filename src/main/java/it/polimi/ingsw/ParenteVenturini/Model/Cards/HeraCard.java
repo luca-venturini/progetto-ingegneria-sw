@@ -7,11 +7,14 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.HeraMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * HeraCard Power -
+ * Opponent's Turn: An opponent cannot win by moving into a perimeter space.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class HeraCard extends Card {
     /**
-     * init the card
+     * initialize the card
      */
     public HeraCard() {
         super();

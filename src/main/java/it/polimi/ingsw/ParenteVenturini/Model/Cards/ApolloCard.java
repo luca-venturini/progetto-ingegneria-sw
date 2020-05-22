@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.ApolloMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * ApolloCard Power -
+ * Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.
+ *
+ *  It returns Move class, WinCheck class and OpponentEffect class
  */
 public class ApolloCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public ApolloCard() {
         super();

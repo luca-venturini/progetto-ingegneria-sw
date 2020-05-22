@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.DemeterMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * DemeterCard Power -
+ * Your Build: Your Worker may build one additional time, but not on the same space.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class DemeterCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public DemeterCard() {
         super();

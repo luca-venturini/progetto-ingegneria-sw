@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.AtlasMove;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 
 /**
- * {@inheritDoc}
+ * AtlasCard Power -
+ * Your Build: Your Worker may build a dome at any level.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class AtlasCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public AtlasCard() {
         super();

@@ -6,12 +6,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.ZeusMove;
 
 /**
- * {@inheritDoc}
+ * ZeusCard Power -
+ * Your Build: Your Worker may build a block under itself.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class ZeusCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public ZeusCard() {
         super();

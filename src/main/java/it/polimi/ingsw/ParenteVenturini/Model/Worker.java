@@ -57,7 +57,7 @@ public class Worker implements Serializable {
 
     /**
      * get the position of the worker
-     * @param point return the position where the worker is
+     * @param point is the position in which the worker move
      */
 
     public void setPosition(Point point){

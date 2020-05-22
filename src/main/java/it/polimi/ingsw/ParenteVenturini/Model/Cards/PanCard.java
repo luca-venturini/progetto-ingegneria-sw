@@ -7,12 +7,15 @@ import it.polimi.ingsw.ParenteVenturini.Model.Moves.Move;
 import it.polimi.ingsw.ParenteVenturini.Model.Moves.PanMove;
 
 /**
- * {@inheritDoc}
+ * PanCard Power -
+ * Win Condition: You also win if your Worker moves down two or more levels.
+ *
+ * It returns Move class, WinCheck class and OpponentEffect class
  */
 public class PanCard extends Card {
 
     /**
-     * init the card
+     * initialize the card
      */
     public PanCard() {
         super();

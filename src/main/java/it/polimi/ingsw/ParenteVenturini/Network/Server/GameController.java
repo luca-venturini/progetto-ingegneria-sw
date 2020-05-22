@@ -662,7 +662,7 @@ public class GameController {
 
     /**
      * send to a client other players data
-     * @param clientController
+     * @param clientController is a reference to the client
      */
     public void sendOtherPlayersOverview(ClientController clientController){
         List<String> names = new ArrayList<>();
