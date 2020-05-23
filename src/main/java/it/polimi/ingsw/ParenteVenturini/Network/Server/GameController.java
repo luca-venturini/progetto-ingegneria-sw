@@ -358,6 +358,7 @@ public class GameController {
      * notify a client that it is his turn
      */
     public synchronized void notifyYourTurn(){
+        moveHandler.setHasDoneAction(false);
         if(match.gameOver()) {
             if(match.getNumPlayers()>2)
                 notifySingleClient(match.getTurn().getCurrentPlayer(), new GameOverNotification());
@@ -451,7 +452,7 @@ public class GameController {
      * @param index the index of the selected worker
      */
     public synchronized void selectWorker(ClientController clientController, String nickname, int index){
-        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname)){
+        if(match.getTurn().getCurrentPlayer().getNickname().equals(nickname) && moveHandler != null && !moveHandler.hasDoneAction()){
             match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
             notifySingleClient(clientController,new SelectWorkerResponse("Worker selected",true));
         }
