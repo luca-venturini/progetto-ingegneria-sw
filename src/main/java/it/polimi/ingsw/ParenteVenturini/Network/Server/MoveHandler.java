@@ -58,6 +58,14 @@ public class MoveHandler {
     }
 
     /**
+     * use this setter method to clear the boolean variable every time the current player change
+     * @param hasDoneAction set to false to start new player's move
+     */
+    public void setHasDoneAction(boolean hasDoneAction) {
+        this.hasDoneAction = hasDoneAction;
+    }
+
+    /**
      * do the selected action
      * @param nickname the nickname of the player
      * @param x the selected point
