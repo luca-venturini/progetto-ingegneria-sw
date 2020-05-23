@@ -456,7 +456,7 @@ public class GameController {
             match.getTurn().setActualWorker( match.selectPlayer(nickname).selectWorker(index-1) );
             notifySingleClient(clientController,new SelectWorkerResponse("Worker selected",true));
         }
-        else notifySingleClient(clientController,new SelectWorkerResponse("It's not your turn",false));
+        else notifySingleClient(clientController,new SelectWorkerResponse("It's not your turn, or you've already moved",false));
     }
 
     /**

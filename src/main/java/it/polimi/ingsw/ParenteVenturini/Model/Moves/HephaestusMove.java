@@ -104,6 +104,8 @@ public class HephaestusMove extends Move{
             }
             else throw new OutOfOrderMoveException();
         }
+        if(!hasWalked)
+            throw new OutOfOrderMoveException();
         else throw new AlreadyBuiltException();
     }
 }

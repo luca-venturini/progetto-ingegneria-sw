@@ -204,6 +204,9 @@ public class FXMLGameController implements ViewController{
     @FXML
     private ImageView card_image_view;
 
+    @FXML
+    private Button change_worker_button;
+
     private Button[][] buttons = new Button[5][5];
     private StackPane[][] stackPanes = new StackPane[5][5];
     private List<Button> workerButtons = new ArrayList<>();
@@ -272,6 +275,7 @@ public class FXMLGameController implements ViewController{
         move_button.setDisable(true);
         build_button.setDisable(true);
         specialbuild_button.setDisable(true);
+        change_worker_button.setDisable(true);
         if( !GUIHandler.clientSideController.getYourCard().equals("Atlas") ){
             specialbuild_button.setVisible(false);
         }
@@ -396,6 +400,7 @@ public class FXMLGameController implements ViewController{
         build_button.setDisable(false);
         specialbuild_button.setDisable(false);
         endMove_button.setDisable(false);
+        change_worker_button.setDisable(false);
     }
 
     public void disableMovebuttons(){
@@ -404,6 +409,7 @@ public class FXMLGameController implements ViewController{
         build_button.setDisable(true);
         specialbuild_button.setDisable(true);
         endMove_button.setDisable(true);
+        change_worker_button.setDisable(true);
     }
 
     private void sendMove(String type){
@@ -437,6 +443,12 @@ public class FXMLGameController implements ViewController{
             b.setDisable(false);
             b.setOnAction(e -> sendWorker(workerindex.get(workerButtons.indexOf(b))));
         }
+    }
+
+    @FXML
+    public void enableWorkerSelectionFromButton(){
+        clearButtons();
+        enableWorkerSelection();
     }
 
     public void disableWorkerSelection(){
