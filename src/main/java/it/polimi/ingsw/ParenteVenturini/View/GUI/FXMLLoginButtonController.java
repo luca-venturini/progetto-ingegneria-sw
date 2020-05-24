@@ -36,9 +36,10 @@ public class FXMLLoginButtonController implements ViewController{
     @FXML
     public void login(Event event){
         String user = username.getText();
+        user = user.replaceAll("\\s+","");
         String number = comboBoxPalyerNumber.getSelectionModel().getSelectedItem().toString();
 
-        if((number.equals("2") || number.equals("3"))){
+        if((number.equals("2") || number.equals("3")) && !user.equals("")){
             System.out.println("login possibile");
             login_button.setDisable(true);
             MessageToServer message = new AccessGameMessageRequest(user, number);

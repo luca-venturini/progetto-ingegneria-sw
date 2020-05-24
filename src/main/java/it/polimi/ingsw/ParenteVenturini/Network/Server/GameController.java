@@ -560,6 +560,7 @@ public class GameController {
 
                 //evaluate if the current player or another player won
                 if(moveHandler.isMovement() && match.selectPlayer(nickname).hasWon(match.getBoard(),match.getTurn().getCurrentWorker(),match.getPlayers())){
+                    sendBoard();
                     notifyAllClients(new WinNotification(nickname));
                     notifySingleClient(clientController, new VictoryNotification() );
                     try {

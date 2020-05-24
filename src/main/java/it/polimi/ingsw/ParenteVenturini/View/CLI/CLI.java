@@ -29,6 +29,12 @@ public class CLI implements ViewInterface {
         try {
             System.out.println("Insert nickname: ");
             String name = stdIn.nextLine();
+            name = name.replaceAll("\\s+","");
+            while(name.equals("")){
+                System.out.println("Insert nickname: ");
+                name = stdIn.nextLine();
+                name = name.replaceAll("\\s+","");
+            }
             while (!done) {
                 System.out.println("Insert number of players: ");
                 numOfPlayers = stdIn.nextLine();

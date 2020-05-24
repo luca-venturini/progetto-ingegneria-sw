@@ -307,7 +307,9 @@ public class Match {
      * @throws NoStarterException thrown if the starter hasn't been selected
      * @throws NoPlayerException thrown if there are no players
      */
-    public void orderPlayers() throws NoStarterException, NoPlayerException {
+
+    /*
+    public void orderPlayers2() throws NoStarterException, NoPlayerException {
         if( !players.isEmpty() ) {
             if (this.starter != null) {
                 List<Player> p = new ArrayList<>();
@@ -321,6 +323,31 @@ public class Match {
             } else throw new NoStarterException();
         }
         else throw new NoPlayerException();
+    }
+
+     */
+
+    public void orderPlayers() throws NoStarterException, NoPlayerException {
+        if( !players.isEmpty() ) {
+            if (this.starter != null) {
+                List<Player> p = new ArrayList<>();
+                int index = players.indexOf(starter);
+                p.add(this.starter);
+                for(int i = index+1; i<players.size(); i++){
+                    p.add(players.get(i));
+                }
+                for(int j = 0; j<index; j++){
+                    p.add(players.get(j));
+                }
+                this.players = p;
+            } else throw new NoStarterException();
+        }
+        else throw new NoPlayerException();
+        System.out.println("Length: "+players.size());
+        System.out.println("Order: ");
+        for(Player p: players){
+            System.out.println("Player: "+p.getNickname());
+        }
     }
 
     /**
