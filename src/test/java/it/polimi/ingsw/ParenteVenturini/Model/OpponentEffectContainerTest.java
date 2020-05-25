@@ -100,4 +100,15 @@ class OpponentEffectContainerTest {
         assertEquals(2, test.removeConstructionPoint(myPoints, new Point(1,0), new AthenaEffect(), board).size());
     }
 
+    @Test
+    void removeEffects(){
+        test.addEffect(new AthenaEffect());
+        test.switchToNewTurn();
+        test.addEffect(new AthenaEffect());
+        test.removeEffect(new AthenaEffect());
+        assertEquals(0, test.getActiveEffects().size());
+        test.switchToNewTurn();
+        assertEquals(0, test.getActiveEffects().size());
+    }
+
 }
