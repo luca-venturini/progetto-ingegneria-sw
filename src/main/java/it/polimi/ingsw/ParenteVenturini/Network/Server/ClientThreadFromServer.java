@@ -15,11 +15,11 @@ public class ClientThreadFromServer {
     /** the client controller */
     private ClientController clientController;
 
-    // Not used to write or read
+    // input and output
     private InputStream inputStream;
     private OutputStream outputStream;
 
-    // To write and read
+    // used to write and read
     private ObjectInputStream readStream;
     private ObjectOutputStream writeStream;
 
@@ -36,7 +36,7 @@ public class ClientThreadFromServer {
      */
     public void handleConnection(){
         try{
-            // Communication streams
+            // input and output
             inputStream = clientSocket.getInputStream();
             outputStream = clientSocket.getOutputStream();
 
@@ -46,7 +46,7 @@ public class ClientThreadFromServer {
 
             clientController = new ClientController(this);
 
-            // Handle incoming data from client
+            // messages from client
             MessageToServer msg;
 
             do {

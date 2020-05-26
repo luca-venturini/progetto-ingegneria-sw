@@ -24,7 +24,7 @@ public class GameDispatcher {
     }
 
     /**
-     * get an istance of the class
+     * get an instance of the class
      * @return the class
      */
     synchronized public static GameDispatcher getInstance(){

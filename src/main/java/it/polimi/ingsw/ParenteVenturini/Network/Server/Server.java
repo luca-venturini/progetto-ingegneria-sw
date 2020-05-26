@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * server class, handle teh connection of new clients
+ * server class, handle the connection of new clients
  */
 public class Server {
     /** the port */
@@ -36,7 +36,7 @@ public class Server {
         }
         catch(Exception e){
         }
-        System.out.println("Server in esecuzione");
+        System.out.println("Server starts");
         while(true){
             try{
                 Socket socket = serverSocket.accept();
